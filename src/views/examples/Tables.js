@@ -57,11 +57,11 @@ class Tables extends React.Component {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Project</th>
-                      <th scope="col">Budget</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Container</th>
+                      <th scope="col">Temperature</th>
+                      <th scope="col">Humidity</th>
                       <th scope="col">Users</th>
-                      <th scope="col">Completion</th>
+                      <th scope="col">Time</th>
                       <th scope="col" />
                     </tr>
                   </thead>
