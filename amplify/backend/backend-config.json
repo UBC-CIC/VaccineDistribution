@@ -1,0 +1,10 @@
+{
+  "auth": {
+    "siddmcg46702bd19": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  }
+}

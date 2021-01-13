@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-    "scripts": {
+  "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -42,7 +42,9 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "@aws-amplify/ui-react": "^0.2.34",
     "@fortawesome/fontawesome-free": "5.12.1",
+    "aws-amplify": "^3.3.14",
     "chart.js": "2.9.3",
     "classnames": "2.2.6",
     "moment": "2.24.0",
@@ -55,7 +57,7 @@
     "react-dom": "16.12.0",
     "react-google-maps": "9.4.5",
     "react-router-dom": "5.1.2",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^3.4.4",
     "reactstrap": "8.4.1"
   },
   "devDependencies": {
