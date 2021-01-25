@@ -46,24 +46,27 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import axios from 'axios';
 
 //Amplify.configure(awsExports)
 
 
-let containerID = [];
-let containerTemp = [];
-let containerHumidity = [];
-let containerDate = [];
+let Comp_ID = [];
+let companyType = [];
+let companyName = [];
+let companyIC = [];
+let isCompanyRegistered = [];
 let items = [];
-let temp = []
-let containerData = []
+let temp = [];
+let companyData = [];
 
-class Tables extends Component {
+
+class CompanyTable extends Component {
      
   constructor(props) {
     super(props);
     this.state = {
-        containers:[],
+        companies:[],
         itemsList: []
   };
 }
@@ -72,7 +75,7 @@ class Tables extends Component {
   
   async componentDidMount(){
     console.log("Loading tables now")
-    this.getContainers();
+    this.getCompanies();
     
   }
 
@@ -82,8 +85,21 @@ class Tables extends Component {
     
        
   //get all container data
-  async getContainers(){
-   
+  async getCompanies(){
+    try {
+    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcompany`, { Operation: "GET_COMPANY" } )
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        companyData = res.data.body;
+      this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+        }
+catch (err) {
+    console.log('error fetching company...', err)
+  }
+/*
     try {
       const containers = await API.graphql(graphqlOperation(listContainers))
       containerData = containers.data.listContainers.items
@@ -95,47 +111,54 @@ class Tables extends Component {
       console.log('error fetching containers...', err)
     }
 
-    
+    */
     
   }
 
   //create table and fill in container data
-  async createContainerList(){
-    console.log("in create container list")
-    containerData.forEach(element => {
-      containerID.push(element.name);
-      containerTemp.push(element.currentTemperature);
-      containerHumidity.push(element.currentHumidity);
-      let date = new Date(element.updatedAt).toLocaleTimeString()
-      containerDate.push(date)
+  async createCompanyList(){
+    console.log("in create company list")
+    companyData.forEach(element => {
+      Comp_ID.push(element.Comp_ID);
+      companyType.push(element.companyType);
+      companyName.push(element.companyName);
+      companyIC.push(element.companyIC);
+      isCompanyRegistered.push(element.isCompanyRegistered);
+      //let date = new Date(element.updatedAt).toLocaleTimeString()
+      //containerDate.push(date)
     });
-    temp = containerData
+    temp = companyData
     var i;
-    for(i=0; i < this.state.containers.length; i++){
+    for(i=0; i < this.state.companies.length; i++){
         items.push(
               <tr key={i}>
                   <th scope="row">
                     <Media className="align-items-center">
                       <Media>
                         <span className="mb-0 text-sm">
-                        {containerData[i].name}
+                        {companyData[i].Comp_ID}
                         </span>
                       </Media>
                     </Media>
                   </th>
-                  <td>{containerData[i].currentTemperature}  °C</td>
+                  <td>{companyData[i].companyType}</td>
                   <td>
                     
                      
-                      {containerData[i].currentHumidity} %
+                      {companyData[i].companyName}
                    
                   </td>
                   <td>
-                    {containerData[i].currentLat + " , " + containerData[i].currentLng}
+                    
+                     
+                      {companyData[i].companyIC}
+                   
                   </td>
                   <td>
-                    {containerDate[i]}
+                      {companyData[i].isCompanyRegistered?"true":"false"}
                   </td>
+                  
+                 
                   <td className="text-right">
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -176,7 +199,7 @@ class Tables extends Component {
     }
     this.setState({itemsList:items})
 
-    console.log(containerData)
+    console.log(companyData)
 
   }
   
@@ -184,7 +207,7 @@ class Tables extends Component {
   render() {
     return (
       <>
-        <Header />
+        
         {/* Page content */}
         <Container className="mt--7" fluid>
           {/* Table */}
@@ -192,16 +215,16 @@ class Tables extends Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Sensor Data</h3>
+                  <h3 className="mb-0">Company Data</h3>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Container</th>
-                      <th scope="col">Temperature</th>
-                      <th scope="col">Humidity</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Update Time</th>
+                      <th scope="col">Comp_ID</th>
+                      <th scope="col">Company Type</th>
+                      <th scope="col">Company Name</th>
+                      <th scope="col">Company IC</th>
+                      <th scope="col">IsCompanyRegistered</th>
                       <th scope="col" />
                     </tr>
                   </thead>
@@ -275,4 +298,4 @@ class Tables extends Component {
   }
 }
 
-export default withAuthenticator(Tables) ;
+export default withAuthenticator(CompanyTable) ;

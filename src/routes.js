@@ -22,6 +22,16 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import createContainerComponent from "views/createContainerComponent";
+import CreateCompany from "views/examples/CreateCompany";
+import CreateVaccine from "views/examples/CreateVaccine";
+import CreateContainer from "views/examples/CreateContainer";
+
+
+import ViewCompany from "views/examples/ViewCompany";
+import ViewContainer from "views/examples/ViewContainer";
+import ViewVaccine from "views/examples/ViewVaccine";
+
 
 var routes = [
   {
@@ -39,6 +49,63 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/CreateCompany",
+    name: "Create Company",
+    icon: "ni ni-fat-add text-primary",
+    component: CreateCompany,
+    layout: "/admin"
+  },
+  /*
+  {
+    path: "/createContainer",
+    name: "Create Container",
+    icon: "ni ni-fat-add text-primary",
+    component: createContainerComponent,
+    layout: "/admin"
+  },
+  */
+
+ {
+  path: "/CreateContainer",
+  name: "Create Container",
+  icon: "ni ni-fat-add text-primary",
+  component: CreateContainer,
+  layout: "/admin"
+},
+
+  {
+    path: "/CreateVaccine",
+    name: "Create Vaccine",
+    icon: "ni ni-fat-add text-primary",
+    component: CreateVaccine,
+    layout: "/admin"
+  },
+  
+  {
+    path: "/ViewCompany",
+    name: "View Company",
+    icon: "ni ni-tv-2 text-blue",
+    component: ViewCompany,
+    layout: "/admin"
+  },
+  {
+    path: "/ViewContainer",
+    name: "View Container",
+    icon: "ni ni-tv-2 text-blue",
+    component: ViewContainer,
+    layout: "/admin"
+  },
+  {
+    path: "/ViewVaccine",
+    name: "View Vaccine",
+    icon: "ni ni-tv-2 text-blue",
+    component: ViewVaccine,
+    layout: "/admin"
+  },
+ 
+
+  {/*
+  {
     path: "/maps",
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
@@ -52,6 +119,7 @@ var routes = [
     component: Profile,
     layout: "/admin"
   },
+*/},
   {
     path: "/tables",
     name: "Tables",
@@ -59,6 +127,7 @@ var routes = [
     component: Tables,
     layout: "/admin"
   },
+  {/*
   {
     path: "/login",
     name: "Login",
@@ -73,5 +142,6 @@ var routes = [
     component: Register,
     layout: "/auth"
   }
+  */}
 ];
 export default routes;

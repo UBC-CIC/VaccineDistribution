@@ -20,9 +20,6 @@ import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
 import { listContainers } from '../../graphql/queries';
 //import awsExports from "../../aws-exports";
 
-
-
-
 // reactstrap components
 import {
   Badge,
@@ -46,19 +43,21 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import axios from 'axios';
 
 //Amplify.configure(awsExports)
 
 
-let containerID = [];
-let containerTemp = [];
-let containerHumidity = [];
-let containerDate = [];
+let Cont_ID = [];
+let containerType = [];
+let containerName = [];
+let isContainerSafe = [];
 let items = [];
-let temp = []
-let containerData = []
+let temp = [];
+let containerData = [];
 
-class Tables extends Component {
+
+class ContainerTable extends Component {
      
   constructor(props) {
     super(props);
@@ -83,7 +82,20 @@ class Tables extends Component {
        
   //get all container data
   async getContainers(){
-   
+    try {
+    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcontainer`, { Operation: "GET_CONTAINER" } )
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        containerData = res.data.body;
+      this.setState({ containers: res.data.body }, ()=> this.createContainerList());
+    })
+        }
+catch (err) {
+    console.log('error fetching containers...', err)
+  }
+/*
     try {
       const containers = await API.graphql(graphqlOperation(listContainers))
       containerData = containers.data.listContainers.items
@@ -95,7 +107,7 @@ class Tables extends Component {
       console.log('error fetching containers...', err)
     }
 
-    
+    */
     
   }
 
@@ -103,11 +115,12 @@ class Tables extends Component {
   async createContainerList(){
     console.log("in create container list")
     containerData.forEach(element => {
-      containerID.push(element.name);
-      containerTemp.push(element.currentTemperature);
-      containerHumidity.push(element.currentHumidity);
-      let date = new Date(element.updatedAt).toLocaleTimeString()
-      containerDate.push(date)
+      Cont_ID.push(element.Cont_ID);
+      containerType.push(element.containerType);
+      containerName.push(element.containerName);
+      isContainerSafe.push(element.isContainerSafe);
+      //let date = new Date(element.updatedAt).toLocaleTimeString()
+      //containerDate.push(date)
     });
     temp = containerData
     var i;
@@ -118,24 +131,23 @@ class Tables extends Component {
                     <Media className="align-items-center">
                       <Media>
                         <span className="mb-0 text-sm">
-                        {containerData[i].name}
+                        {containerData[i].Cont_ID}
                         </span>
                       </Media>
                     </Media>
                   </th>
-                  <td>{containerData[i].currentTemperature}  °C</td>
+                  <td>{containerData[i].containerType}</td>
                   <td>
                     
                      
-                      {containerData[i].currentHumidity} %
+                      {containerData[i].containerName}
                    
                   </td>
                   <td>
-                    {containerData[i].currentLat + " , " + containerData[i].currentLng}
+                      {containerData[i].isContainerSafe?"true":"false"}
                   </td>
-                  <td>
-                    {containerDate[i]}
-                  </td>
+                  
+                 
                   <td className="text-right">
                     <UncontrolledDropdown>
                       <DropdownToggle
@@ -184,7 +196,7 @@ class Tables extends Component {
   render() {
     return (
       <>
-        <Header />
+        
         {/* Page content */}
         <Container className="mt--7" fluid>
           {/* Table */}
@@ -192,16 +204,15 @@ class Tables extends Component {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <h3 className="mb-0">Sensor Data</h3>
+                  <h3 className="mb-0">Container Data</h3>
                 </CardHeader>
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Container</th>
-                      <th scope="col">Temperature</th>
-                      <th scope="col">Humidity</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Update Time</th>
+                      <th scope="col">Cont_ID</th>
+                      <th scope="col">Container Type</th>
+                      <th scope="col">Container Name</th>
+                      <th scope="col">isContainerSafe</th>
                       <th scope="col" />
                     </tr>
                   </thead>
@@ -275,4 +286,4 @@ class Tables extends Component {
   }
 }
 
-export default withAuthenticator(Tables) ;
+export default withAuthenticator(ContainerTable) ;

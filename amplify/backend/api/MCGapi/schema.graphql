@@ -1,0 +1,54 @@
+type Container @model {
+  id: ID!
+  name: String
+  currentTemperature: String
+  currentHumidity: String
+  createdAt:AWSDateTime
+  updatedAt:AWSDateTime
+  sensorReadings: [SensorReading] @connection(keyName:"ContainerReading")
+  currentLat: String
+  currentLng: String
+  gpsReading: [GPSReading] @connection(keyName: "containerLocation")
+}
+
+type SensorReading @model{
+  id: ID!
+  container: Container @connection(keyName: "ContainerReading")
+  sensorID: String
+  containerName: String
+  temperature: String
+  humidity: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  containerSensorReadingsId: String
+  sensor: Sensor @connection(keyName: "SensorReadingsList")
+  sensorReadingContainerId: String
+}
+
+type Sensor @model{
+  id: ID!
+  container: Container @connection(keyName: "ContainerReading")
+  sensorReadings: [SensorReading] @connection(keyName:"SensorReadingsList")
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  sensorContainerId: String
+}
+
+type GPSReading @model{
+  id: ID!
+  container: Container @connection(keyName: "containerLocation")
+  lat: String
+  lng: String
+  containerGpsReadingId: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+# enum {
+#  Manufacturer
+# MCG
+# Distributor
+# Customs
+# End Point (e.g. Vaccine warehouse)
+
+# }

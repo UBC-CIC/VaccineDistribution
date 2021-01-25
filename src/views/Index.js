@@ -43,31 +43,335 @@ import {
   chartOptions,
   parseOptions,
   chartExample1,
-  chartExample2
+  chartExample2,
+  chartExample3,
+  chartExample4
 } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
+
+import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
+import { getSensorReading, listContainers, listSensorReadings, listGpsReadings } from '../graphql/queries';
+import Select from 'react-select'
+//import awsExports from "../aws-exports";
+import Search from 'react-search'
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withAuthenticator } from '@aws-amplify/ui-react'
+import Jvectormap from "components/Dashboard/JVectorMap";
+import Timeline from "components/Dashboard/Timeline";
+import Piechart from "components/Dashboard/Piechart";
+import VectorMapTest from "components/Dashboard/VectorMapTest";
+
+let sensorTemp = []
+let sensorHumidity = []
+
+let sensorTemp2 = []
+let sensorHumidity2 = []
+
+let API_KEY = 'AIzaSyCE1m9O-rVYp0ttT-keHHHlQA1MRsfJL8k'; //API KEY FROM GOOGLE. REPLACE
+
+var Options = [
+  {label:'TEMPERATURE', value: 0},
+  {label:'HUMIDITY', value: 1},
+  {label: 'LOCATION', value:2}
+  
+]
+/*
+data 1 and data 2 are the sensors
+they are filled in following functions
+*/
+var data1 = {
+ 
+  datasets: [
+    {
+      label: 'Temperature',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      
+      
+    }
+    ,
+    {
+      label: 'Temperature2',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(191,133,74,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(191,133,74,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(191,133,74,1)',
+      pointHoverBorderColor: 'rgba(191,133,74,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      
+      
+    }
+  ]
+};
+
+var data2 = {
+  
+  datasets: [
+    {
+      label: 'Humidity',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(75,192,192,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(75,192,192,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+      pointHoverBorderColor: 'rgba(220,220,220,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      
+      
+    },
+    {
+      label: 'Humidity2',
+      fill: false,
+      lineTension: 0.1,
+      backgroundColor: 'rgba(75,192,192,0.4)',
+      borderColor: 'rgba(191,133,74,1)',
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: 'rgba(191,133,74,1)',
+      pointBackgroundColor: '#fff',
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: 'rgba(191,133,74,1)',
+      pointHoverBorderColor: 'rgba(191,133,74,1)',
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+     
+      
+    }
+  ]
+};
+
+let containerOptions = []
+
+//the default location of the google maps api
+
+const location = {
+  address: '1600 Amphitheatre Parkway, Mountain View, california.',
+  lat: 37.42216,
+  lng: -122.08427,
+}
+//the google maps component configuration
+const MyMapComponent = withScriptjs(withGoogleMap((props) =>
+  <GoogleMap
+  
+    defaultZoom={10}
+    center={{ lat: location.lat, lng: location.lng }}
+  >
+    {props.isMarkerShown && <Marker position={{ lat: location.lat, lng: location.lng }} />}
+  </GoogleMap>
+))
 
 class Index extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       activeNav: 1,
-      chartExample1Data: "data1"
+      chartExample1Data: "data1",
+      containers: [],
+      sensorReadings: [],
+      dataType: -1,
+      dataOption: {},
+      dataArray: [],
+      data1: '',
+      data2: '',
+      containerId: '5430d7b2-8987-48ad-aa40-497e4c3f2531',
+      containerName: '',
+      currentReadings: [],
+      dataName: '',
+      gpsReadings: [],
+      containerLocation: []
     };
+    this.chartReference = React.createRef();
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
+    this.handleSensorDropdown = this.handleSensorDropdown.bind(this);
+    this.handleContainerDropdown = this.handleContainerDropdown.bind(this);
   }
+  //code to change the type of data that's shown
   toggleNavs = (e, index) => {
+    console.log(index)
     e.preventDefault();
     this.setState({
       activeNav: index,
       chartExample1Data:
-        this.state.chartExample1Data === "data1" ? "data2" : "data1"
+        this.state.chartExample1Data === "data1" ? "data2" : "data1",
+      dataType: index
+       
+        
     });
+   
+    
+    console.log(this.state.dataArray)
   };
+  
+  //functions to run after components mount
+  async componentWillMount(){
+    this.getContainers();
+    console.log(this.chartReference)
+    if (window.Chart) {
+      parseOptions(Chart, chartOptions());
+    }
+  }
+  
+  componentWillUnmount(){
+    containerOptions = []
+  }
+  //get all containers from database
+  async getContainers(){
+    try {
+      const containers = await API.graphql(graphqlOperation(listContainers))
+      console.log('containers:', containers)
+      this.setState({
+         containers: containers.data.listContainers.items
+      })
+    } catch (err) {
+      console.log('error fetching containers...', err)
+    }
+    this.state.containers.forEach(element => {
+      containerOptions.push({value: element.id, label: element.name})
+    });
+   
+
+    
+  }
+  //get sensor readings for selected containers on dropdown
+  async getSensorForContainer(){
+    console.log(this.state.containerId)
+    try {
+      const currentReadings = await API.graphql(graphqlOperation(listSensorReadings, {filter:{containerSensorReadingsId:{eq:this.state.containerId}}}))
+      
+      console.log('current readings: ', currentReadings)
+      this.setState({
+         currentReadings: currentReadings.data.listSensorReadings.items
+      })
+    } catch (err) {
+      console.log('error fetching current containers...', err)
+    }
+
+    let fakeArray = []
+    let labelArray = []
+    
+    this.state.currentReadings.forEach(element => {
+      
+      if(element.sensorID === '1'){
+        sensorTemp.push(element.temperature)
+        sensorHumidity.push(element.humidity)
+        
+      }
+      else if(element.sensorID === '2'){
+        sensorTemp2.push(element.temperature)
+        sensorHumidity2.push(element.humidity)
+      }
+      
+     
+    });
+    let index = 0
+    for(index = 0; index < 10; index++){
+      labelArray.push(index)
+    }
+    
+    //console.log(sensorTemp)
+    
+    data1.datasets[0].data = sensorTemp;
+    data1.datasets[1].data = sensorTemp2;
+   data1.labels = labelArray;
+    
+    
+    data2.datasets[0].data = sensorHumidity;
+    data2.datasets[1].data = sensorHumidity2;
+   data2.labels = labelArray;
+    
+    
+    fakeArray.push(data1)
+    fakeArray.push(data2)
+    
+    this.setState({dataArray: fakeArray})
+    this.setState({data1: data1})
+    this.setState({data2: data2})
+   
+    
+  }
+
+  //handles code for data type dropdown 
+  handleSensorDropdown(event){
+    this.setState({dataType : event.value})
+    this.setState({dataName: event.label})
+  }
+
+  //handles code for container dropdown
+  handleContainerDropdown(event){
+    this.setState({containerName: event.name})
+    this.setState({containerId: event.value}, () => this.getSensorForContainer())
+    this.setState({containerId: event.value}, () => this.getGPSForContainer())
+      
+  }
+
+  //get gps coordinates for selected container
+  async getGPSForContainer(){
+        console.log(this.state.containerId)
+        try {
+          const currentGPSReadings = await API.graphql(graphqlOperation(listGpsReadings, {filter:{containerGpsReadingId:{eq:this.state.containerId}}}))
+          //const currentReadings = await API.graphql(graphqlOperation(listSensorReadings,{filter :{ containerSensorReadingsId: {eq: this.state.containerId}}}))
+          console.log('current GPS readings: ', currentGPSReadings)
+          this.setState({
+            
+            currentLocation: currentGPSReadings.data.listGPSReadings.items
+          })
+        } catch (err) {
+          console.log('error fetching current containers...', err)
+        }
+
+      location.lat = parseFloat(this.state.currentLocation[0].lat);
+      location.lng = parseFloat(this.state.currentLocation[0].lng);
+    
+  }
+  
+  
+   
   render() {
+  
+  
     return (
       <>
         <Header />
@@ -79,85 +383,170 @@ class Index extends React.Component {
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h6 className="text-uppercase text-light ls-1 mb-1">
-                        Overview
+                      
+                      <h6 className="text-uppercase ls-1 mb-1">
+                          <Select onChange={this.handleContainerDropdown} options={containerOptions}/>
                       </h6>
-                      <h2 className="text-white mb-0">Sales value</h2>
+                      
+                      {/* <h2 className="text-white mb-0">Sensor Data</h2> */}
                     </div>
                     <div className="col">
-                      <Nav className="justify-content-end" pills>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 1
-                            })}
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 1)}
-                          >
-                            <span className="d-none d-md-block">Month</span>
-                            <span className="d-md-none">M</span>
-                          </NavLink>
-                        </NavItem>
-                        <NavItem>
-                          <NavLink
-                            className={classnames("py-2 px-3", {
-                              active: this.state.activeNav === 2
-                            })}
-                            data-toggle="tab"
-                            href="#pablo"
-                            onClick={e => this.toggleNavs(e, 2)}
-                          >
-                            <span className="d-none d-md-block">Week</span>
-                            <span className="d-md-none">W</span>
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
+                    <h6 className="text-uppercase ls-1 mb-1">
+                      
+                        <Select onChange={this.handleSensorDropdown}  options={Options}/>
+                        
+                    </h6>
+                      
+                     
                     </div>
                   </Row>
                 </CardHeader>
+                
                 <CardBody>
                   {/* Chart */}
+                 
                   <div className="chart">
-                    <Line
-                      data={chartExample1[this.state.chartExample1Data]}
-                      options={chartExample1.options}
-                      getDatasetAtEvent={e => console.log(e)}
-                    />
+                    
+                    {
+                    this.state.dataType === 0 && (
+                     <Line ref="chart" data={data1} />
+                    )
+                    }
+                    {
+                      this.state.dataType === 1 && (
+                        <Line ref="chart" data={data2} />
+                       )
+
+                    }
+                    {
+                     
+                      this.state.dataType === 2 && (
+                        
+                        <MyMapComponent
+                        
+                              isMarkerShown
+                              googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places"}
+                              loadingElement={<div style={{ height: `100%` }} />}
+                              containerElement={<div style={{ height: `100%` }} />}
+                              mapElement={<div style={{ height: `100%` }} />}
+                         />
+                      )
+                    }
                   </div>
+                 
+                 
+                 
+                
+                  <h2 className="text-white mb-0">{this.state.dataName}</h2>
                 </CardBody>
               </Card>
             </Col>
-            <Col xl="4">
-              <Card className="shadow">
-                <CardHeader className="bg-transparent">
+            <Col xl="4" >
+            
+            
+            <Card className="shadow">
+                <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h6 className="text-uppercase text-muted ls-1 mb-1">
-                        Performance
-                      </h6>
-                      <h2 className="mb-0">Total orders</h2>
+                      <h3 className="mb-0">Vaccine map</h3>
+                    </div>
+                    <div className="col text-right">
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="sm"
+                      >
+                        See all
+                      </Button>
                     </div>
                   </Row>
                 </CardHeader>
                 <CardBody>
-                  {/* Chart */}
-                  <div className="chart">
-                    <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                    />
-                  </div>
+                
+                <Jvectormap />
+                 
                 </CardBody>
+               
+              </Card>
+                  
+                 
+              
+              
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col className="mb-5 mb-xl-0" xl="8">
+            <Card className="bg-default">
+            <CardHeader className="border-0">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h3 className="mb-0">Temperature chart</h3>
+                    </div>
+                    <div className="col text-right">
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="sm"
+                      >
+                        See all
+                      </Button>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+             <div className="chart">
+
+                    
+               <Line ref="chart"
+                 data={chartExample3.data}
+                 id="chart-sales"
+                 className="chart-canvas"
+                 options={chartExample3.options}
+                 
+               />
+             </div>
+           </CardBody>
+               
+              </Card>
+              
+            </Col>
+            <Col xl="4">
+            <Card className="shadow">
+                <CardHeader className="border-0">
+                  <Row className="align-items-center">
+                    <div className="col">
+                      <h3 className="mb-0">Container Piechart</h3>
+                    </div>
+                    <div className="col text-right">
+                      <Button
+                        color="primary"
+                        href="#pablo"
+                        onClick={e => e.preventDefault()}
+                        size="sm"
+                      >
+                        See all
+                      </Button>
+                    </div>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                
+                  <Piechart/>
+                 
+                </CardBody>
+               
               </Card>
             </Col>
           </Row>
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="shadow">
+            <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Page visits</h3>
+                      <h3 className="mb-0">Vaccine Container Timeline</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -171,71 +560,21 @@ class Index extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Page name</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col">Unique users</th>
-                      <th scope="col">Bounce rate</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">/argon/</th>
-                      <td>4,569</td>
-                      <td>340</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/index.html</th>
-                      <td>3,985</td>
-                      <td>319</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/charts.html</th>
-                      <td>3,513</td>
-                      <td>294</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                        36,49%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/tables.html</th>
-                      <td>2,050</td>
-                      <td>147</td>
-                      <td>
-                        <i className="fas fa-arrow-up text-success mr-3" />{" "}
-                        50,87%
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">/argon/profile.html</th>
-                      <td>1,795</td>
-                      <td>190</td>
-                      <td>
-                        <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                        46,53%
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <CardBody>
+                
+                  <Timeline/>
+                 
+                </CardBody>
+               
               </Card>
+              
             </Col>
             <Col xl="4">
-              <Card className="shadow">
+            <Card className="shadow">
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Social traffic</h3>
+                      <h3 className="mb-0">Container Piechart</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -249,93 +588,12 @@ class Index extends React.Component {
                     </div>
                   </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush" responsive>
-                  <thead className="thead-light">
-                    <tr>
-                      <th scope="col">Referral</th>
-                      <th scope="col">Visitors</th>
-                      <th scope="col" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>1,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">60%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="60"
-                              barClassName="bg-gradient-danger"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Facebook</th>
-                      <td>5,480</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">70%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="70"
-                              barClassName="bg-gradient-success"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Google</th>
-                      <td>4,807</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">80%</span>
-                          <div>
-                            <Progress max="100" value="80" />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Instagram</th>
-                      <td>3,678</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">75%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="75"
-                              barClassName="bg-gradient-info"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th scope="row">twitter</th>
-                      <td>2,645</td>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <span className="mr-2">30%</span>
-                          <div>
-                            <Progress
-                              max="100"
-                              value="30"
-                              barClassName="bg-gradient-warning"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+                <CardBody>
+                
+                  <Piechart/>
+                 
+                </CardBody>
+               
               </Card>
             </Col>
           </Row>
@@ -345,4 +603,12 @@ class Index extends React.Component {
   }
 }
 
-export default Index;
+export default withAuthenticator(Index,{
+  includeGreetings: true,
+  signUpConfig: {
+    hiddenDefaults: ['phone_number']
+  }
+
+
+
+});

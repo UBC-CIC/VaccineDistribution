@@ -17,6 +17,7 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
+import { Auth } from 'aws-amplify';
 // reactstrap components
 import {
   DropdownMenu,
@@ -34,8 +35,41 @@ import {
   Container,
   Media
 } from "reactstrap";
+import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 
+let user;
+
+//let user ="usama101";//Auth.currentAuthenticatedUser();
+/*
+Auth.currentAuthenticatedUser()
+    .then(user => alert(user.username))
+    .catch(err => console.log(err));
+*/
 class AdminNavbar extends React.Component {
+  //let user = await Auth.currentAuthenticatedUser(); 
+  constructor(props) {
+    super(props);
+    this.state = {
+        username:''
+  };
+}
+/*
+    async componentDidMount()
+    {
+      user = await Auth.currentAuthenticatedUser();  
+      
+      alert(user.username);
+    }
+    */
+  async  signOut() {
+    try {
+        await Auth.signOut({ global: true });
+        console.log("signed out")
+        window.location.reload(true);
+    } catch (error) {
+        console.log('error signing out: ', error);
+    }
+}
   render() {
     return (
       <>
@@ -47,6 +81,7 @@ class AdminNavbar extends React.Component {
             >
               {this.props.brandText}
             </Link>
+            {/* 
             <Form className="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
               <FormGroup className="mb-0">
                 <InputGroup className="input-group-alternative">
@@ -59,6 +94,7 @@ class AdminNavbar extends React.Component {
                 </InputGroup>
               </FormGroup>
             </Form>
+             */}
             <Nav className="align-items-center d-none d-md-flex" navbar>
               <UncontrolledDropdown nav>
                 <DropdownToggle className="pr-0" nav>
@@ -66,12 +102,12 @@ class AdminNavbar extends React.Component {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("assets/img/theme/team-4-800x800.jpg")}
+                        src={require("assets/img/theme/User_Logo.png")}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                        Jessica Jones
+                      New user
                       </span>
                     </Media>
                   </Media>
@@ -80,6 +116,7 @@ class AdminNavbar extends React.Component {
                   <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">Welcome!</h6>
                   </DropdownItem>
+                  {/* 
                   <DropdownItem to="/admin/user-profile" tag={Link}>
                     <i className="ni ni-single-02" />
                     <span>My profile</span>
@@ -96,14 +133,20 @@ class AdminNavbar extends React.Component {
                     <i className="ni ni-support-16" />
                     <span>Support</span>
                   </DropdownItem>
+                  */}
                   <DropdownItem divider />
+                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                    <i className="ni ni-single-02" />
+                    <span>My profile</span>
+                  </DropdownItem>
                   <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
                     <i className="ni ni-user-run" />
-                    <span>Logout</span>
+                    <span style={{width:"50px"}}><AmplifySignOut /></span>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
+           
           </Container>
         </Navbar>
       </>

@@ -29,28 +29,27 @@ class UserHeader extends React.Component {
           style={{
             minHeight: "600px",
             backgroundImage:
-              "url(" + require("assets/img/theme/profile-cover.jpg") + ")",
+              "url(" + require("assets/img/theme/Cover_Photo.jpg") + ")",
             backgroundSize: "cover",
             backgroundPosition: "center top"
           }}
         >
           {/* Mask */}
-          <span className="mask bg-gradient-default opacity-8" />
+          <span className="mask bg-gradient-default opacity-5" />
           {/* Header container */}
           <Container className="d-flex align-items-center" fluid>
             <Row>
               <Col lg="7" md="10">
-                <h1 className="display-2 text-white">Hello Jesse</h1>
+                <h1 className="display-2 text-white">MCG</h1>
                 <p className="text-white mt-0 mb-5">
-                  This is your profile page. You can see the progress you've
-                  made with your work and manage your projects or assigned tasks
+                MCG Canada is aiming to develop the advanced modular hardware system: Logistics Innovation Unit Container (LIUC), including the modular Transport-Handling-Packaging(THP) smart containers and Rapid & Reliable (R&R) distribution of the pharmaceutical products (including the vaccine) across its supply chain, based on Physical Internet (PI) enabled and Blockchain technologies.
                 </p>
                 <Button
                   color="info"
                   href="#pablo"
                   onClick={e => e.preventDefault()}
                 >
-                  Edit profile
+                  Edit
                 </Button>
               </Col>
             </Row>
