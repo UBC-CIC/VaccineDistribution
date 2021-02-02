@@ -4,7 +4,7 @@ import {v4 as uuidv4} from "uuid";
 // reactstrap components
 import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-
+import QrReader from 'react-qr-scanner'
 
 class ContainerForm extends React.Component {
 /*
@@ -25,7 +25,11 @@ class ContainerForm extends React.Component {
       Cont_ID: uuidv4(),
       containerType: '',
       containerName: '',
-      isContainerSafe: true
+      isContainerSafe: true,
+      delay: 5000,
+      scan: false,
+      scanResult: false,
+      scanResultData: null
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -52,7 +56,7 @@ class ContainerForm extends React.Component {
 
 
   handleSubmit = event => {
-    event.preventDefault();
+    //event.preventDefault();
 
     const vaccine = {
     Operation: "POST",
@@ -77,10 +81,59 @@ res.setHeader("Access-Control-Allow-Headers", "content-type");
 
         console.log(res);
         console.log(res.data);
+        alert("Container saved successfully");
       })
   }
 
+  activeQR = () => {
+    this.setState({
+        scan: true
+    })
+    console.log(this.state.scan)
+}
+
+handleScan = (e) => {
+  
+  this.setState({
+    scanResultData: e,
+      scan: false,
+      scanResult: true
+  })
+  let testScan = JSON.parse(e)
+  console.log( this.state.scanResultData)
+  console.log( testScan)
+  this.setState({
+    containerType: testScan.containerType,
+    containerName: testScan.containerName
+  })
+  console.log(this.state.containerType,this.state.containerName)
+  this.handleSubmit();
+  alert("Container saved successfully")
+
+}
+
+scanAgain = () => {
+  this.setState({
+      scan: true,
+      ScanResult: false
+  })
+}
+handleError(err){
+  console.error(err)
+}
+
   render() {
+    const previewStyle = {
+      height: 700,
+      width: 1000,
+      display: 'flex',
+      justifyContent: "center"
+    }
+    const camStyle = {
+      display: 'flex',
+      justifyContent: "center",
+      marginTop: '-50px'
+    }
     return (
       <>
         <Form onSubmit={this.handleSubmit}>
@@ -112,6 +165,7 @@ res.setHeader("Access-Control-Allow-Headers", "content-type");
               id="containerType_id"
               type="text"
               name="containerType" 
+              //value={this.state.containerType}
               onChange={this.handleContainerTypeChange} 
             />
           </FormGroup>
@@ -126,9 +180,35 @@ res.setHeader("Access-Control-Allow-Headers", "content-type");
               id="containerName_id"
               type="text"
               name="containerName" 
+              //value={this.state.containerName}
               onChange={this.handleContainerNameChange} 
             />
           </FormGroup>
+          <FormGroup>
+            <label
+              className="form-control-label"
+              
+            >
+              QRCode Scanner
+            </label>
+            {!this.state.scan && !this.state.scanResult && <Button color="primary" type="button" onClick={this.activeQR}>
+          Activate QRScanner
+         </Button>
+         }
+         {
+           this.state.scanResult && <p>Container: {this.state.scanResultData} <Button color="primary"  type="button" onClick={this.scanAgain}>Scan again</Button></p>
+           
+         }
+         <div style = {camStyle}>
+            {this.state.scan && <QrReader
+          delay={this.state.delay}
+          style={previewStyle}
+          onError={this.handleError}
+          onScan={this.handleScan}
+          //onRead={this.onSuccess}
+          />}
+          </div>
+            </FormGroup>
           {/*
           <FormGroup>
             <label
@@ -296,6 +376,7 @@ res.setHeader("Access-Control-Allow-Headers", "content-type");
                   </Button>
                   
         </Form>
+        
       </>
     );
   }
