@@ -362,8 +362,8 @@ class Index extends React.Component {
           console.log('error fetching current containers...', err)
         }
 
-      location.lat = parseFloat(this.state.currentLocation[0].lat);
-      location.lng = parseFloat(this.state.currentLocation[0].lng);
+      location.lat = location.lat//parseFloat(this.state.currentLocation[0].lat);
+      location.lng = location.lng//parseFloat(this.state.currentLocation[0].lng);
     
   }
   
