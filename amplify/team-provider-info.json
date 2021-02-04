@@ -1,19 +1,19 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-amplifyfb7e48202d264-staging-72524-authRole",
-      "UnauthRoleArn": "arn:aws:iam::766196282444:role/amplify-amplifyfb7e48202d264-staging-72524-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::766196282444:role/amplify-amplifyfb7e48202d264-staging-72524-authRole",
-      "Region": "ca-central-1",
-      "DeploymentBucketName": "amplify-amplifyfb7e48202d264-staging-72524-deployment",
-      "UnauthRoleName": "amplify-amplifyfb7e48202d264-staging-72524-unauthRole",
-      "StackName": "amplify-amplifyfb7e48202d264-staging-72524",
-      "StackId": "arn:aws:cloudformation:ca-central-1:766196282444:stack/amplify-amplifyfb7e48202d264-staging-72524/80d3bbb0-5570-11eb-8089-0ee7f85b481a",
-      "AmplifyAppId": "dg8lhe6wcyhuz"
+      "AuthRoleName": "amplify-mcgvaccinedelivery-dev-145339-authRole",
+      "UnauthRoleArn": "arn:aws:iam::766196282444:role/amplify-mcgvaccinedelivery-dev-145339-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::766196282444:role/amplify-mcgvaccinedelivery-dev-145339-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-mcgvaccinedelivery-dev-145339-deployment",
+      "UnauthRoleName": "amplify-mcgvaccinedelivery-dev-145339-unauthRole",
+      "StackName": "amplify-mcgvaccinedelivery-dev-145339",
+      "StackId": "arn:aws:cloudformation:us-west-2:766196282444:stack/amplify-mcgvaccinedelivery-dev-145339/aa771d50-6672-11eb-a8e2-02999ac8a6c5",
+      "AmplifyAppId": "d13f67lx0dmtdw"
     },
     "categories": {
       "auth": {
-        "siddmcg46702bd19": {}
+        "mcgvaccinedelivery329d6f97": {}
       }
     }
   }

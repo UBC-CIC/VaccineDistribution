@@ -134,7 +134,7 @@ class Sidebar extends React.Component {
                 className="navbar-brand-img"
                 src={logo.imgSrc}
               /> */}
-               <div>VACCINE IOT</div>
+               <div>VACCINE IOT Oregon</div>
             </NavbarBrand>
           ) : null}
           {/* User */}

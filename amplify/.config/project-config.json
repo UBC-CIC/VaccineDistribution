@@ -1,8 +1,5 @@
 {
-  "providers": [
-    "awscloudformation"
-  ],
-  "projectName": "Sidd_MCG4",
+  "projectName": "MCGVaccineDelivery",
   "version": "3.0",
   "frontend": "javascript",
   "javascript": {
@@ -13,5 +10,8 @@
       "BuildCommand": "npm.cmd run-script build",
       "StartCommand": "npm.cmd run-script start"
     }
-  }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
 }

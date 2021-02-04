@@ -1,6 +1,6 @@
 {
   "auth": {
-    "siddmcg46702bd19": {
+    "mcgvaccinedelivery329d6f97": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -8,16 +8,15 @@
     }
   },
   "api": {
-    "MCGapi": {
+    "mcgvaccinedelivery": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": "demo"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authmcgvaccinedelivery329d6f97"
             }
           },
           "additionalAuthenticationProviders": []
@@ -26,7 +25,7 @@
     }
   },
   "storage": {
-    "imagestorage": {
+    "s3c85d9a5d": {
       "service": "S3",
       "providerPlugin": "awscloudformation"
     }
