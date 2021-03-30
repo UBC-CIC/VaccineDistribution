@@ -282,3 +282,32 @@ export const listGpsReadings = /* GraphQL */ `
     }
   }
 `;
+export const getLinkUser = /* GraphQL */ `
+  query GetLinkUser($id: ID!) {
+    getLinkUser(id: $id) {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listLinkUsers = /* GraphQL */ `
+  query ListLinkUsers(
+    $filter: ModelLinkUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listLinkUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        cognitoUserId
+        qldbPersonId
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

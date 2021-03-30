@@ -508,3 +508,45 @@ export const deleteGpsReading = /* GraphQL */ `
     }
   }
 `;
+export const createLinkUser = /* GraphQL */ `
+  mutation CreateLinkUser(
+    $input: CreateLinkUserInput!
+    $condition: ModelLinkUserConditionInput
+  ) {
+    createLinkUser(input: $input, condition: $condition) {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateLinkUser = /* GraphQL */ `
+  mutation UpdateLinkUser(
+    $input: UpdateLinkUserInput!
+    $condition: ModelLinkUserConditionInput
+  ) {
+    updateLinkUser(input: $input, condition: $condition) {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteLinkUser = /* GraphQL */ `
+  mutation DeleteLinkUser(
+    $input: DeleteLinkUserInput!
+    $condition: ModelLinkUserConditionInput
+  ) {
+    deleteLinkUser(input: $input, condition: $condition) {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;

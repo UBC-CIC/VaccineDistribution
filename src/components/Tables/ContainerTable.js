@@ -43,6 +43,7 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import { Auth } from "aws-amplify"; 
 import axios from 'axios';
 
 //Amplify.configure(awsExports)
@@ -55,6 +56,8 @@ let isContainerSafe = [];
 let items = [];
 let temp = [];
 let containerData = [];
+let user;
+let jwtToken;
 
 
 class ContainerTable extends Component {
@@ -71,6 +74,8 @@ class ContainerTable extends Component {
   
   async componentDidMount(){
     console.log("Loading tables now")
+    user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken;
     this.getContainers();
     
   }
@@ -83,7 +88,10 @@ class ContainerTable extends Component {
   //get all container data
   async getContainers(){
     try {
-    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcontainer`, { Operation: "GET_CONTAINER" } )
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, { Operation: "GET_CONTAINER" },{
+      headers: {
+        'Authorization': jwtToken
+      }} )
     .then(res => {
         console.log(res);
         console.log(res.data);

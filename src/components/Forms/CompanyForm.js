@@ -4,7 +4,12 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
+import { Auth } from "aws-amplify"; 
 
+
+
+let user;
+let jwtToken;
 
 class CompanyForm extends React.Component {
 /*
@@ -54,7 +59,11 @@ class CompanyForm extends React.Component {
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
   //}
-
+  async componentDidMount(){
+    console.log("Loading Auth token")
+    user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken;    
+  }
 
   handleSubmit = event => {
     event.preventDefault();
@@ -74,12 +83,15 @@ class CompanyForm extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcompany`, { Operation: "POST",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`, { Operation: "POST",
     Comp_ID: parseInt(this.state.Comp_ID),
     companyType: this.state.companyType,
     companyName: this.state.companyName,
     companyIC: this.state.companyIC,
-    isCompanyRegistered: false })
+    isCompanyRegistered: false },{
+      headers: {
+        'Authorization': jwtToken
+      }} )
       .then(res => {
 
         console.log(res);

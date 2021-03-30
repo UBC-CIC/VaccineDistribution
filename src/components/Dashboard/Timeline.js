@@ -52,7 +52,7 @@ import { Chrono } from "react-chrono";
         media: {
           type: "IMAGE",
           source: {
-            url: require("assets/img/Dashboard/HospitalLogo.png")
+            url:  require("assets/img/Dashboard/HospitalLogo.png")
           }
         }
       }];

@@ -1,59 +1,43 @@
 import React from "react";
+import "./modal.css";
+import PropTypes from "prop-types";
+
 import axios from 'axios';
-import {v4 as uuidv4} from "uuid";
+
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
+import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import QRCodeScanner from "components/Features/QRCodeScanner";
-import QrReader from 'react-qr-scanner'
 import { Auth } from "aws-amplify"; 
+
+
 
 let user;
 let jwtToken;
 
-class VaccineForm extends React.Component {
-/*
-  state = {
-    Operation: "POST",
-    Vac_ID: '',
-    vaccineType: '',
-    vaccineName: '',
-    isVaccineSafe: true
-
-  }
-  */
-
+class InitiateShipmentDistributorModal extends React.Component {
+  
   constructor(props){
     super(props);
     this.state = {
-      Operation: "POST",
-      Vac_ID: uuidv4(),
-      vaccineType: '',
-      vaccineName: '',
-      isVaccineSafe: true,
-      delay: 5000,
-      scan: false,
-      scanResult: false,
-      scanResultData: null
+        Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
+        PersonId: this.props.qldbPersonId,
+        PurchaseOrderId: '',
+        TransportType: 3,
+        CarrierCompanyId: ''
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
-    //this.handleVaccineIDChange = this.handleVaccineIDChange.bind(this);
-    this.handleVaccineTypeChange = this.handleVaccineTypeChange.bind(this);
-    this.handleVaccineNameChange = this.handleVaccineNameChange.bind(this);
-  }
-/*
-  handleVaccineIDChange = event => {
-    this.setState({ Vac_ID: event.target.value });
-  }
-  */
-  handleVaccineTypeChange = event => {
-    this.setState({ vaccineType: event.target.value });
   }
 
-  handleVaccineNameChange = event => {
-    this.setState({ vaccineName: event.target.value });
+  handleOnChange = event => {
+    this.setState({ [event.target.name] : event.target.value });
   }
+
+
+  
+
+
+  
 
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
@@ -61,173 +45,133 @@ class VaccineForm extends React.Component {
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
-     jwtToken = user.signInUserSession.idToken.jwtToken;    
+     jwtToken = user.signInUserSession.idToken.jwtToken; 
+     //this.setState({Email: user.attributes.email});
+     //console.log(user.attributes.email);
+     console.log(user)   
   }
 
   handleSubmit = event => {
-    //event.preventDefault();
+    event.preventDefault();
 
-    const vaccine = {
+    /*
+    const company = {
     Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true
+    Comp_ID: this.state.Comp_ID,
+    companyType: this.state.companyType,
+    companyName: this.state.companyName,
+    companyIC: this .state.companyIC,
+    isCompanyRegistered: false
     };
+    */
+
     /*
     res.setHeader("Access-Control-Allow-Origin", "*");
-res.setHeader("Access-Control-Allow-Credentials", "true");
-res.setHeader("Access-Control-Max-Age", "1800");
-res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, { Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true },{
-      headers: {
-        'Authorization': jwtToken
-      }} )
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
+    PersonId: this.state.PersonId,
+
+    
+    PurchaseOrderId: this.state.PurchaseOrderId,
+    TransportType: this. state.TransportType,
+    CarrierCompanyId: this.state.CarrierCompanyId
+    
+}
+     )
       .then(res => {
 
         console.log(res);
         console.log(res.data);
-        alert("Vaccine saved successfully");
+        alert("INITIATE SHIPMENT FOR DISTRIBUTOR sucessfull")
+        console.log("MCGRequestId",res.data.body.McgRequestId);
+        alert("MCGRequestId",res.data.body.McgRequestId);
+        //this.setState({ qldbPersonId: res.data.body.PersonId });
+        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+
       })
   }
-  
-  activeQR = () => {
-    this.setState({
-        scan: true
-    })
-    console.log(this.state.scan)
-}
-
-handleScan = (e) => {
-  
-  this.setState({
-    scanResultData: e,
-      scan: false,
-      scanResult: true
-  })
-  let testScan = JSON.parse(e)
-  console.log( this.state.scanResultData)
-  console.log( testScan)
-  if(testScan != null)
-  {
-  this.setState({
-    vaccineType: testScan.vaccineType,
-    vaccineName: testScan.vaccineName
-  })
-  console.log(this.state.vaccineName,this.state.vaccineType)
-  this.handleSubmit();
-}
-else
-{
- 
-    alert("Scan not successful");
- 
-}
-}
-
-scanAgain = () => {
-  this.setState({
-      scan: true,
-      ScanResult: false
-  })
-}
-handleError(err){
-  console.error(err)
-}
-
-  render() {
-    const previewStyle = {
-      height: 700,
-      width: 1000,
-      display: 'flex',
-      justifyContent: "center"
-    }
-    const camStyle = {
-      display: 'flex',
-      justifyContent: "center",
-      marginTop: '-50px'
-    }
+    
+  render(){
+    const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
-      <>
+      <div className={showHideClassName}>
+        <section className="modal-main">
         <Form onSubmit={this.handleSubmit}>
-        {/* 
-          <FormGroup>
+          <Container>
+            <Row>
+              <Col>
+              <h2>INITIATE SHIPMENT FOR DISTRIBUTOR</h2>
+              <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="Vac_ID_id"
+              htmlFor="PersonId_id"
             >
-              Vaccine ID
+              Person Id
             </label>
             <Input
-              
-              id="Vac_ID_id"
+              id="PersonId_id"
               type="text"
-              name="Vac_ID"
-              onChange={this.handleVaccineIDChange}
-            />
-          </FormGroup>
-          */}
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="vaccineType_id"
-            >
-              Vaccine Type
-            </label>
-            <Input
-              id="vaccineType_id"
-              type="text"
-              name="vaccineType" 
-              //value={this.state.vaccineType}
-              onChange={this.handleVaccineTypeChange} 
+              name="PersonId"
+              value={this.state.PersonId}
+              onChange={this.handleOnChange}              
             />
           </FormGroup>
           <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="vaccineName_id"
+              htmlFor="PurchaseOrderId_id"
             >
-              Vaccine Name
+              Purchase Order Id
             </label>
             <Input
-              id="vaccineName_id"
+              id="PurchaseOrderId_id"
               type="text"
-              name="vaccineName" 
-              //value={this.state.vaccineName}
-              onChange={this.handleVaccineNameChange} 
+              name="PurchaseOrderId"
+              value={this.state.PurchaseOrderId}
+              onChange={this.handleOnChange}              
             />
           </FormGroup>
           <FormGroup>
             <label
               className="form-control-label"
-              
+              htmlFor="TransportType_id"
             >
-              QRCode Scanner
+              Transport Type
             </label>
-            {!this.state.scan && !this.state.scanResult && <Button color="primary" type="button" onClick={this.activeQR}>
-          Activate QRScanner {' '}
-         </Button>
-         }
-         {
-           this.state.scanResult && <p>VaccineDetails: {this.state.scanResultData} <Button color="primary"  type="button" onClick={this.scanAgain}>Scan again</Button></p>
-           
-         }
-         <div style = {camStyle}>
-            {this.state.scan && <QrReader
-          delay={this.state.delay}
-          style={previewStyle}
-          onError={this.handleError}
-          onScan={this.handleScan}
-          //onRead={this.onSuccess}
-          />}
-          </div>
+            <Input
+              id="TransportType_id"
+              type="text"
+              name="TransportType"
+              value={this.state.TransportType}
+              onChange={this.handleOnChange}               
+            />
           </FormGroup>
+
+          <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="CarrierCompanyId_id"
+            >
+              Carrier CompanyId
+            </label>
+            <Input
+              id="CarrierCompanyId_id"
+              type="text"
+              name="CarrierCompanyId"
+              value={this.state.CarrierCompanyId}
+              onChange={this.handleOnChange}               
+            />
+          </FormGroup>
+
+              </Col>          
+            </Row>
+          </Container>
+        
+          
           {/*
           <FormGroup>
             <label
@@ -383,22 +327,23 @@ handleError(err){
           <Button
                       className="float-right"
                       color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
+                      
+                      onClick={this.props.handleClose}
+                      size="xl"
                     >
-                      Message
+                      Close
                     </Button>
                     <br></br>
                     <Button className="btn-fill" color="primary" type="submit">
-                    Create Vaccine
+                    Initiate Shipment Distributor
                   </Button>
                   
         </Form>
-    
-      </>
+          
+        </section>
+      </div>
     );
   }
 }
 
-export default VaccineForm;
+export default InitiateShipmentDistributorModal;

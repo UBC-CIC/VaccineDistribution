@@ -46,7 +46,7 @@ import {
   chartExample2,
   chartExample3,
   chartExample4
-} from "variables/charts.js";
+} from "variables/charts";
 
 import Header from "components/Headers/Header.js";
 
@@ -61,6 +61,8 @@ import Jvectormap from "components/Dashboard/JVectorMap";
 import Timeline from "components/Dashboard/Timeline";
 import Piechart from "components/Dashboard/Piechart";
 import VectorMapTest from "components/Dashboard/VectorMapTest";
+import ConnectUserModal from "components/Modal/ConnectUserModal";
+import axios from "axios";
 
 let sensorTemp = []
 let sensorHumidity = []
@@ -219,7 +221,8 @@ class Index extends React.Component {
       currentReadings: [],
       dataName: '',
       gpsReadings: [],
-      containerLocation: []
+      containerLocation: [],
+      show: false
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -227,6 +230,10 @@ class Index extends React.Component {
     }
     this.handleSensorDropdown = this.handleSensorDropdown.bind(this);
     this.handleContainerDropdown = this.handleContainerDropdown.bind(this);
+
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+   
   }
   //code to change the type of data that's shown
   toggleNavs = (e, index) => {
@@ -254,6 +261,27 @@ class Index extends React.Component {
     }
   }
   
+//function to call IOt data using API
+/*
+componentDidMount(){
+  var url = 'http:/api.com/'
+  var headers ={
+    headers:{
+      'Content-Type': 'application/json',
+      'apikey': 'frfiemdiewdiewdoewkdo'
+    }
+  }
+  axios.post(url, body, headers)
+  .then((x)=>{
+    console.log(x)
+  })
+  .catch(()=>{
+    alert('Failed to get the data')
+  })
+
+}
+*/
+
   componentWillUnmount(){
     containerOptions = []
   }
@@ -329,7 +357,7 @@ class Index extends React.Component {
     this.setState({dataArray: fakeArray})
     this.setState({data1: data1})
     this.setState({data2: data2})
-   
+   console.log(data1)
     
   }
 
@@ -367,6 +395,14 @@ class Index extends React.Component {
     
   }
   
+//Display Modal form for user register in QLDB
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+  };
   
    
   render() {
@@ -375,6 +411,8 @@ class Index extends React.Component {
     return (
       <>
         <Header />
+        
+
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -409,12 +447,14 @@ class Index extends React.Component {
                     
                     {
                     this.state.dataType === 0 && (
-                     <Line ref="chart" data={data1} />
+                     <Line ref="chart" data={data1} 
+                     />
                     )
                     }
                     {
                       this.state.dataType === 1 && (
-                        <Line ref="chart" data={data2} />
+                        <Line ref="chart" data={data2}
+                         />
                        )
 
                     }
@@ -517,7 +557,7 @@ class Index extends React.Component {
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Container Piechart</h3>
+                      <h3 className="mb-0">Connect User to Ledger</h3>
                     </div>
                     <div className="col text-right">
                       <Button
@@ -532,8 +572,12 @@ class Index extends React.Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                
-                  <Piechart/>
+                <ConnectUserModal show={this.state.show} handleClose={this.hideModal}>
+          <p>Modal</p>
+        </ConnectUserModal>
+                <Button onClick={this.showModal}>
+          Open
+        </Button>
                  
                 </CardBody>
                

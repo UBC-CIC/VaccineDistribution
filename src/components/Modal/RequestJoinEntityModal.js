@@ -1,59 +1,85 @@
 import React from "react";
+import "./modal.css";
+import PropTypes from "prop-types";
+
 import axios from 'axios';
-import {v4 as uuidv4} from "uuid";
+
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
+import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import QRCodeScanner from "components/Features/QRCodeScanner";
-import QrReader from 'react-qr-scanner'
 import { Auth } from "aws-amplify"; 
+
+
 
 let user;
 let jwtToken;
 
-class VaccineForm extends React.Component {
-/*
-  state = {
-    Operation: "POST",
-    Vac_ID: '',
-    vaccineType: '',
-    vaccineName: '',
-    isVaccineSafe: true
-
-  }
-  */
-
+class RegisterEntityModal extends React.Component {
+  
   constructor(props){
     super(props);
     this.state = {
-      Operation: "POST",
-      Vac_ID: uuidv4(),
-      vaccineType: '',
-      vaccineName: '',
-      isVaccineSafe: true,
-      delay: 5000,
-      scan: false,
-      scanResult: false,
-      scanResultData: null
+        Operation: "REGISTER_NEW_USER_AND_SCENTITY",
+        
+        ScEntityName: '',
+        ScEntityContact_Email: '',
+        ScEntityContact_Address:'',
+        ScEntityContact_Phone: '',
+
+        isApprovedBySuperAdmin: true,
+        ScEntityTypeCode: "2",
+        PersonIds:[],
+        JoiningRequests:[],
+        ScEntityIdentificationCode: '',
+        ScEntityIdentificationCodeType: ''
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
-    //this.handleVaccineIDChange = this.handleVaccineIDChange.bind(this);
-    this.handleVaccineTypeChange = this.handleVaccineTypeChange.bind(this);
-    this.handleVaccineNameChange = this.handleVaccineNameChange.bind(this);
-  }
-/*
-  handleVaccineIDChange = event => {
-    this.setState({ Vac_ID: event.target.value });
-  }
-  */
-  handleVaccineTypeChange = event => {
-    this.setState({ vaccineType: event.target.value });
+  
+
+
+    this.handleScEntityNameChange = this.handleScEntityNameChange.bind(this);
+    this.handleScEntityContact_EmailChange = this.handleScEntityContact_EmailChange.bind(this);
+    this.handleScEntityContact_AddressChange = this.handleScEntityContact_AddressChange.bind(this);
+    this.handleScEntityContact_PhoneChange = this.handleScEntityContact_PhoneChange.bind(this);
+    this.handleScEntityTypeCodeChange = this.handleScEntityTypeCodeChange.bind(this);
+    this.handleScEntityIdentificationCodeChange = this.handleScEntityIdentificationCodeChange.bind(this);
+    this.handleScEntityIdentificationCodeTypeChange = this.handleScEntityIdentificationCodeTypeChange.bind(this);
+
+
   }
 
-  handleVaccineNameChange = event => {
-    this.setState({ vaccineName: event.target.value });
+
+
+
+
+  handleScEntityNameChange = event => {
+    this.setState({ ScEntityName: event.target.value });
   }
+  handleScEntityContact_EmailChange = event => {
+    this.setState({ ScEntityContact_Email: event.target.value });
+  }
+  handleScEntityContact_AddressChange = event => {
+    this.setState({ ScEntityContact_Address: event.target.value });
+  }
+  handleScEntityContact_PhoneChange = event => {
+    this.setState({ ScEntityContact_Phone: event.target.value });
+  }
+  handleScEntityTypeCodeChange = event => {
+    this.setState({ ScEntityTypeCode: event.target.value });
+  }
+  handleScEntityIdentificationCodeChange = event => {
+    this.setState({ ScEntityIdentificationCode: event.target.value });
+  }
+  handleScEntityIdentificationCodeTypeChange = event => {
+    this.setState({ ScEntityIdentificationCodeType: event.target.value });
+  }
+ 
+
+
+
+
+  
 
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
@@ -65,169 +91,127 @@ class VaccineForm extends React.Component {
   }
 
   handleSubmit = event => {
-    //event.preventDefault();
+    event.preventDefault();
 
-    const vaccine = {
+    /*
+    const company = {
     Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true
+    Comp_ID: this.state.Comp_ID,
+    companyType: this.state.companyType,
+    companyName: this.state.companyName,
+    companyIC: this .state.companyIC,
+    isCompanyRegistered: false
     };
+    */
+
     /*
     res.setHeader("Access-Control-Allow-Origin", "*");
-res.setHeader("Access-Control-Allow-Credentials", "true");
-res.setHeader("Access-Control-Max-Age", "1800");
-res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, { Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true },{
-      headers: {
-        'Authorization': jwtToken
-      }} )
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
+    ScEntity:{
+      ScEntityName: this.state.ScEntityName,
+      ScEntityContact:{
+        ScEntityContact_Email: this.state.ScEntityContact_Email,
+        ScEntityContact_Address: this.state.ScEntityContact_Address,
+        ScEntityContact_Phone: this.state.ScEntityContact_Phone
+      },
+      isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin,
+      ScEntityTypeCode: this.state.ScEntityTypeCode,
+      PersonIds: this.state.PersonIds,
+      JoiningRequests: this.state.JoiningRequests,
+      ScEntityIdentificationCode: this.state.ScEntityIdentificationCode,
+      ScEntityIdentificationCodeType: this.state.ScEntityIdentificationCodeType
+    }
+  }
+     )
       .then(res => {
 
         console.log(res);
         console.log(res.data);
-        alert("Vaccine saved successfully");
+        alert("User Created in ledger");
       })
   }
-  
-  activeQR = () => {
-    this.setState({
-        scan: true
-    })
-    console.log(this.state.scan)
-}
-
-handleScan = (e) => {
-  
-  this.setState({
-    scanResultData: e,
-      scan: false,
-      scanResult: true
-  })
-  let testScan = JSON.parse(e)
-  console.log( this.state.scanResultData)
-  console.log( testScan)
-  if(testScan != null)
-  {
-  this.setState({
-    vaccineType: testScan.vaccineType,
-    vaccineName: testScan.vaccineName
-  })
-  console.log(this.state.vaccineName,this.state.vaccineType)
-  this.handleSubmit();
-}
-else
-{
- 
-    alert("Scan not successful");
- 
-}
-}
-
-scanAgain = () => {
-  this.setState({
-      scan: true,
-      ScanResult: false
-  })
-}
-handleError(err){
-  console.error(err)
-}
-
-  render() {
-    const previewStyle = {
-      height: 700,
-      width: 1000,
-      display: 'flex',
-      justifyContent: "center"
-    }
-    const camStyle = {
-      display: 'flex',
-      justifyContent: "center",
-      marginTop: '-50px'
-    }
+    
+  render(){
+    const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
-      <>
+      <div className={showHideClassName}>
+        <section className="modal-main">
         <Form onSubmit={this.handleSubmit}>
-        {/* 
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="Vac_ID_id"
-            >
-              Vaccine ID
-            </label>
-            <Input
+          <Container>
+            <Row>
+            
+              <Col>
+              <h2>Request to Join Supply Chain Entity</h2>
+              <FormGroup>
               
-              id="Vac_ID_id"
-              type="text"
-              name="Vac_ID"
-              onChange={this.handleVaccineIDChange}
-            />
+            <label
+              className="form-control-label"
+            >
+             Send Request Join ScEntity
+            </label>
+
+            <label className="custom-toggle">
+          <input  defaultChecked type="checkbox" />
+          <span
+            className="custom-toggle-slider rounded-circle"
+            data-label-off="No"
+            data-label-on="Yes"
+          />
+        </label>
+            
           </FormGroup>
-          */}
+
+          
           <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="vaccineType_id"
+              htmlFor="ScEntityContact_Email_id"
             >
-              Vaccine Type
+              ScEntity Email
             </label>
             <Input
-              id="vaccineType_id"
+              id="ScEntityContact_Email_id"
               type="text"
-              name="vaccineType" 
-              //value={this.state.vaccineType}
-              onChange={this.handleVaccineTypeChange} 
+              name="ScEntityContact_Email"
+              onChange={this.handleScEntityContact_EmailChange}              
             />
           </FormGroup>
+
           <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="vaccineName_id"
+              htmlFor="ScEntityContact_Address_id"
             >
-              Vaccine Name
+              ScEntity Address
             </label>
             <Input
-              id="vaccineName_id"
+              id="ScEntityContact_Address_id"
               type="text"
-              name="vaccineName" 
-              //value={this.state.vaccineName}
-              onChange={this.handleVaccineNameChange} 
+              name="ScEntityContact_Address"
+              onChange={this.handleScEntityContact_AddressChange}              
             />
           </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              
-            >
-              QRCode Scanner
-            </label>
-            {!this.state.scan && !this.state.scanResult && <Button color="primary" type="button" onClick={this.activeQR}>
-          Activate QRScanner {' '}
-         </Button>
-         }
-         {
-           this.state.scanResult && <p>VaccineDetails: {this.state.scanResultData} <Button color="primary"  type="button" onClick={this.scanAgain}>Scan again</Button></p>
-           
-         }
-         <div style = {camStyle}>
-            {this.state.scan && <QrReader
-          delay={this.state.delay}
-          style={previewStyle}
-          onError={this.handleError}
-          onScan={this.handleScan}
-          //onRead={this.onSuccess}
-          />}
-          </div>
-          </FormGroup>
+
+          
+        
+
+          
+
+
+         
+
+        
+
+              </Col>
+            </Row>
+          </Container>
+        
+          
           {/*
           <FormGroup>
             <label
@@ -383,22 +367,23 @@ handleError(err){
           <Button
                       className="float-right"
                       color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
+                      
+                      onClick={this.props.handleClose}
+                      size="xl"
                     >
-                      Message
+                      Close
                     </Button>
                     <br></br>
                     <Button className="btn-fill" color="primary" type="submit">
-                    Create Vaccine
+                    Request Join Entity
                   </Button>
                   
         </Form>
-    
-      </>
+          
+        </section>
+      </div>
     );
   }
 }
 
-export default VaccineForm;
+export default RegisterEntityModal;

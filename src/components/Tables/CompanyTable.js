@@ -46,6 +46,7 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import { Auth } from "aws-amplify"; 
 import axios from 'axios';
 
 //Amplify.configure(awsExports)
@@ -59,6 +60,9 @@ let isCompanyRegistered = [];
 let items = [];
 let temp = [];
 let companyData = [];
+let session;
+let user;
+let jwtToken;
 
 
 class CompanyTable extends Component {
@@ -75,6 +79,13 @@ class CompanyTable extends Component {
   
   async componentDidMount(){
     console.log("Loading tables now")
+    
+     session = await Auth.currentSession(); 
+     jwtToken = session.accessToken.jwtToken;
+
+     user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken;
+     
     this.getCompanies();
     
   }
@@ -82,12 +93,34 @@ class CompanyTable extends Component {
   componentWillUnmount(){
     items = []
   }
-    
+/*
+  useEffect(() => {
+    Auth.currentAuthenticatedUser(user => {
+      user.getSession((err, session) => {
+        if(err) {
+          throw new Error(err);
+        }
+
+        const sessionToken = session.getIdToken().jwtToken;
+
+        fetchItems(sessionToken)
+          .then(setItems)
+          .catch(err => console.log(err));
+      });
+    });
+  }, []);
+    */
        
   //get all container data
   async getCompanies(){
     try {
-    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcompany`, { Operation: "GET_COMPANY" } )
+      
+      console.log("JWT token",jwtToken);
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`, { Operation: "GET_COMPANY" } ,{
+      headers: {
+        'Authorization': jwtToken
+      }})
     .then(res => {
         console.log(res);
         console.log(res.data);

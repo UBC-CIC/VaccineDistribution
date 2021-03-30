@@ -472,3 +472,36 @@ export const onDeleteGpsReading = /* GraphQL */ `
     }
   }
 `;
+export const onCreateLinkUser = /* GraphQL */ `
+  subscription OnCreateLinkUser {
+    onCreateLinkUser {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLinkUser = /* GraphQL */ `
+  subscription OnUpdateLinkUser {
+    onUpdateLinkUser {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLinkUser = /* GraphQL */ `
+  subscription OnDeleteLinkUser {
+    onDeleteLinkUser {
+      id
+      cognitoUserId
+      qldbPersonId
+      createdAt
+      updatedAt
+    }
+  }
+`;

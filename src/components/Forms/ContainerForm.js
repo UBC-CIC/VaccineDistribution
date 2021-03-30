@@ -5,6 +5,10 @@ import {v4 as uuidv4} from "uuid";
 import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import QrReader from 'react-qr-scanner'
+import { Auth } from "aws-amplify"; 
+
+let user;
+let jwtToken;
 
 class ContainerForm extends React.Component {
 /*
@@ -53,7 +57,11 @@ class ContainerForm extends React.Component {
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
   //}
-
+  async componentDidMount(){
+    console.log("Loading Auth token")
+    user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken;    
+  }
 
   handleSubmit = event => {
     //event.preventDefault();
@@ -72,11 +80,14 @@ res.setHeader("Access-Control-Max-Age", "1800");
 res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://2fyx6aac6a.execute-api.ca-central-1.amazonaws.com/testMCG2/mcgcontainer`, { Operation: "POST",
+    axios.post(` https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, { Operation: "POST",
     Cont_ID: this.state.Cont_ID,
     containerType: this.state.containerType,
     containerName: this.state.containerName,
-    isContainerSafe: true })
+    isContainerSafe: true },{
+      headers: {
+        'Authorization': jwtToken
+      }} )
       .then(res => {
 
         console.log(res);
@@ -102,13 +113,18 @@ handleScan = (e) => {
   let testScan = JSON.parse(e)
   console.log( this.state.scanResultData)
   console.log( testScan)
+  if (testScan != null)
+  {
   this.setState({
     containerType: testScan.containerType,
     containerName: testScan.containerName
   })
   console.log(this.state.containerType,this.state.containerName)
   this.handleSubmit();
-  alert("Container saved successfully")
+}
+else{
+  alert("Scan not successful");
+}
 
 }
 

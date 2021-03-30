@@ -50,17 +50,17 @@ class AdminNavbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-        username:''
+        email:''
   };
 }
-/*
+
     async componentDidMount()
     {
       user = await Auth.currentAuthenticatedUser();  
-      
-      alert(user.username);
+      this.email = user.attributes.email
+      console.log(user.attributes.email);
     }
-    */
+    
   async  signOut() {
     try {
         await Auth.signOut({ global: true });
@@ -107,7 +107,7 @@ class AdminNavbar extends React.Component {
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                      New user
+                      {this.email}
                       </span>
                     </Media>
                   </Media>
@@ -140,8 +140,8 @@ class AdminNavbar extends React.Component {
                     <span>My profile</span>
                   </DropdownItem>
                   <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                    <i className="ni ni-user-run" />
-                    <span style={{width:"50px"}}><AmplifySignOut /></span>
+                    {/*<i className="ni ni-user-run" />*/}
+                    <span><AmplifySignOut slot="sign-out"></AmplifySignOut></span>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

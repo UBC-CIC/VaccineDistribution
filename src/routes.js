@@ -31,6 +31,10 @@ import CreateContainer from "views/examples/CreateContainer";
 import ViewCompany from "views/examples/ViewCompany";
 import ViewContainer from "views/examples/ViewContainer";
 import ViewVaccine from "views/examples/ViewVaccine";
+import ViewIOT from "views/examples/ViewIOT";
+import SupplyChainFlow from "views/examples/SupplyChainFlow";
+import AdminPanel from "views/examples/AdminPanel";
+import EntityAdminPanel from "views/examples/EntityAdminPanel";
 
 
 var routes = [
@@ -100,6 +104,36 @@ var routes = [
     name: "View Vaccine",
     icon: "ni ni-tv-2 text-blue",
     component: ViewVaccine,
+    layout: "/admin"
+  },
+
+  {
+    path: "/ViewIOT",
+    name: "View IOT",
+    icon: "ni ni-tv-2 text-blue",
+    component: ViewIOT,
+    layout: "/admin"
+  },
+  {
+    path: "/SupplyChainFlow",
+    name: "Supply Chain Flow",
+    icon: "ni ni-tv-2 text-blue",
+    component: SupplyChainFlow,
+    layout: "/admin"
+  },
+  {
+    path: "/AdminPanel",
+    name: "Admin Panel",
+    icon: "ni ni-tv-2 text-blue",
+    component: AdminPanel,
+    layout: "/admin"
+  },
+
+  {
+    path: "/EntityAdminPanel",
+    name: "Entity Admin Panel",
+    icon: "ni ni-tv-2 text-blue",
+    component: EntityAdminPanel,
     layout: "/admin"
   },
  
