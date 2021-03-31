@@ -102,7 +102,7 @@ class AdminNavbar extends React.Component {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="..."
-                        src={require("assets/img/theme/User_Logo.png")}
+                        src={require("assets/img/theme/blank-profile.png")}
                       />
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
@@ -141,7 +141,7 @@ class AdminNavbar extends React.Component {
                   </DropdownItem>
                   <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
                     {/*<i className="ni ni-user-run" />*/}
-                    <span><AmplifySignOut slot="sign-out"></AmplifySignOut></span>
+                    <span><AmplifySignOut slot="sign-out"/></span>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

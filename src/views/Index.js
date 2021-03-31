@@ -503,11 +503,11 @@ componentDidMount(){
                   </Row>
                 </CardHeader>
                 <CardBody>
-                
+
                 <Jvectormap />
-                 
+
                 </CardBody>
-               
+
               </Card>
                   
                  

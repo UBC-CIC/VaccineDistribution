@@ -51,7 +51,8 @@ import {
   Row,
   Col
 } from "reactstrap";
-
+import {createRoutes, routes, viewRoutes, adminRoutes} from "../../routes"
+import {DropdownButton, Dropdown} from "react-bootstrap";
 var ps;
 
 class Sidebar extends React.Component {
@@ -97,7 +98,7 @@ class Sidebar extends React.Component {
     });
   };
   render() {
-    const { bgColor, routes, logo } = this.props;
+    const { bgColor, logo } = this.props;
     let navbarBrandProps;
     if (logo && logo.innerLink) {
       navbarBrandProps = {
@@ -240,11 +241,37 @@ class Sidebar extends React.Component {
               </InputGroup>
             </Form>
             {/* Navigation */}
-            <Nav navbar>{this.createLinks(routes)}</Nav>
-            {/* Divider */}
             <hr className="my-3" />
+            <h6 className="navbar-heading text-muted">Dashboard</h6>
+            <Nav navbar>
+              {this.createLinks(routes)}
+            </Nav>
+
+            <hr className="my-3" />
+            <h6 className="navbar-heading text-muted">Creation</h6>
+            <Nav navbar>
+            {this.createLinks(createRoutes)}
+            </Nav>
+            <hr className="my-3" />
+
+            <h6 className="navbar-heading text-muted">Views</h6>
+            <Nav navbar>
+              {this.createLinks(viewRoutes)}
+            </Nav>
+            <hr className="my-3" />
+            <h6 className="navbar-heading text-muted">Admin</h6>
+
+            <Nav navbar>
+              {this.createLinks(adminRoutes)}
+            </Nav>
+
+            {/*<Nav navbar>*/}
+            {/*  {this.createLinks(routes)}*/}
+            {/*</Nav>*/}
+
+            {/* Divider */}
             {/* Heading */}
-            {/* <h6 className="navbar-heading text-muted">Documentation</h6> */}
+            {/* <h6 className="navbar-heading text-muted">Documentation</h6>*/}
             {/* Navigation */}
             {/* <Nav className="mb-md-3" navbar>
               <NavItem>
@@ -277,6 +304,7 @@ class Sidebar extends React.Component {
           </Collapse>
         </Container>
       </Navbar>
+
     );
   }
 }

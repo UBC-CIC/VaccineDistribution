@@ -1,6 +1,7 @@
 import React from "react";
 // react plugin for creating vector maps
 import { VectorMap } from "react-jvectormap";
+import {Card} from "reactstrap";
 
 let mapData = {
   AU: 760,
