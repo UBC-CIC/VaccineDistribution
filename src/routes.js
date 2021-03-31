@@ -40,45 +40,46 @@ let createRoutes = [
   {
     path: "/CreateContainer",
     name: "Create Container",
-    icon: "ni ni-fat-add text-primary",
+    icon: "fas fa-plus-square text-primary",
     component: CreateContainer,
     layout: "/admin"
   },
   {
     path: "/CreateCompany",
     name: "Create Company",
-    icon: "ni ni-fat-add text-primary",
+    icon: "fas fa-plus-square text-primary",
     component: CreateCompany,
     layout: "/admin"
   },
   {
     path: "/CreateVaccine",
     name: "Create Vaccine",
-    icon: "ni ni-fat-add text-primary",
+    icon: "fas fa-plus-square  text-primary",
     component: CreateVaccine,
     layout: "/admin"
   },
 ]
 
-let viewRoutes =[
+
+    let viewRoutes =[
   {
     path: "/ViewCompany",
     name: "View Company",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-building text-blue",
     component: ViewCompany,
     layout: "/admin"
   },
   {
     path: "/ViewContainer",
     name: "View Container",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-box text-blue",
     component: ViewContainer,
     layout: "/admin"
   },
   {
     path: "/ViewVaccine",
     name: "View Vaccine",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-syringe text-blue",
     component: ViewVaccine,
     layout: "/admin"
   },
@@ -86,7 +87,7 @@ let viewRoutes =[
   {
     path: "/ViewIOT",
     name: "View IOT",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-temperature-low text-blue",
     component: ViewIOT,
     layout: "/admin"
   },
@@ -104,14 +105,14 @@ let adminRoutes =[
   {
     path: "/SupplyChainFlow",
     name: "Supply Chain Flow",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-parachute-box text-blue",
     component: SupplyChainFlow,
     layout: "/admin"
   },
   {
     path: "/AdminPanel",
     name: "Admin Panel",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-user-shield text-blue",
     component: AdminPanel,
     layout: "/admin"
   },
@@ -119,7 +120,7 @@ let adminRoutes =[
   {
     path: "/EntityAdminPanel",
     name: "Entity Admin Panel",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-user-shield text-blue",
     component: EntityAdminPanel,
     layout: "/admin"
   },
@@ -129,7 +130,7 @@ let routes = [
   {
     path: "/index",
     name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
+    icon: "fas fa-tv text-primary",
     component: Index,
     layout: "/admin"
   },
