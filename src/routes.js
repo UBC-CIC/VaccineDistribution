@@ -40,21 +40,21 @@ let createRoutes = [
   {
     path: "/CreateContainer",
     name: "Create Container",
-    icon: "fas fa-plus-square text-primary",
+    icon: "fas fa-plus-square text-red",
     component: CreateContainer,
     layout: "/admin"
   },
   {
     path: "/CreateCompany",
     name: "Create Company",
-    icon: "fas fa-plus-square text-primary",
+    icon: "fas fa-plus-square text-red",
     component: CreateCompany,
     layout: "/admin"
   },
   {
     path: "/CreateVaccine",
     name: "Create Vaccine",
-    icon: "fas fa-plus-square  text-primary",
+    icon: "fas fa-plus-square  text-red",
     component: CreateVaccine,
     layout: "/admin"
   },
@@ -94,7 +94,7 @@ let createRoutes = [
   {
     path: "/tables",
     name: "View Tables",
-    icon: "ni ni-bullet-list-67 text-red",
+    icon: "fas fa-table text-blue",
     component: Tables,
     layout: "/admin"
   },
@@ -105,14 +105,14 @@ let adminRoutes =[
   {
     path: "/SupplyChainFlow",
     name: "Supply Chain Flow",
-    icon: "fas fa-parachute-box text-blue",
+    icon: "fas fa-parachute-box text-green",
     component: SupplyChainFlow,
     layout: "/admin"
   },
   {
     path: "/AdminPanel",
     name: "Admin Panel",
-    icon: "fas fa-user-shield text-blue",
+    icon: "fas fa-user-shield text-green",
     component: AdminPanel,
     layout: "/admin"
   },
@@ -120,7 +120,7 @@ let adminRoutes =[
   {
     path: "/EntityAdminPanel",
     name: "Entity Admin Panel",
-    icon: "fas fa-user-shield text-blue",
+    icon: "fas fa-user-shield text-green",
     component: EntityAdminPanel,
     layout: "/admin"
   },
