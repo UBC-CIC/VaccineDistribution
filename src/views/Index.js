@@ -63,7 +63,9 @@ import Piechart from "components/Dashboard/Piechart";
 import VectorMapTest from "components/Dashboard/VectorMapTest";
 import ConnectUserModal from "components/Modal/ConnectUserModal";
 import axios from "axios";
-
+import '../assets/css/map.css'
+import Map from '../components/Map/Map';
+import{manufacturer} from '../components/Map/VaccineManufacturer'
 let sensorTemp = []
 let sensorHumidity = []
 
@@ -205,6 +207,7 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
 
 class Index extends React.Component {
   constructor(props){
+
     super(props);
     this.state = {
       activeNav: 1,
@@ -281,6 +284,7 @@ componentDidMount(){
 
 }
 */
+
 
   componentWillUnmount(){
     containerOptions = []
@@ -411,7 +415,8 @@ componentDidMount(){
     return (
       <>
         <Header />
-        
+        <div ref = {this.mapContainer} className = "map"/>
+
 
         {/* Page content */}
         <Container className="mt--7" fluid>
@@ -462,14 +467,17 @@ componentDidMount(){
                      
                       this.state.dataType === 2 && (
                         
-                        <MyMapComponent
-                        
-                              isMarkerShown
-                              googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places"}
-                              loadingElement={<div style={{ height: `100%` }} />}
-                              containerElement={<div style={{ height: `100%` }} />}
-                              mapElement={<div style={{ height: `100%` }} />}
-                         />
+                        // <MyMapComponent
+                        //
+                        //       isMarkerShown
+                        //       googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places"}
+                        //       loadingElement={<div style={{ height: `100%` }} />}
+                        //       containerElement={<div style={{ height: `100%` }} />}
+                        //       mapElement={<div style={{ height: `100%` }} />}
+                        //  />
+                          <Map/>
+
+
                       )
                     }
                   </div>
@@ -490,21 +498,11 @@ componentDidMount(){
                     <div className="col">
                       <h3 className="mb-0">Vaccine map</h3>
                     </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
                   </Row>
                 </CardHeader>
                 <CardBody>
 
-                <Jvectormap />
+                <Map markers = {manufacturer}/>
 
                 </CardBody>
 

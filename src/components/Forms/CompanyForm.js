@@ -7,10 +7,8 @@ import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import { Auth } from "aws-amplify"; 
 
 
-
 let user;
 let jwtToken;
-
 class CompanyForm extends React.Component {
 /*
   state = {
@@ -62,7 +60,7 @@ class CompanyForm extends React.Component {
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
-     jwtToken = user.signInUserSession.idToken.jwtToken;    
+     jwtToken = user.signInUserSession.idToken.jwtToken;
   }
 
   handleSubmit = event => {
@@ -83,7 +81,8 @@ class CompanyForm extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`, { Operation: "POST",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
+        { Operation: "POST",
     Comp_ID: parseInt(this.state.Comp_ID),
     companyType: this.state.companyType,
     companyName: this.state.companyName,
@@ -100,22 +99,10 @@ class CompanyForm extends React.Component {
   }
 
   render() {
+      const {Comp_ID, companyType,companyName,companyIC} = this.state
     return (
         <Form onSubmit={this.handleSubmit}>
-          <FormGroup>
-              <label
-              className="form-control-label"
-              
-            >
-              Company ID
-            </label>
-            <Input
-              defaultValue=""
-              
-              type="text"
-              
-            />
-          </FormGroup>
+          <h5>* indicates a required field</h5>
           <FormGroup>
             <label
               className="form-control-label"
@@ -173,19 +160,31 @@ class CompanyForm extends React.Component {
               onChange={this.handleCompanyICChange} 
             />
           </FormGroup>
-          <Button
-                      className="float-right"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
-                    >
-                      Message
-                    </Button>
-                    <Button className="btn-fill" color="primary" type="submit">
-                    Create Company
-                  </Button>
-                  
+          <Row>
+            <Col >
+              <label
+                  className="form-control-label step"
+              >
+                Form Completed?
+              </label>
+              {!(Comp_ID.length===0||companyName.length===0
+              ||companyType.length===0||companyIC.length===0)?
+                  <i className={"far fa-check-circle"} style={{color: "green"}}/>
+                  :
+                  <i className={"far fa-times-circle"} style={{color: "red"}}/>
+              }
+            </Col>
+          </Row>
+          <Row>
+            <Col className={"d-flex justify-content-center"}>
+
+          <Button className="btn-fill" color="primary" type="submit"
+            disabled={Comp_ID.length===0||companyName.length===0
+            ||companyType.length===0||companyIC.length===0}>
+                Create Company
+            </Button>
+            </Col>
+          </Row>
         </Form>
     );
   }

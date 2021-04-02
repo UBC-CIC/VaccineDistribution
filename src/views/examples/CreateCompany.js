@@ -36,20 +36,48 @@ import UserHeader from "components/Headers/UserHeader.js";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import Header from "components/Headers/Header";
 import CompanyForm from "components/Forms/CompanyForm";
+import VaccineForm from "../../components/Forms/VaccineForm";
 
 class CreateCompany extends React.Component {
 
   render() {
     return (
-     
         <>
-        <Header />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <CompanyForm/>
+          <UserHeader />
+          {/* Page content */}
+          <Container className="mt--7" fluid>
+            <Row>
 
-        </Container>
-      </>
+              <Col className="order-xl-1" xl="8">
+                <Card className="bg-secondary shadow">
+                  <CardHeader className="bg-white border-0">
+                    <Row className="align-items-center">
+                      <Col xs="8">
+                        <h3 className="mb-0">Create Vaccine</h3>
+                      </Col>
+                      <Col className="text-right" xs="4">
+                        <Button
+                            color="primary"
+                            href="#pablo"
+                            onClick={e => e.preventDefault()}
+                            size="sm"
+                        >
+                          Reset
+                        </Button>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <CompanyForm/>
+
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+
+          </Container>
+        </>
+
     );
   }
 }
