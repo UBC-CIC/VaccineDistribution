@@ -64,6 +64,9 @@ import VectorMapTest from "components/Dashboard/VectorMapTest";
 import ConnectUserModal from "components/Modal/ConnectUserModal";
 import axios from "axios";
 
+import config from '../aws-exports';
+Amplify.configure(config);
+
 let sensorTemp = []
 let sensorHumidity = []
 

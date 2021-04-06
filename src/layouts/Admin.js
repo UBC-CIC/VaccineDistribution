@@ -27,6 +27,10 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
+import Amplify from 'aws-amplify';
+import config from '../aws-exports';
+Amplify.configure(config);
+
 class Admin extends React.Component {
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
