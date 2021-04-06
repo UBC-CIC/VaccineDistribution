@@ -45,7 +45,9 @@ class JoiningRequestEntityModal extends React.Component {
       ScEntityIdentificationCode: '',
       ScEntityIdentificationCodeType: '',
       qldbPersonId: '',
-      entity: [{text:"Moderna", id:1}]
+      //entity: [{text:"Moderna", id:1}],
+
+      entity : []
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -75,6 +77,8 @@ class JoiningRequestEntityModal extends React.Component {
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
      jwtToken = user.signInUserSession.idToken.jwtToken; 
+
+     
     
   }
 
@@ -169,7 +173,7 @@ class JoiningRequestEntityModal extends React.Component {
              options={{
                placeholder: ""
              }}
-             data={this.state.entity}
+             data={this.props.filterEntityData}
            />
 
 </FormGroup>

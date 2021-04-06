@@ -47,6 +47,7 @@ import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentD
 import axios from 'axios';
 
 import { createLinkUser } from './../../graphql/mutations';
+import { parse } from 'uuid';
 //Amplify.configure(awsExports)
 
 
@@ -73,7 +74,8 @@ class SupplyChainFlow extends Component {
           userSub: '',
           qldbPersonId:'',
           manufacturerId:'',
-          entity: []
+          entity: [],
+          filterEntityData: []
         };
         
         
@@ -99,12 +101,7 @@ class SupplyChainFlow extends Component {
         this.hideCreateManufacturerOrderModal = this.hideCreateManufacturerOrderModal.bind(this);
         this.hideInitiateShipmentManufacturerModal = this.hideInitiateShipmentManufacturerModal.bind(this);
         this.hideInitiateShipmentDistributorModal = this.hideInitiateShipmentDistributorModal.bind(this);
-
-
-
-
-
-        
+       
       }
 
 
@@ -118,8 +115,11 @@ class SupplyChainFlow extends Component {
          console.log(user.attributes.email);
          console.log(user)   
          console.log('user attributes: ', user.attributes);
+         localStorage.setItem('cognitoUserId', this.state.userSub); 
 
-         this.getEntityData();   
+         this.getEntityData();
+         
+
       }
 
       //Display Modal form for user register in QLDB
@@ -197,9 +197,23 @@ class SupplyChainFlow extends Component {
         console.log(res.data);
         console.log(res.data.body);
         this.setState({entity:res.data.body});
+
+        const entityData = this.state.entity.map( function(entity) {
+          if( entity.isApprovedBySuperAdmin === true){
+              var info = { "text": entity.ScEntityName,
+                           "id": parseInt (entity.ScEntityTypeCode)
+                          }
+              return info;
+                        }
+          
+         })
+         console.log("EntityData", entityData)
+         this.setState({filterEntityData: entityData})
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
   } 
+
+
   
 LinkCognito_QLDBUser = (qldbPersonId) => {
 
@@ -284,7 +298,7 @@ async createUserLink(){
                         color="default"
                        onClick={this.showRegisterEntityModal}> Joining Request  </Button>
 
-                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity}>
+                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData}>
           
                </JoiningRequestEntityModal>
                 

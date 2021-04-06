@@ -77,7 +77,8 @@ class AdminPanel extends Component {
        { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }],
        entity: [],
        cognitoUserId: '',
-       qldbPersonId: ''
+       qldbPersonId: '',
+       allMcgRequest:[]
     }
  }
   async componentDidMount(){
@@ -140,6 +141,7 @@ async getQldbPersonId() {
       this.setState({
          qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
       })
+      localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
     } catch (err) {
       console.log('error fetching LinkUser...', err)
     }
@@ -153,12 +155,62 @@ removeData = (id) => {
   })
 }
 
-removeEntityData = (ScEntityIdentificationCode) => {
-
+removeEntityData = (ScEntityIdentificationCode, personId) => {
+console.log(personId)
   axios.delete(`${URL}/${ScEntityIdentificationCode}`).then(res => {
       const del = this.state.entity.filter(entity => ScEntityIdentificationCode !== entity.ScEntityIdentificationCode)
       this.setState({entity:del})
   })
+
+  
+
+}
+
+approveEntityData = (personId) => {
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_MCG_REQUESTS",
+
+PersonId: localStorage.getItem("qldbPersonId")
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.body);
+      this.setState({allMcgRequest:res.data.body});
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+  const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
+
+PersonId: localStorage.getItem("qldbPersonId"),
+RequestId: mcgRequest.RequestId
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      if(res.data.statusCode == 200){
+      console.log(res.data.body);
+     alert("Entity is approved")
+    }
+    else{
+      alert("Entity approval failed")
+    }
+
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+
 }
 
 

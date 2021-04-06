@@ -52,7 +52,7 @@ import { withAuthenticator } from '@aws-amplify/ui-react';
 import InitializeQLDB from "components/AdminPanel/InitializeQLDB.js";
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
-import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
+import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/ApprovalJoinRequestEntityTable.js";
 
 import axios from 'axios';
 import { Auth } from "aws-amplify"; 
@@ -94,7 +94,11 @@ class EntityAdminPanel extends Component {
 
 async getEntityData() {
   const response = await axios.get(URL)
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+  /*
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_JOINING_REQUESTS",
+PersonId: localStorage.getItem("qldbPersonId"),
+ScEntityId: localStorage.getItem("ScEntityId")
+} ,
   {
     headers: {
       //'Authorization': jwtToken
@@ -107,7 +111,7 @@ async getEntityData() {
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
   })
 
-
+*/
   //this.setState({entity: response.data})
 }
 
@@ -191,60 +195,15 @@ removeEntityData = (ScEntityIdentificationCode) => {
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
-                <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
+                <ApprovalJoinRequestEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
           </CardBody>
               </Card>
             </Col>
           </Row>
 
-          <Row className="mt-5">
-          <Col className="order-xl-1" xl="12">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h1 className="mb-0">Approve Product Request</h1>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
-                    </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                <ApprovalProductTable employees={this.state.employees} removeData={this.removeData}/>
-          </CardBody>
-              </Card>
-            </Col>
-          </Row>
+       
 
 
-          <Row className="mt-5">
-            
-            <Col className="order-xl-1" xl="12">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h1 className="mb-0">Initialize QLDB</h1>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      
-                    </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                <InitializeQLDB/>
-          </CardBody>
-              </Card>
-            </Col>
-          </Row>
 
         </Container>
        

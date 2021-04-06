@@ -388,8 +388,8 @@ export const onDeleteSensor = /* GraphQL */ `
     }
   }
 `;
-export const onCreateGpsReading = /* GraphQL */ `
-  subscription OnCreateGpsReading {
+export const onCreateGPSReading = /* GraphQL */ `
+  subscription OnCreateGPSReading {
     onCreateGPSReading {
       id
       container {
@@ -416,8 +416,8 @@ export const onCreateGpsReading = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateGpsReading = /* GraphQL */ `
-  subscription OnUpdateGpsReading {
+export const onUpdateGPSReading = /* GraphQL */ `
+  subscription OnUpdateGPSReading {
     onUpdateGPSReading {
       id
       container {
@@ -444,8 +444,8 @@ export const onUpdateGpsReading = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteGpsReading = /* GraphQL */ `
-  subscription OnDeleteGpsReading {
+export const onDeleteGPSReading = /* GraphQL */ `
+  subscription OnDeleteGPSReading {
     onDeleteGPSReading {
       id
       container {

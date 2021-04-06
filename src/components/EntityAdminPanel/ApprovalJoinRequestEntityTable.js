@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import "./ApprovalTable.css";
 import axios from 'axios'
-import FusionTablesLayer from 'react-google-maps/lib/components/FusionTablesLayer';
 
 
 const URL = 'https://jsonplaceholder.typicode.com/users'
 
-class ApprovalEntityTable extends Component {
+class ApprovalJoinRequestEntityTable extends Component {
 
 
 
@@ -21,8 +20,8 @@ class ApprovalEntityTable extends Component {
 
      
      renderBody = () => {
-         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 && entity.isApprovedBySuperAdmin == false )
-        return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode, PersonIds}) => {
+         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 )
+        return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode }) => {
             return (
                 <tr key={ScEntityIdentificationCode}>
                     <td>{ScEntityIdentificationCode}</td>
@@ -31,8 +30,8 @@ class ApprovalEntityTable extends Component {
                     <td>{ScEntityIdentificationCodeType}</td>
                     <td>{ScEntityTypeCode}</td>
                     <td className='opration'>
-                        <button className='buttonApproval' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode, PersonIds[0])}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode,PersonIds[0])}>Deny</button>
+                        <button className='buttonApproval' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Deny</button>
                     </td>
                 </tr>
             )
@@ -44,7 +43,7 @@ class ApprovalEntityTable extends Component {
      render(){
         return (
             <>
-                <h1 id='title'>Approval MCG-Request Entity Table</h1>
+                <h1 id='title'>Approval Join Request to Entity Table</h1>
                 <table id='employee'>
                     <thead>
                         <tr>{this.renderHeader()}</tr>
@@ -58,4 +57,4 @@ class ApprovalEntityTable extends Component {
     }
 }
 
-export default ApprovalEntityTable
+export default ApprovalJoinRequestEntityTable

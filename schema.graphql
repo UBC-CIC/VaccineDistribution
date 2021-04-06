@@ -44,6 +44,16 @@ type GPSReading @model{
   updatedAt: AWSDateTime
 }
 
+
+type LinkUser @model{
+  id: ID!
+  cognitoUserId: String!
+  qldbPersonId: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+ 
+}
+
 # enum {
 #  Manufacturer
 # MCG

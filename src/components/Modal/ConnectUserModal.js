@@ -25,8 +25,8 @@ class ConnectUserModal extends React.Component {
         LastName: '',
         isSuperAdmin: false,
         isAdmin: false,
-        Email: '',//this.props.userEmail,
-        Phone: '',//this.props.userPhone,
+        Email: this.props.userEmail,
+        Phone: this.props.userPhone,
         Address: '',
 
         ScEntityName: '',
@@ -255,7 +255,7 @@ class ConnectUserModal extends React.Component {
               id="Email_id"
               type="text"
               name="Email"
-              //value={this.props.userEmail}
+              value={this.props.userEmail}
               onChange={this.handleEmailChange}              
             />
           </FormGroup>
@@ -270,7 +270,7 @@ class ConnectUserModal extends React.Component {
               id="Phone_id"
               type="text"
               name="Phone"
-              //value={this.props.userPhone}
+              value={this.props.userPhone}
               onChange={this.handlePhoneChange}              
             />
           </FormGroup>

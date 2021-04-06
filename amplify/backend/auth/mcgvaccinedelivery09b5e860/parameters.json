@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mcgvaccinedelivery329d6f97_identitypool_329d6f97",
+    "identityPoolName": "mcgvaccinedelivery09b5e860_identitypool_09b5e860",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mcgvac329d6f97",
-    "userPoolName": "mcgvaccinedelivery329d6f97_userpool_329d6f97",
+    "resourceNameTruncated": "mcgvac09b5e860",
+    "userPoolName": "mcgvaccinedelivery09b5e860_userpool_09b5e860",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,7 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
         "email"
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "mcgvac329d6f97_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "mcgvac09b5e860_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "329d6f97",
-    "resourceName": "mcgvaccinedelivery329d6f97",
+    "sharedId": "09b5e860",
+    "resourceName": "mcgvaccinedelivery09b5e860",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,9 +46,6 @@
         ]
     },
     "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,

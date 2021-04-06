@@ -225,8 +225,8 @@ export const listSensors = /* GraphQL */ `
     }
   }
 `;
-export const getGpsReading = /* GraphQL */ `
-  query GetGpsReading($id: ID!) {
+export const getGPSReading = /* GraphQL */ `
+  query GetGPSReading($id: ID!) {
     getGPSReading(id: $id) {
       id
       container {
@@ -253,8 +253,8 @@ export const getGpsReading = /* GraphQL */ `
     }
   }
 `;
-export const listGpsReadings = /* GraphQL */ `
-  query ListGpsReadings(
+export const listGPSReadings = /* GraphQL */ `
+  query ListGPSReadings(
     $filter: ModelGPSReadingFilterInput
     $limit: Int
     $nextToken: String

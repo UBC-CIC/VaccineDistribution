@@ -51,7 +51,7 @@ import {
 import Header from "components/Headers/Header.js";
 
 import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { getSensorReading, listContainers, listSensorReadings, listGpsReadings } from '../graphql/queries';
+import { getSensorReading, listContainers, listSensorReadings, listGPSReadings } from '../graphql/queries';
 import Select from 'react-select'
 //import awsExports from "../aws-exports";
 import Search from 'react-search'
@@ -379,7 +379,7 @@ componentDidMount(){
   async getGPSForContainer(){
         console.log(this.state.containerId)
         try {
-          const currentGPSReadings = await API.graphql(graphqlOperation(listGpsReadings, {filter:{containerGpsReadingId:{eq:this.state.containerId}}}))
+          const currentGPSReadings = await API.graphql(graphqlOperation(listGPSReadings, {filter:{containerGpsReadingId:{eq:this.state.containerId}}}))
           //const currentReadings = await API.graphql(graphqlOperation(listSensorReadings,{filter :{ containerSensorReadingsId: {eq: this.state.containerId}}}))
           console.log('current GPS readings: ', currentGPSReadings)
           this.setState({

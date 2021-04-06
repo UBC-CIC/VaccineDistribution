@@ -154,6 +154,7 @@ class RegisterProductModal extends React.Component {
               id="ProductCode_id"
               type="text"
               name="ProductCode"
+              placeholder="Product Code as GS1 number"
               value={this.state.ProductCode}
               onChange={this.handleOnChange}              
             />
@@ -299,6 +300,7 @@ class RegisterProductModal extends React.Component {
             <Input
               id="ProductHSTarriffNumber_id"
               type="text"
+             
               name="ProductHSTarriffNumber"
               value={this.state.ProductHSTarriffNumber}
               onChange={this.handleOnChange}               
