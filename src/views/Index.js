@@ -66,6 +66,7 @@ import axios from "axios";
 import '../assets/css/map.css'
 import Map from '../components/Map/Map';
 import{manufacturer} from '../components/Map/VaccineManufacturer'
+import GeneralHeader from "../components/Headers/GeneralHeader";
 let sensorTemp = []
 let sensorHumidity = []
 
@@ -414,7 +415,7 @@ componentDidMount(){
   
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Home"} />
         <div ref = {this.mapContainer} className = "map"/>
 
 

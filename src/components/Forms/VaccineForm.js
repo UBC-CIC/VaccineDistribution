@@ -190,13 +190,10 @@ handleError(err){
           </FormGroup>
           <FormGroup>
             <Row>
-              <Col>
-              <label
-              className="form-control-label"
-              
-            >
+              <Col className={"d-flex justify-content-center"}>
+              <label className="form-control-label">
               QRCode Scanner
-            </label>
+              </label>
               </Col>
             </Row>
             <Row className={"d-flex justify-content-center"}>
@@ -221,7 +218,7 @@ handleError(err){
             </Row>
           </FormGroup>
           <Row>
-            <Col>
+            <Col className={"d-flex justify-content-center"}>
             <label
               className="form-control-label step"
           >

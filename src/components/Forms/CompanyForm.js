@@ -65,6 +65,11 @@ class CompanyForm extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    const {Comp_ID} = this.state
+    if(!(parseInt(Comp_ID) && Comp_ID>=0)){
+        alert("Company ID has to be an integer greater or equal to 0")
+        return
+    }
 
     const company = {
     Operation: "POST",
@@ -161,7 +166,7 @@ class CompanyForm extends React.Component {
             />
           </FormGroup>
           <Row>
-            <Col >
+            <Col className={"d-flex justify-content-center"}>
               <label
                   className="form-control-label step"
               >

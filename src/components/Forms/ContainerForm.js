@@ -177,11 +177,10 @@ handleError(err){
               onChange={this.handleContainerNameChange} 
             />
           </FormGroup>
+          <FormGroup>
           <Row>
-            <Col>
-            <label
-              className="form-control-label"
-            >
+            <Col className={"d-flex justify-content-center"}>
+            <label className="form-control-label">
               QRCode Scanner
             </label>
             </Col>
@@ -194,7 +193,7 @@ handleError(err){
            this.state.scanResult && <p>Container: {this.state.scanResultData} <Button color="primary"  type="button" onClick={this.scanAgain}>Scan again</Button></p>
            
          }
-         <div style = {camStyle}>
+         <div style = {camStyle} >
             {this.state.scan && <QrReader
           delay={this.state.delay}
           style={previewStyle}
@@ -204,8 +203,9 @@ handleError(err){
           />}
           </div>
           </Row>
-          <Row>
-            <Col>
+        </FormGroup>
+        <Row>
+            <Col className={"d-flex justify-content-center"}>
           <label
               className="form-control-label step"
           >

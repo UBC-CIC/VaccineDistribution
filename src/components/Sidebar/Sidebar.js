@@ -242,7 +242,7 @@ class Sidebar extends React.Component {
             </Form>
             {/* Navigation */}
             <hr className="my-3" />
-            <h6 className="navbar-heading text-primary">Dashboard</h6>
+            <h6 className="navbar-heading text-yellow">Home</h6>
             <Nav navbar>
               {this.createLinks(routes)}
             </Nav>

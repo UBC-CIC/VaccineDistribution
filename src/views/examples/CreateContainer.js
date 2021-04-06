@@ -75,6 +75,7 @@ class CreateContainer extends Component {
                 </CardHeader>
                 <CardBody>
                   <div className="pl-lg-1">
+
                     <ContainerForm/>
                   </div>
 
@@ -89,4 +90,4 @@ class CreateContainer extends Component {
   }
 }
 
-export default withAuthenticator(CreateContainer) ;
+export default withAuthenticator (CreateContainer) ;

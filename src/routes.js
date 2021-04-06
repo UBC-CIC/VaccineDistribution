@@ -38,19 +38,20 @@ import EntityAdminPanel from "views/examples/EntityAdminPanel";
 
 let createRoutes = [
   {
-    path: "/CreateContainer",
-    name: "Create Container",
-    icon: "fas fa-plus-square text-red",
-    component: CreateContainer,
-    layout: "/admin"
-  },
-  {
     path: "/CreateCompany",
     name: "Create Company",
     icon: "fas fa-plus-square text-red",
     component: CreateCompany,
     layout: "/admin"
   },
+  {
+    path: "/CreateContainer",
+    name: "Create Container",
+    icon: "fas fa-plus-square text-red",
+    component: CreateContainer,
+    layout: "/admin"
+  },
+
   {
     path: "/CreateVaccine",
     name: "Create Vaccine",
@@ -76,7 +77,15 @@ let createRoutes = [
     component: ViewContainer,
     layout: "/admin"
   },
-  {
+      {
+        path: "/tables",
+        name: "View Container Status",
+        icon: "fas fa-table text-blue",
+        component: Tables,
+        layout: "/admin"
+      },
+
+      {
     path: "/ViewVaccine",
     name: "View Vaccine",
     icon: "fas fa-syringe text-blue",
@@ -89,13 +98,6 @@ let createRoutes = [
     name: "View IOT",
     icon: "fas fa-temperature-low text-blue",
     component: ViewIOT,
-    layout: "/admin"
-  },
-  {
-    path: "/tables",
-    name: "View Tables",
-    icon: "fas fa-table text-blue",
-    component: Tables,
     layout: "/admin"
   },
 
@@ -129,8 +131,8 @@ let adminRoutes =[
 let routes = [
   {
     path: "/index",
-    name: "Dashboard",
-    icon: "fas fa-tv text-primary",
+    name: "Home",
+    icon: "fas fa-home text-yellow",
     component: Index,
     layout: "/admin"
   },
