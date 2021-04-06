@@ -55,7 +55,8 @@ import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js"
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
 
 import axios from 'axios';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 
 
 
@@ -163,7 +164,7 @@ removeEntityData = (ScEntityIdentificationCode) => {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Entity Admin Panel"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
