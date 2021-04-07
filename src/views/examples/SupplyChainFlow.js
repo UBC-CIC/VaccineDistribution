@@ -47,6 +47,7 @@ import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentD
 import axios from 'axios';
 
 import { createLinkUser } from './../../graphql/mutations';
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 //Amplify.configure(awsExports)
 
 
@@ -231,7 +232,7 @@ async createUserLink(){
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Supply Chain Flow"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <ListGroup data-toggle="checklist" flush>

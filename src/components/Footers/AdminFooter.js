@@ -56,7 +56,7 @@ class Footer extends React.Component {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                      href="https://github.com/UBC-CIC/Mobile_Health_Monitoring_Platform/blob/master/ATTRIBUTIONS.md"
+                      href="https://github.com/UBC-CIC/MCG_VaccineDelivery/blob/mcg-ui/ATTRIBUTIONS.md"
                       rel="noopener noreferrer"
                       target="_blank"
                   >
@@ -65,7 +65,7 @@ class Footer extends React.Component {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://github.com/UBC-CIC/Mobile_Health_Monitoring_Platform/blob/master/LICENSE.md"
+                    href="https://github.com/UBC-CIC/MCG_VaccineDelivery/blob/mcg-ui/LICENSE.md"
                     rel="noopener noreferrer"
                     target="_blank"
                   >

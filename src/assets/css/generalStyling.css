@@ -37,3 +37,6 @@
     border-radius: 10px;
     border: transparent;
 }
+.modal {
+    overflow-y:auto !important;
+}

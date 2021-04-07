@@ -54,7 +54,6 @@ import CreateIndexesAndAdmin from "components/AdminPanel/CreateIndexesAndAdmin.j
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
-
 import axios from 'axios';
 import { Auth } from "aws-amplify"; 
 
@@ -166,6 +165,7 @@ removeEntityData = (ScEntityIdentificationCode) => {
     return (
       <>
         <GeneralHeader title={"Admin Panel"} />
+
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
