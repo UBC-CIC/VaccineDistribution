@@ -252,26 +252,8 @@ async createUserLink(){
         </ConnectUserModal>
                 
 
-                
-                
-               
-                <small>10:30 AM</small>
               </div>
               
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
-              </div>
             </div>
           </ListGroupItem>
 
@@ -288,24 +270,6 @@ async createUserLink(){
                 <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity}>
           
                </JoiningRequestEntityModal>
-                
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -317,25 +281,7 @@ async createUserLink(){
                 <Button className="float-right"
                         color="default"
                        onClick={this.showRequestJoinModal}> Request join </Button>
-                <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}>
-          
-        </RequestJoinEntityModal>
-        
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-warning">
-                  <input
-                    className="custom-control-input"
-                    id="chk-todo-task-2"
-                    defaultChecked
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-2"
-                  />
-                </div>
+                <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}/>
               </div>
             </div>
           </ListGroupItem>
@@ -358,23 +304,6 @@ async createUserLink(){
           <p>Register Product Modal</p>
         </ RegisterProductModal>
                 
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -397,26 +326,6 @@ async createUserLink(){
           <p>Create Batch Modal</p>
         </ CreateBatchModal>
                 
-
-                
-                
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -438,24 +347,6 @@ async createUserLink(){
           <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Create Manufacturer Order Modal</p>
         </ CreateManufacturerOrderModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -477,24 +368,6 @@ async createUserLink(){
           <InitiateShipmentManufacturerModal show={this.state.showInitiateShipmentManufacturer} handleClose={this.hideInitiateShipmentManufacturerModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Initiate Shipment Manufacturer Modal</p>
         </ InitiateShipmentManufacturerModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -517,39 +390,9 @@ async createUserLink(){
           <InitiateShipmentDistributorModal show={this.state.showInitiateShipmentDistributor} handleClose={this.hideInitiateShipmentDistributorModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Initiate Shipment Distributor Modal</p>
         </ InitiateShipmentDistributorModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -562,21 +405,6 @@ async createUserLink(){
                 <Button className="float-right"
                         color="default"
                        onClick={this.showRequestVaccineContainerModal}> Request Container </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-info">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-3"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-3"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -587,21 +415,6 @@ async createUserLink(){
                 <Button className="float-right"
                         color="default"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-danger">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-4"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-4"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -612,21 +425,6 @@ async createUserLink(){
                 <Button className="float-right"
                         color="default"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-5"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-5"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>

@@ -282,7 +282,6 @@ class JoiningRequestEntityModal extends React.Component {
           </Row>
         </Container>
          <div className={"modal-footer"}>
-             <h5>* indicates a required field</h5>
          <Row>
              <Col className={"align-items-center"}>
                  <Button
