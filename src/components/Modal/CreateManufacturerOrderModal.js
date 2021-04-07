@@ -106,7 +106,13 @@ class CreateManufacturerOrderModal extends React.Component {
   }
     
   render(){
-    const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
+      const{PersonId,PurchaseOrderNumber,ProductId,OrderQuantity,OrdererScEntityId,OrdererPersonId,isOrderShipped,
+              OrderType} = this.state
+
+      const formNotCompleted = PersonId.length===0||ProductId.length===0||PurchaseOrderNumber.length===0||OrderQuantity.length===0||
+          OrdererScEntityId.length===0||OrdererPersonId.length===0 || isOrderShipped.length===0||OrderType.length===0
+
+          const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
       <div className={showHideClassName}>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
@@ -264,7 +270,7 @@ class CreateManufacturerOrderModal extends React.Component {
                     </Button>
                     </Col>
                     <Col>
-                    <Button className="btn-fill" color="primary" type="submit">
+                    <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
                     Create Manufacturer Order
                   </Button>
                     </Col>
