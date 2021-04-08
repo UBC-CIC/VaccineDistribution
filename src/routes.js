@@ -132,7 +132,7 @@ let routes = [
   {
     path: "/index",
     name: "Home",
-    icon: "fas fa-home text-yellow",
+    icon: "fas fa-home text-green",
     component: Index,
     layout: "/admin"
   },

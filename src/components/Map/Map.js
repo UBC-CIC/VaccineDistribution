@@ -18,7 +18,9 @@ class Map extends Component{
         let {markers} = this.props
         if(markers){
             for(let i=0;i<markers.length;i++){
-                new mapboxgl.Marker()
+                var el = document.createElement('div');
+                el.className = 'marker fas fa-map-marker-alt fa-3x';
+                new mapboxgl.Marker(el)
                     .setLngLat([markers[i].latLng[1],markers[i].latLng[0]])
                     .setPopup(new mapboxgl.Popup().setHTML(markers[i].name))
                     .addTo(map);
