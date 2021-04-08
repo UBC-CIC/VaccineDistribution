@@ -2,7 +2,6 @@ import React from "react";
 import "./modal.css";
 import PropTypes from "prop-types";
  // react plugin used to create DropdownMenu for selecting items
- import Select2 from "react-select2-wrapper";
 
 import axios from 'axios';
 

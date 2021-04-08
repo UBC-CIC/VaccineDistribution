@@ -255,36 +255,30 @@ class Index extends React.Component {
     
     console.log(this.state.dataArray)
   };
-  
+
   //functions to run after components mount
   async componentWillMount(){
-    this.getContainers();
+    await this.getContainers();
     console.log(this.chartReference)
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
   }
-  
-//function to call IOt data using API
-/*
-componentDidMount(){
-  var url = 'http:/api.com/'
-  var headers ={
-    headers:{
-      'Content-Type': 'application/json',
-      'apikey': 'frfiemdiewdiewdoewkdo'
+  containerLocationListBuilder(){
+    const {containers} = this.state
+    const coordinates = []
+    for (let i=0;i<containers.length;i++){
+      let entry = {}
+      entry['latLng'] = [containers[i].currentLat,containers[i].currentLng]
+      entry['name'] = containers[i].name
+      coordinates.push(entry)
     }
-  }
-  axios.post(url, body, headers)
-  .then((x)=>{
-    console.log(x)
-  })
-  .catch(()=>{
-    alert('Failed to get the data')
-  })
+    this.setState({
+      containerLocation: coordinates
+    });
 
-}
-*/
+
+  }
 
 
   componentWillUnmount(){
@@ -298,6 +292,7 @@ componentDidMount(){
       this.setState({
          containers: containers.data.listContainers.items
       })
+      this.containerLocationListBuilder()
     } catch (err) {
       console.log('error fetching containers...', err)
     }
@@ -411,6 +406,9 @@ componentDidMount(){
   
    
   render() {
+    const{containerLocation} = this.state
+    console.log(this.state)
+    console.log(containerLocation)
   
   
     return (
@@ -468,15 +466,7 @@ componentDidMount(){
                      
                       this.state.dataType === 2 && (
                         
-                        // <MyMapComponent
-                        //
-                        //       isMarkerShown
-                        //       googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places"}
-                        //       loadingElement={<div style={{ height: `100%` }} />}
-                        //       containerElement={<div style={{ height: `100%` }} />}
-                        //       mapElement={<div style={{ height: `100%` }} />}
-                        //  />
-                          <Map/>
+                          <Map markers = {containerLocation}/>
 
 
                       )
