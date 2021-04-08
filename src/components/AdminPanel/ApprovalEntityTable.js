@@ -44,7 +44,7 @@ class ApprovalEntityTable extends Component {
             <div className='align-items-center'>
                 <h1 id='title'>Approval MCG-Request Entity Table</h1>
                 <table id='employee'>
-                    <thead>
+                    <thead className={"bg-gradient-primary"}>
                         <tr>{this.renderHeader()}</tr>
                     </thead>
                     <tbody>

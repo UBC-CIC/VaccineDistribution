@@ -12,6 +12,10 @@
     color: #ffffff !important;
     text-align: left !important;
 }
+.th{
+    background-color: #66d486 !important;
+
+}
 #table{
     border-collapse: collapse;
     margin: 25px 0;
@@ -33,8 +37,8 @@
 }
 
 *::-webkit-scrollbar-thumb {
-    background-color: #7f53ac;
-    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%);    border-radius: 10px;
+    background-color: #b8b0f2;
+    border-radius: 10px;
     border: transparent;
 }
 .modal {

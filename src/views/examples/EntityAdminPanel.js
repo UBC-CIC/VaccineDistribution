@@ -180,7 +180,7 @@ removeEntityData = (ScEntityIdentificationCode) => {
                     </Col>
                   </Row>
                 </CardHeader>
-                <CardBody >
+                <CardBody className="justify-content-center">
                       <JoinRequest_Entity/>
                       <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
           </CardBody>

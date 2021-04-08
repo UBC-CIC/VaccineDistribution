@@ -73,7 +73,6 @@ let sensorHumidity = []
 let sensorTemp2 = []
 let sensorHumidity2 = []
 
-let API_KEY = 'AIzaSyCE1m9O-rVYp0ttT-keHHHlQA1MRsfJL8k'; //API KEY FROM GOOGLE. REPLACE
 
 var Options = [
   {label:'TEMPERATURE', value: 0},
@@ -195,16 +194,6 @@ const location = {
   lat: 37.42216,
   lng: -122.08427,
 }
-//the google maps component configuration
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-  
-    defaultZoom={10}
-    center={{ lat: location.lat, lng: location.lng }}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: location.lat, lng: location.lng }} />}
-  </GoogleMap>
-))
 
 class Index extends React.Component {
   constructor(props){
@@ -392,7 +381,7 @@ class Index extends React.Component {
 
       location.lat = location.lat//parseFloat(this.state.currentLocation[0].lat);
       location.lng = location.lng//parseFloat(this.state.currentLocation[0].lng);
-    
+
   }
   
 //Display Modal form for user register in QLDB
@@ -421,7 +410,7 @@ class Index extends React.Component {
         <Container className="mt--7" fluid>
           <Row>
             <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="bg-gradient-default shadow">
+              <Card className="bg-gradient-gray-dark shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
                     <div className="col">
@@ -483,7 +472,7 @@ class Index extends React.Component {
             <Col xl="4" >
             
             
-            <Card className="shadow">
+            <Card className="shadow bg-gradient-gray-dark shadow" >
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
@@ -506,21 +495,11 @@ class Index extends React.Component {
           </Row>
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-default">
+            <Card className="bg-gradient-gray-dark shadow">
             <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Temperature chart</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <h3 className="mb-0 text-black">Temperature chart</h3>
                     </div>
                   </Row>
                 </CardHeader>
