@@ -178,21 +178,11 @@ removeEntityData = (ScEntityIdentificationCode) => {
                     <Col xs="8">
                       <h1 className="mb-0">Approve Join Request of Entity</h1>
                     </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
-                    </Col>
                   </Row>
                 </CardHeader>
-                <CardBody>
-                  <JoinRequest_Entity/>
-                <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
+                <CardBody >
+                      <JoinRequest_Entity/>
+                      <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
           </CardBody>
               </Card>
             </Col>

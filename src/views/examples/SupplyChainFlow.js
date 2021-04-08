@@ -243,7 +243,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 1. Register User and Entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showConnectUserModal}> Register User and Entity </Button>
 
 
@@ -264,7 +264,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 2. Joining Request to Entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRegisterEntityModal}> Joining Request  </Button>
 
                 <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity}>
@@ -279,7 +279,7 @@ async createUserLink(){
               
                 <h5 className="checklist-title mb-0">Step 3. Request to join the entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRequestJoinModal}> Request join </Button>
                 <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}/>
               </div>
@@ -296,7 +296,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 4. Register a Product</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRegisterProductModal}> Register Product </Button>
 
 
@@ -318,7 +318,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 5. Create a Product Batch</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showCreateBatchModal}> Create Batch </Button>
 
 
@@ -340,7 +340,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 6. Create Manufacturer Order Modal</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
 
 
@@ -361,7 +361,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Manufacturer</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showInitiateShipmentManufacturerModal}> Initiate Shipment Manufacturer </Button>
 
 
@@ -383,7 +383,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 8. Initiate Shipment for Distributor</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showInitiateShipmentDistributorModal}> Initiate Shipment Distributor </Button>
 
 
@@ -403,7 +403,7 @@ async createUserLink(){
                 Step 9. Request the vaccine container
                 </h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRequestVaccineContainerModal}> Request Container </Button>
               </div>
             </div>
@@ -413,7 +413,7 @@ async createUserLink(){
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">Step 10. Accept the request</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
               </div>
             </div>
@@ -423,7 +423,7 @@ async createUserLink(){
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">Step 11. Receive the Vaccine order</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>
               </div>
             </div>

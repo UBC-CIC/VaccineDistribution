@@ -41,7 +41,7 @@ class ApprovalEntityTable extends Component {
 
      render(){
         return (
-            <>
+            <div className='align-items-center'>
                 <h1 id='title'>Approval MCG-Request Entity Table</h1>
                 <table id='employee'>
                     <thead>
@@ -51,7 +51,7 @@ class ApprovalEntityTable extends Component {
                         {this.renderBody()}
                     </tbody>
                 </table>
-            </>
+            </div>
         )
     }
 }
