@@ -493,7 +493,7 @@ class Index extends React.Component {
             </Col>
           </Row>
 
-          <Container className="mt--12" >
+          <Container className="mt--12">
             <Row className="mt-5">
               <Col className="mb-5 mb-xl-0" lg="12">
                 <Card className="table-container scroll-bar"id = 'stepperContainer'>
