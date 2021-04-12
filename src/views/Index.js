@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import './home.css'
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -23,6 +24,7 @@ import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
+import HomeStepper from '../components/Stepper/Stepper'
 import {
   Button,
   Card,
@@ -472,7 +474,7 @@ class Index extends React.Component {
             <Col xl="4" >
             
             
-            <Card className="shadow bg-gradient-gray-dark shadow" >
+            <Card className="shadow bg-gradient-gray-dark shadow"  >
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
@@ -487,71 +489,29 @@ class Index extends React.Component {
                 </CardBody>
 
               </Card>
-                  
-                 
-              
-              
+
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-gray-dark shadow">
-            <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0 text-black">Temperature chart</h3>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-             <div className="chart">
 
-                    
-               <Line ref="chart"
-                 data={chartExample3.data}
-                 id="chart-sales"
-                 className="chart-canvas"
-                 options={chartExample3.options}
-                 
-               />
-             </div>
-           </CardBody>
-               
-              </Card>
-              
-            </Col>
-            <Col xl="4">
-            <Card className="shadow">
+          <Container className="mt--12" >
+            <Row className="mt-5">
+              <Col className="mb-5 mb-xl-0" lg="12">
+                <Card className="table-container scroll-bar"id = 'stepperContainer'>
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Connect User to Ledger</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <h3 className="mb-0">Supply Chain steps</h3>
                     </div>
                   </Row>
+                  <CardBody>
+                    <HomeStepper/>
+                  </CardBody>
                 </CardHeader>
-                <CardBody>
-                <ConnectUserModal show={this.state.show} handleClose={this.hideModal}>
-          <p>Modal</p>
-        </ConnectUserModal>
-                <Button onClick={this.showModal}>
-          Open
-        </Button>
-                 
-                </CardBody>
-               
               </Card>
             </Col>
           </Row>
+          </Container>
+
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">
