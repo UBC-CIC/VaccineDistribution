@@ -76,7 +76,9 @@ class EntityAdminPanel extends Component {
        { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }],
        entity: [],
        cognitoUserId: '',
-       qldbPersonId: ''
+       qldbPersonId: '',
+       allJoiningRequest:[],
+       currentScEntity:{}
     }
  }
   async componentDidMount(){
@@ -85,6 +87,8 @@ class EntityAdminPanel extends Component {
     this.getEntityData();
     this.getCognitoUserId()
     this.getQldbPersonId()
+    this.getAllJoiningRequest()
+    this.getYourScEntityId()
 }
 
   async getEmployeeData() {
@@ -147,6 +151,54 @@ async getQldbPersonId() {
     }
 }
 
+async getAllJoiningRequest(){
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_JOINING_REQUESTS",
+
+  PersonId: localStorage.getItem("qldbPersonId"),
+  ScEntityId: localStorage.getItem("ScEntityId")
+  } ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({allJoiningRequest:res.data.body});
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  console.log("AllJoiningRequest", this.state.allJoiningRequest)
+
+}
+
+
+async getYourScEntityId() {
+  
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+
+  PersonId: localStorage.getItem("qldbPersonId")
+
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.body);
+      this.setState({currentScEntity:res.data.body});
+      //console.log("EntityId", this.state.currentScEntity[0].id)
+      localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+  //this.setState({entity: response.data})
+}
+
 removeData = (id) => {
 
   axios.delete(`${URL}/${id}`).then(res => {
@@ -162,6 +214,50 @@ removeEntityData = (ScEntityIdentificationCode) => {
       this.setState({entity:del})
   })
 }
+
+approveEntityData = (joiningRequestId, personId) => {
+
+  console.log("personId", personId)
+
+
+const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId == personId)
+console.log("McgRequest filter", joiningRequest)
+console.log("McgRequestId filter", joiningRequest[0].JoiningRequestId)
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_JOINING_REQUEST",
+
+PersonId: localStorage.getItem("qldbPersonId"),
+JoiningRequestId: joiningRequest[0].JoiningRequestId
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      if(res.data.statusCode == 200){
+      console.log(res.data.body);
+     alert("Joining Request is approved")
+
+      const del = this.state.allJoiningRequest.filter(request => personId !== request.SenderPersonId)
+      this.setState({allJoiningRequest:del})
+    }
+    else{
+      alert("Entity approval failed")
+    }
+
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+
+}
+
+denyEntityData = (joiningRequestId, personId) => {
+
+  alert("Denied Joining Request")
+}
+
 
 
   render() {
@@ -195,7 +291,8 @@ removeEntityData = (ScEntityIdentificationCode) => {
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
-                <ApprovalJoinRequestEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
+                <ApprovalJoinRequestEntityTable allJoiningRequest={this.state.allJoiningRequest} approveEntityData={this.approveEntityData} denyEntityData={this.denyEntityData}/>
+                
           </CardBody>
               </Card>
             </Col>

@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState } from 'react'
-import { listContainers } from '../../graphql/queries';
+import { listContainers, listLinkUsers } from '../../graphql/queries';
 //import awsExports from "../../aws-exports";
 
 
@@ -73,9 +73,17 @@ class SupplyChainFlow extends Component {
           userPhone: '',
           userSub: '',
           qldbPersonId:'',
-          manufacturerId:'',
+          ScEntityId:'',
           entity: [],
-          filterEntityData: []
+          filterEntityData: [],
+          cognitoUserId: '',
+          qldbPersonId: '',
+
+          cognitoUserId: '',
+      
+       allMcgRequest:[],
+       currentScEntity:{}
+          
         };
         
         
@@ -87,10 +95,6 @@ class SupplyChainFlow extends Component {
         this.showCreateManufacturerOrderModal = this.showCreateManufacturerOrderModal.bind(this);
         this.showInitiateShipmentManufacturerModal = this.showInitiateShipmentManufacturerModal.bind(this);
         this.showInitiateShipmentDistributorModal = this.showInitiateShipmentDistributorModal.bind(this);
-
-
-
-
 
 
         this.hideRegisterEntityModal = this.hideRegisterEntityModal.bind(this);
@@ -118,6 +122,12 @@ class SupplyChainFlow extends Component {
          localStorage.setItem('cognitoUserId', this.state.userSub); 
 
          this.getEntityData();
+
+         this.getCognitoUserId()
+         this.getQldbPersonId()
+        // this.getAllMCGRequest()
+         this.getYourScEntityId()
+        
          
 
       }
@@ -184,7 +194,7 @@ class SupplyChainFlow extends Component {
   };
 
 
-
+//Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
     
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
@@ -193,26 +203,96 @@ class SupplyChainFlow extends Component {
         //'Authorization': jwtToken
       }})
     .then(res => {
-        console.log(res);
         console.log(res.data);
         console.log(res.data.body);
         this.setState({entity:res.data.body});
-
+/*
         const entityData = this.state.entity.map( function(entity) {
-          if( entity.isApprovedBySuperAdmin === true){
+          if( entity.isApprovedBySuperAdmin === true ){
               var info = { "text": entity.ScEntityName,
-                           "id": parseInt (entity.ScEntityTypeCode)
+                           "id": entity.ScEntityIdentificationCode
                           }
               return info;
-                        }
+                        }           
           
          })
+         */
+         const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity => 
+         {
+              var info = { "text": entity.ScEntityName,
+                           "id": entity.ScEntityIdentificationCode
+                          }
+              return info;
+                        }         
+          
+         )
          console.log("EntityData", entityData)
          this.setState({filterEntityData: entityData})
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
   } 
 
+
+  async getCognitoUserId() {
+    console.log("Loading Auth token")
+    user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken; 
+     //this.setState({Email: user.attributes.email});
+     //console.log(user.attributes.email);
+     this.setState({cognitoUserId: user.attributes.sub})
+  
+     console.log(this.state.cognitoUserId) 
+     localStorage.setItem('cognitoUserId', this. state.cognitoUserId); 
+  }
+
+  async getQldbPersonId() {
+    console.log(this.state.qldbPersonId)
+      try {
+        console.log("Loading Auth token")
+        user = await Auth.currentAuthenticatedUser();
+         jwtToken = user.signInUserSession.idToken.jwtToken; 
+         //this.setState({Email: user.attributes.email});
+         //console.log(user.attributes.email);
+         this.setState({cognitoUserId: user.attributes.sub})
+  
+        const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
+        
+        console.log('current readings: ', currentReadings)
+        this.setState({
+           qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
+        })
+        localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
+      } catch (err) {
+        console.log('error fetching LinkUser...', err)
+      }
+  }
+
+
+  async getYourScEntityId() {
+  
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+  
+    PersonId: localStorage.getItem("qldbPersonId")
+  
+  } ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({currentScEntity:res.data.body});
+        //console.log("EntityId", this.state.currentScEntity[0].id)
+        this.setState({ScEntityId:this.state.currentScEntity[0].id});
+        localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  
+  
+    //this.setState({entity: response.data})
+  }
 
   
 LinkCognito_QLDBUser = (qldbPersonId) => {
@@ -229,11 +309,12 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
      API.graphql(graphqlOperation(createLinkUser, {input: linkUser}));
     console.log('Created Link User!')
     alert('Created Link User!')
-  }catch(err){
-      console.log("Error creating Link User", err);
-
   }
-  
+  catch(err){
+      console.log("Error creating Link User", err);
+  }
+
+  this.hideConnectUserModal();
 
 }
 
@@ -298,7 +379,7 @@ async createUserLink(){
                         color="default"
                        onClick={this.showRegisterEntityModal}> Joining Request  </Button>
 
-                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData}>
+                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData} userEmail={this.state.userEmail} userPhone={this.state.userPhone} LinkCognito_QLDBUser = {this.LinkCognito_QLDBUser}>
           
                </JoiningRequestEntityModal>
                 
@@ -367,7 +448,7 @@ async createUserLink(){
                        onClick={this.showRegisterProductModal}> Register Product </Button>
 
 
-          <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.ScEntityId} >
           <p>Register Product Modal</p>
         </ RegisterProductModal>
                 
@@ -513,9 +594,6 @@ async createUserLink(){
           </ListGroupItem>
 
 
-
-
-
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
                 
@@ -551,20 +629,6 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-info">

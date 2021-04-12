@@ -20,7 +20,7 @@ class RegisterProductModal extends React.Component {
     super(props);
     this.state = {
         Operation: "REGISTER_NEW_PRODUCT",
-        PersonId: this.props.qldbPersonId,
+        PersonId: '',
         ProductCode: '',
         ProductName: '',
         ProductPrice: 0,
@@ -60,6 +60,7 @@ class RegisterProductModal extends React.Component {
      jwtToken = user.signInUserSession.idToken.jwtToken; 
      //this.setState({Email: user.attributes.email});
      //console.log(user.attributes.email);
+    
      console.log(user)   
   }
 
@@ -85,7 +86,7 @@ class RegisterProductModal extends React.Component {
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_PRODUCT",
-    PersonId: this.state.PersonId,
+    PersonId: this.props.qldbPersonId,
     Product:{
     ProductCode: this.state.ProductCode,
     ProductName: this. state.ProductName,
@@ -99,7 +100,7 @@ class RegisterProductModal extends React.Component {
       HighThreshHumidity: parseInt(this.state.HighThreshHumidity)
     },
     ProductHSTarriffNumber: this.state.ProductHSTarriffNumber,
-    ManufacturerId: this.state.ManufacturerId,
+    ManufacturerId: this.props.manufacturerId,
     isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin
     }
       
@@ -139,8 +140,9 @@ class RegisterProductModal extends React.Component {
               id="PersonId_id"
               type="text"
               name="PersonId"
-              value={this.state.PersonId}
-              onChange={this.handleOnChange}              
+              value={this.props.qldbPersonId}
+              onChange={this.handleOnChange} 
+                            
             />
           </FormGroup>
           <FormGroup>
@@ -318,15 +320,10 @@ class RegisterProductModal extends React.Component {
               id="ManufacturerId_id"
               type="text"
               name="ManufacturerId"
-              value={this.state.ManufacturerId}
-              onChange={this.handleOnChange}               
+              value={this.props.manufacturerId}
+              onChange={this.handleOnChange}                
             />
           </FormGroup>
-
-
-
-
-
               </Col>
             </Row>
           </Container>

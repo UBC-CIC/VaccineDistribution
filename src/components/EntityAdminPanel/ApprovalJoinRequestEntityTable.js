@@ -10,7 +10,7 @@ class ApprovalJoinRequestEntityTable extends Component {
 
 
      renderHeader = () => {
-        let headerElement = ['Identification Code', 'Entity Name', 'Email', 'Code Type', 'code', 'operation']
+        let headerElement = ['JoiningRequestNumber', 'SenderEmployeeId','JoiningRequestId', 'Operation']
 
         return headerElement.map((key, index) => {
             return <th key={index}>{key.toUpperCase()}</th>
@@ -20,18 +20,17 @@ class ApprovalJoinRequestEntityTable extends Component {
 
      
      renderBody = () => {
-         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 )
-        return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode }) => {
+         const filterEntity = this.props.allJoiningRequest.filter(request => request.isAccepted == false)//.filter(entity => entity.ScEntityTypeCode != 1 )
+        return  filterEntity.map(({ JoiningRequestNumber, SenderEmployeeId, SenderPersonId, ScEntityId, isAccepted, JoiningRequestId }) => {
             return (
-                <tr key={ScEntityIdentificationCode}>
-                    <td>{ScEntityIdentificationCode}</td>
-                    <td>{ScEntityName}</td>
-                    <td>{ScEntityContact.Email}</td>
-                    <td>{ScEntityIdentificationCodeType}</td>
-                    <td>{ScEntityTypeCode}</td>
-                    <td className='opration'>
-                        <button className='buttonApproval' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Deny</button>
+                <tr key={SenderEmployeeId}>
+                    <td>{JoiningRequestNumber}</td>
+                    <td>{SenderEmployeeId}</td>
+                                       
+                    <td>{JoiningRequestId}</td>
+                    <td className='operation'>
+                        <button className='buttonApproval' onClick={this.props.approveEntityData.bind(this, JoiningRequestId, SenderPersonId)}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.denyEntityData.bind(this, JoiningRequestId, SenderPersonId)}>Deny</button>
                     </td>
                 </tr>
             )

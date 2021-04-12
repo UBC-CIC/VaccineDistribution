@@ -30,9 +30,9 @@ class ApprovalEntityTable extends Component {
                     <td>{ScEntityContact.Email}</td>
                     <td>{ScEntityIdentificationCodeType}</td>
                     <td>{ScEntityTypeCode}</td>
-                    <td className='opration'>
-                        <button className='buttonApproval' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode, PersonIds[0])}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode,PersonIds[0])}>Deny</button>
+                    <td className='operation'>
+                        <button className='buttonApproval' onClick={this.props.approveEntityData.bind(this, ScEntityIdentificationCode, PersonIds[0])}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.approveEntityData.bind(this, ScEntityIdentificationCode,PersonIds[0])}>Deny</button>
                     </td>
                 </tr>
             )

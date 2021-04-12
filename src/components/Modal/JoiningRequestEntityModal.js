@@ -47,7 +47,8 @@ class JoiningRequestEntityModal extends React.Component {
       qldbPersonId: '',
       //entity: [{text:"Moderna", id:1}],
 
-      entity : []
+      entity : [],
+      
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,6 +63,21 @@ class JoiningRequestEntityModal extends React.Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
+  }
+
+  handleOnChangeSelect = event => {
+    this.setState({ [event.target.name] : event.target.value });
+
+    const selectedEntity = this.props.entity.filter(entity => entity.ScEntityIdentificationCode === event.target.value)
+
+    this.setState({ ScEntityName : selectedEntity[0].ScEntityName });
+    this.setState({ ScEntityContact_Email : selectedEntity[0].ScEntityContact.Email });
+    this.setState({ ScEntityContact_Address : selectedEntity[0].ScEntityContact.Address });
+    this.setState({ ScEntityContact_Phone : selectedEntity[0].ScEntityContact.Phone });
+    this.setState({ ScEntityTypeCode : selectedEntity[0].ScEntityTypeCode });
+    this.setState({ ScEntityIdentificationCode : selectedEntity[0].ScEntityIdentificationCode });
+    this.setState({ ScEntityIdentificationCodeType : selectedEntity[0].ScEntityIdentificationCodeType });
+    
   }
  
 
@@ -113,8 +129,8 @@ class JoiningRequestEntityModal extends React.Component {
       isSuperAdmin: this.state.isSuperAdmin,
 
       PersonContact:{
-        Email: this.state.Email,
-        Phone: this.state.Phone,
+        Email: this.props.userEmail,
+        Phone: this.props.userPhone,
         Address: this.state.Address
       }
 
@@ -160,23 +176,27 @@ class JoiningRequestEntityModal extends React.Component {
           <Row>
             <Col>
             <h2>Joining Request to Entity</h2>
+
             <FormGroup>
-
             <label
-            className="form-control-label"
-            htmlFor="ScEntitySelect_id"
-          > Select the Entity </label>
+              className="form-control-label"
+              htmlFor="ScEntitySelect_id"
+            >
+              Select the Entity
+            </label>
+            <Input
+              id="ScEntitySelect_id"
+              type="select"
+              name="ScEntityIdentificationCode"
+              onChange={this.handleOnChangeSelect}              
+            >
+             
+              {this.props.filterEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}  
+              
+            
+              </Input>
+          </FormGroup>
 
-            <Select2
-             className="form-control"
-             defaultValue=""
-             options={{
-               placeholder: ""
-             }}
-             data={this.props.filterEntityData}
-           />
-
-</FormGroup>
    <FormGroup>
           <label
             className="form-control-label"
@@ -234,7 +254,7 @@ class JoiningRequestEntityModal extends React.Component {
             type="text"
             name="Email"
             //value={this.props.userEmail}
-            value={this.state.Email}
+            value={this.props.userEmail}
             onChange={this.handleOnChange}               
           />
         </FormGroup>
@@ -249,8 +269,7 @@ class JoiningRequestEntityModal extends React.Component {
             id="Phone_id"
             type="text"
             name="Phone"
-            //value={this.props.userPhone}
-            value={this.state.Phone}
+            value={this.props.userPhone}
             onChange={this.handleOnChange}               
           />
         </FormGroup>

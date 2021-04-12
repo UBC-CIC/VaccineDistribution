@@ -25,8 +25,8 @@ class ConnectUserModal extends React.Component {
         LastName: '',
         isSuperAdmin: false,
         isAdmin: false,
-        Email: this.props.userEmail,
-        Phone: this.props.userPhone,
+        Email: '',
+        Phone: '',
         Address: '',
 
         ScEntityName: '',
@@ -126,6 +126,8 @@ class ConnectUserModal extends React.Component {
      //this.setState({Email: user.attributes.email});
      //console.log(user.attributes.email);
      console.log(user)   
+     this.setState({Email: this.props.userEmail})
+     this.setState({Phone: this.props.userPhone})
   }
 
   handleSubmit = event => {
@@ -157,8 +159,8 @@ class ConnectUserModal extends React.Component {
       isSuperAdmin: this.state.isSuperAdmin,
 
       PersonContact:{
-        Email: this.state.Email,
-        Phone: this.state.Phone,
+        Email: this.props.userEmail,
+        Phone: this.props.userPhone,
         Address: this.state.Address
       }
 
@@ -290,14 +292,7 @@ class ConnectUserModal extends React.Component {
             />
           </FormGroup>
 
-
-
-
-          
               </Col>
-
-
-
 
               <Col>
               <FormGroup>
@@ -371,10 +366,17 @@ class ConnectUserModal extends React.Component {
             </label>
             <Input
               id="ScEntityTypeCode_id"
-              type="text"
+              type="select"
               name="ScEntityTypeCode"
               onChange={this.handleScEntityTypeCodeChange}              
-            />
+            >
+              <option value="1">MCG</option>
+              <option value="2">Manufacturer</option>
+              <option value="3">Airports</option>
+              <option value="4">Seaports</option>
+              <option value="5">Hospitals</option>
+            
+              </Input>
           </FormGroup>
 
 

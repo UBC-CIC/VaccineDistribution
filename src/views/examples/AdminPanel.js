@@ -76,9 +76,11 @@ class AdminPanel extends Component {
        { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
        { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }],
        entity: [],
+       products: [],
        cognitoUserId: '',
        qldbPersonId: '',
-       allMcgRequest:[]
+       allMcgRequest:[],
+       currentScEntity:{}
     }
  }
   async componentDidMount(){
@@ -87,6 +89,11 @@ class AdminPanel extends Component {
     this.getEntityData();
     this.getCognitoUserId()
     this.getQldbPersonId()
+    this.getAllMCGRequest()
+    this.getYourScEntityId()
+
+
+    this.getProductData();
 }
 
   async getEmployeeData() {
@@ -111,6 +118,22 @@ async getEntityData() {
 
 
   //this.setState({entity: response.data})
+}
+
+async getProductData() {
+  const response = await axios.get(URL)
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.body);
+      this.setState({products:res.data.body});
+    
+  })
 }
 
 async getCognitoUserId() {
@@ -147,6 +170,53 @@ async getQldbPersonId() {
     }
 }
 
+async getAllMCGRequest(){
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_MCG_REQUESTS",
+
+  PersonId: localStorage.getItem("qldbPersonId")
+  } ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({allMcgRequest:res.data.body});
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  console.log("AllMCGRequest", this.state.allMcgRequest)
+
+}
+
+
+async getYourScEntityId() {
+  
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+
+  PersonId: localStorage.getItem("qldbPersonId")
+
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.body);
+      this.setState({currentScEntity:res.data.body});
+      //console.log("EntityId", this.state.currentScEntity[0].id)
+      localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+  //this.setState({entity: response.data})
+}
+
 removeData = (id) => {
 
   axios.delete(`${URL}/${id}`).then(res => {
@@ -166,30 +236,27 @@ console.log(personId)
 
 }
 
-approveEntityData = (personId) => {
+removeProductData = (productId, personId) => {
+  console.log(personId)
+    axios.delete(`${URL}/${productId}`).then(res => {
+        const del = this.state.products.filter(product => productId !== product.productId)
+        this.setState({products:del})
+    })
+  
+  }
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_MCG_REQUESTS",
+approveEntityData = (ScEntityIdentificationCode, personId) => {
 
-PersonId: localStorage.getItem("qldbPersonId")
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
-  .then(res => {
-      console.log(res);
-      console.log(res.data);
-      console.log(res.data.body);
-      this.setState({allMcgRequest:res.data.body});
-    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
-  })
+  console.log("personId", personId)
 
-  const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
 
+const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
+console.log("McgRequest filter", mcgRequest)
+console.log("McgRequestId filter", mcgRequest[0].RequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
 
 PersonId: localStorage.getItem("qldbPersonId"),
-RequestId: mcgRequest.RequestId
+RequestId: mcgRequest[0].RequestId
 } ,
   {
     headers: {
@@ -201,6 +268,9 @@ RequestId: mcgRequest.RequestId
       if(res.data.statusCode == 200){
       console.log(res.data.body);
      alert("Entity is approved")
+
+      const del = this.state.entity.filter(entity => ScEntityIdentificationCode !== entity.ScEntityIdentificationCode)
+      this.setState({entity:del})
     }
     else{
       alert("Entity approval failed")
@@ -212,6 +282,46 @@ RequestId: mcgRequest.RequestId
 
 
 }
+
+approveProductData = (scEntityId, productId) => {
+
+  console.log("productId", productId)
+
+  const currentEntity = this.state.entity.filter(entity => entity.id == scEntityId)
+const personId = "abcd"
+const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
+console.log("McgRequest filter", mcgRequest)
+console.log("McgRequestId filter", mcgRequest[0].RequestId)
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
+
+PersonId: localStorage.getItem("qldbPersonId"),
+RequestId: mcgRequest[0].RequestId
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      if(res.data.statusCode == 200){
+      console.log(res.data.body);
+     alert("Product is approved")
+
+      const del = this.state.products.filter(product => productId !== product.ProductId)
+      this.setState({products:del})
+    }
+    else{
+      alert("Product approval failed")
+    }
+
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+
+}
+
 
 
   render() {
@@ -245,7 +355,7 @@ RequestId: mcgRequest.RequestId
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
-                <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData}/>
+                <ApprovalEntityTable entity={this.state.entity} removeEntityData={this.removeEntityData} approveEntityData={this.approveEntityData}/>
           </CardBody>
               </Card>
             </Col>
@@ -272,7 +382,7 @@ RequestId: mcgRequest.RequestId
                   </Row>
                 </CardHeader>
                 <CardBody>
-                <ApprovalProductTable employees={this.state.employees} removeData={this.removeData}/>
+                <ApprovalProductTable employees={this.state.employees} products={this.state.products} removeProductData={this.removeProductData} approveProductData={this.approveProductData}/>
           </CardBody>
               </Card>
             </Col>
