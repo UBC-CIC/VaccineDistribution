@@ -47,7 +47,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
+import GeneralHeader from "components/Headers/GeneralHeader.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import VaccineForm from "components/Forms/VaccineForm.js";
 //Amplify.configure(awsExports)
@@ -59,43 +59,32 @@ class CreateVaccine extends Component {
 
   render() {
     return (
-      <>
-       <UserHeader />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-        <Row>
-            
-            <Col className="order-xl-1" xl="8">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h3 className="mb-0">Create Vaccine</h3>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
-                    </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-          <VaccineForm/>
-             
-          </CardBody>
-              </Card>
-            </Col>
-          </Row>
-
-        </Container>
+        <>
+          <GeneralHeader title={"Add a New Vaccine"} />
+          {/* Page content */}
+          <Container className="mt--7" fluid>
+            <Row>
+              <Col>
+                <Card className="bg-secondary shadow">
+                  <CardHeader className="bg-white border-0">
+                    <Row className="align-items-center">
+                      <Col xs="8">
+                        <h3 className="mb-0">Container Information</h3>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="pl-lg-1">
+                      <VaccineForm/>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
       </>
     );
   }
 }
 
-export default withAuthenticator(CreateVaccine) ;
+export default withAuthenticator (CreateVaccine) ;

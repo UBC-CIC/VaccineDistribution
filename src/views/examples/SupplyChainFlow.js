@@ -47,6 +47,7 @@ import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentD
 import axios from 'axios';
 
 import { createLinkUser } from './../../graphql/mutations';
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 import { parse } from 'uuid';
 //Amplify.configure(awsExports)
 
@@ -72,18 +73,15 @@ class SupplyChainFlow extends Component {
           userEmail: '',
           userPhone: '',
           userSub: '',
-          qldbPersonId:'',
           ScEntityId:'',
           entity: [],
           filterEntityData: [],
           cognitoUserId: '',
           qldbPersonId: '',
 
-          cognitoUserId: '',
-      
        allMcgRequest:[],
        currentScEntity:{}
-          
+
         };
         
         
@@ -105,7 +103,7 @@ class SupplyChainFlow extends Component {
         this.hideCreateManufacturerOrderModal = this.hideCreateManufacturerOrderModal.bind(this);
         this.hideInitiateShipmentManufacturerModal = this.hideInitiateShipmentManufacturerModal.bind(this);
         this.hideInitiateShipmentDistributorModal = this.hideInitiateShipmentDistributorModal.bind(this);
-       
+
       }
 
 
@@ -119,7 +117,7 @@ class SupplyChainFlow extends Component {
          console.log(user.attributes.email);
          console.log(user)   
          console.log('user attributes: ', user.attributes);
-         localStorage.setItem('cognitoUserId', this.state.userSub); 
+         localStorage.setItem('cognitoUserId', this.state.userSub);
 
          this.getEntityData();
 
@@ -127,8 +125,8 @@ class SupplyChainFlow extends Component {
          this.getQldbPersonId()
         // this.getAllMCGRequest()
          this.getYourScEntityId()
-        
-         
+
+
 
       }
 
@@ -196,7 +194,7 @@ class SupplyChainFlow extends Component {
 
 //Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
-    
+
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
     {
       headers: {
@@ -213,36 +211,36 @@ class SupplyChainFlow extends Component {
                            "id": entity.ScEntityIdentificationCode
                           }
               return info;
-                        }           
-          
+                        }
+
          })
          */
-         const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity => 
+         const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
          {
               var info = { "text": entity.ScEntityName,
                            "id": entity.ScEntityIdentificationCode
                           }
               return info;
-                        }         
-          
+                        }
+
          )
          console.log("EntityData", entityData)
          this.setState({filterEntityData: entityData})
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
-  } 
+  }
 
 
   async getCognitoUserId() {
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
-     jwtToken = user.signInUserSession.idToken.jwtToken; 
+     jwtToken = user.signInUserSession.idToken.jwtToken;
      //this.setState({Email: user.attributes.email});
      //console.log(user.attributes.email);
      this.setState({cognitoUserId: user.attributes.sub})
-  
-     console.log(this.state.cognitoUserId) 
-     localStorage.setItem('cognitoUserId', this. state.cognitoUserId); 
+
+     console.log(this.state.cognitoUserId)
+     localStorage.setItem('cognitoUserId', this. state.cognitoUserId);
   }
 
   async getQldbPersonId() {
@@ -250,13 +248,13 @@ class SupplyChainFlow extends Component {
       try {
         console.log("Loading Auth token")
         user = await Auth.currentAuthenticatedUser();
-         jwtToken = user.signInUserSession.idToken.jwtToken; 
+         jwtToken = user.signInUserSession.idToken.jwtToken;
          //this.setState({Email: user.attributes.email});
          //console.log(user.attributes.email);
          this.setState({cognitoUserId: user.attributes.sub})
-  
+
         const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
-        
+
         console.log('current readings: ', currentReadings)
         this.setState({
            qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
@@ -269,11 +267,11 @@ class SupplyChainFlow extends Component {
 
 
   async getYourScEntityId() {
-  
+
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
-  
+
     PersonId: localStorage.getItem("qldbPersonId")
-  
+
   } ,
     {
       headers: {
@@ -289,8 +287,8 @@ class SupplyChainFlow extends Component {
         localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
-  
-  
+
+
     //this.setState({entity: response.data})
   }
 
@@ -326,7 +324,7 @@ async createUserLink(){
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Supply Chain Flow"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <ListGroup data-toggle="checklist" flush>
@@ -337,7 +335,7 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 1. Register User and Entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showConnectUserModal}> Register User and Entity </Button>
 
 
@@ -346,26 +344,8 @@ async createUserLink(){
         </ConnectUserModal>
                 
 
-                
-                
-               
-                <small>10:30 AM</small>
               </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
-              </div>
+
             </div>
           </ListGroupItem>
 
@@ -376,30 +356,12 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 2. Joining Request to Entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRegisterEntityModal}> Joining Request  </Button>
 
                 <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData} userEmail={this.state.userEmail} userPhone={this.state.userPhone} LinkCognito_QLDBUser = {this.LinkCognito_QLDBUser}>
           
                </JoiningRequestEntityModal>
-                
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -409,27 +371,9 @@ async createUserLink(){
               
                 <h5 className="checklist-title mb-0">Step 3. Request to join the entity</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRequestJoinModal}> Request join </Button>
-                <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}>
-          
-        </RequestJoinEntityModal>
-        
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-warning">
-                  <input
-                    className="custom-control-input"
-                    id="chk-todo-task-2"
-                    defaultChecked
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-2"
-                  />
-                </div>
+                <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}/>
               </div>
             </div>
           </ListGroupItem>
@@ -444,31 +388,14 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 4. Register a Product</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRegisterProductModal}> Register Product </Button>
 
 
           <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.ScEntityId} >
           <p>Register Product Modal</p>
         </ RegisterProductModal>
-                
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
+
               </div>
             </div>
           </ListGroupItem>
@@ -483,34 +410,14 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 5. Create a Product Batch</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showCreateBatchModal}> Create Batch </Button>
 
 
           <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Create Batch Modal</p>
         </ CreateBatchModal>
-                
 
-                
-                
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -525,31 +432,13 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 6. Create Manufacturer Order Modal</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
 
 
           <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Create Manufacturer Order Modal</p>
         </ CreateManufacturerOrderModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -564,31 +453,13 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Manufacturer</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showInitiateShipmentManufacturerModal}> Initiate Shipment Manufacturer </Button>
 
 
           <InitiateShipmentManufacturerModal show={this.state.showInitiateShipmentManufacturer} handleClose={this.hideInitiateShipmentManufacturerModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Initiate Shipment Manufacturer Modal</p>
         </ InitiateShipmentManufacturerModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -601,34 +472,18 @@ async createUserLink(){
              
                 <h5 className="checklist-title mb-0">Step 8. Initiate Shipment for Distributor</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showInitiateShipmentDistributorModal}> Initiate Shipment Distributor </Button>
 
 
           <InitiateShipmentDistributorModal show={this.state.showInitiateShipmentDistributor} handleClose={this.hideInitiateShipmentDistributorModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Initiate Shipment Distributor Modal</p>
         </ InitiateShipmentDistributorModal>
-        
-               
-                <small>10:30 AM</small>
-              </div>
-              
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-1"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-1"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
+
+
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-info">
@@ -637,23 +492,8 @@ async createUserLink(){
                 Step 9. Request the vaccine container
                 </h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showRequestVaccineContainerModal}> Request Container </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-info">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-3"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-3"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -662,23 +502,8 @@ async createUserLink(){
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">Step 10. Accept the request</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-danger">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-4"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-4"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>
@@ -687,23 +512,8 @@ async createUserLink(){
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">Step 11. Receive the Vaccine order</h5>
                 <Button className="float-right"
-                        color="default"
+                        color="primary"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>
-                <small>10:30 AM</small>
-              </div>
-              <div>
-                <div className="custom-control custom-checkbox custom-checkbox-success">
-                  <input
-                    className="custom-control-input"
-                    defaultChecked
-                    id="chk-todo-task-5"
-                    type="checkbox"
-                  />
-                  <label
-                    className="custom-control-label"
-                    htmlFor="chk-todo-task-5"
-                  />
-                </div>
               </div>
             </div>
           </ListGroupItem>

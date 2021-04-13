@@ -152,12 +152,12 @@ catch (err) {
   async createCompanyList(){
     console.log("in create company list")
     companyData.forEach(element => {
-      Comp_ID.push(element.Comp_ID);
-      companyType.push(element.companyType);
-      companyName.push(element.companyName);
-      companyIC.push(element.companyIC);
-      isCompanyRegistered.push(element.isCompanyRegistered);
-      //let date = new Date(element.updatedAt).toLocaleTimeString()
+        Comp_ID.push(element.Comp_ID);
+        companyType.push(element.companyType);
+        companyName.push(element.companyName);
+        companyIC.push(element.companyIC);
+        isCompanyRegistered.push(element.isCompanyRegistered);
+        //let date = new Date(element.updatedAt).toLocaleTimeString()
       //containerDate.push(date)
     });
     temp = companyData

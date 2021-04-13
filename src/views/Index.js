@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import './home.css'
 // node.js library that concatenates classes (strings)
 import classnames from "classnames";
 // javascipt plugin for creating charts
@@ -23,6 +24,7 @@ import Chart from "chart.js";
 // react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
+import HomeStepper from '../components/Stepper/Stepper'
 import {
   Button,
   Card,
@@ -65,15 +67,18 @@ import ConnectUserModal from "components/Modal/ConnectUserModal";
 import axios from "axios";
 
 import config from '../aws-exports';
-Amplify.configure(config);
 
+import '../assets/css/map.css'
+import Map from '../components/Map/Map';
+import{manufacturer} from '../components/Map/VaccineManufacturer'
+import GeneralHeader from "../components/Headers/GeneralHeader";
 let sensorTemp = []
 let sensorHumidity = []
+Amplify.configure(config);
 
 let sensorTemp2 = []
 let sensorHumidity2 = []
 
-let API_KEY = 'AIzaSyCE1m9O-rVYp0ttT-keHHHlQA1MRsfJL8k'; //API KEY FROM GOOGLE. REPLACE
 
 var Options = [
   {label:'TEMPERATURE', value: 0},
@@ -195,19 +200,37 @@ const location = {
   lat: 37.42216,
   lng: -122.08427,
 }
-//the google maps component configuration
-const MyMapComponent = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-  
-    defaultZoom={10}
-    center={{ lat: location.lat, lng: location.lng }}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: location.lat, lng: location.lng }} />}
-  </GoogleMap>
-))
 
 class Index extends React.Component {
+  //Get all the Entities from "GET_ALL_ENTITIES" operation
+  async getEntityData() {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+        {
+          headers: {
+            //'Authorization': jwtToken
+          }})
+        .then(res => {
+          console.log(res.data);
+          console.log(res.data.body);
+          this.setState({entity:res.data.body});
+          const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
+              {
+                let info = { "text": entity.ScEntityName,
+                  "id": entity.ScEntityIdentificationCode
+                }
+                return info;
+              }
+
+          )
+          console.log("EntityData", entityData)
+          this.setState({filterEntityData: entityData})
+          //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+        })
+  }
+
   constructor(props){
+
     super(props);
     this.state = {
       activeNav: 1,
@@ -225,7 +248,9 @@ class Index extends React.Component {
       dataName: '',
       gpsReadings: [],
       containerLocation: [],
-      show: false
+      show: false,
+      entity:[],
+      filterEntityData:[]
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -254,36 +279,31 @@ class Index extends React.Component {
     
     console.log(this.state.dataArray)
   };
-  
+
   //functions to run after components mount
   async componentWillMount(){
-    this.getContainers();
+    await this.getContainers();
     console.log(this.chartReference)
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
   }
-  
-//function to call IOt data using API
-/*
-componentDidMount(){
-  var url = 'http:/api.com/'
-  var headers ={
-    headers:{
-      'Content-Type': 'application/json',
-      'apikey': 'frfiemdiewdiewdoewkdo'
+  containerLocationListBuilder(){
+    const {containers} = this.state
+    const coordinates = []
+    for (let i=0;i<containers.length;i++){
+      let entry = {}
+      entry['latLng'] = [containers[i].currentLat,containers[i].currentLng]
+      entry['name'] = containers[i].name
+      coordinates.push(entry)
     }
-  }
-  axios.post(url, body, headers)
-  .then((x)=>{
-    console.log(x)
-  })
-  .catch(()=>{
-    alert('Failed to get the data')
-  })
+    this.setState({
+      containerLocation: coordinates
+    });
 
-}
-*/
+
+  }
+
 
   componentWillUnmount(){
     containerOptions = []
@@ -296,6 +316,7 @@ componentDidMount(){
       this.setState({
          containers: containers.data.listContainers.items
       })
+      this.containerLocationListBuilder()
     } catch (err) {
       console.log('error fetching containers...', err)
     }
@@ -395,7 +416,7 @@ componentDidMount(){
 
       location.lat = location.lat//parseFloat(this.state.currentLocation[0].lat);
       location.lng = location.lng//parseFloat(this.state.currentLocation[0].lng);
-    
+
   }
   
 //Display Modal form for user register in QLDB
@@ -409,18 +430,22 @@ componentDidMount(){
   
    
   render() {
-  
+    const{containerLocation} = this.state
+    console.log(this.state)
+    console.log(containerLocation)
+
   
     return (
       <>
-        <Header />
-        
+        <GeneralHeader title={"Home"} />
+        <div ref = {this.mapContainer} className = "map"/>
+
 
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
             <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="bg-gradient-default shadow">
+              <Card className="bg-gradient-gray-dark shadow">
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
                     <div className="col">
@@ -465,14 +490,9 @@ componentDidMount(){
                      
                       this.state.dataType === 2 && (
                         
-                        <MyMapComponent
-                        
-                              isMarkerShown
-                              googleMapURL={"https://maps.googleapis.com/maps/api/js?key=" + API_KEY + "&v=3.exp&libraries=geometry,drawing,places"}
-                              loadingElement={<div style={{ height: `100%` }} />}
-                              containerElement={<div style={{ height: `100%` }} />}
-                              mapElement={<div style={{ height: `100%` }} />}
-                         />
+                          <Map markers = {containerLocation}/>
+
+
                       )
                     }
                   </div>
@@ -487,106 +507,44 @@ componentDidMount(){
             <Col xl="4" >
             
             
-            <Card className="shadow">
+            <Card className="shadow bg-gradient-gray-dark shadow"  >
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
                       <h3 className="mb-0">Vaccine map</h3>
                     </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
                   </Row>
                 </CardHeader>
                 <CardBody>
-                
-                <Jvectormap />
-                 
+
+                <Map markers = {manufacturer}/>
+
                 </CardBody>
-               
+
               </Card>
-                  
-                 
-              
-              
+
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-default">
-            <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Temperature chart</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-             <div className="chart">
 
-                    
-               <Line ref="chart"
-                 data={chartExample3.data}
-                 id="chart-sales"
-                 className="chart-canvas"
-                 options={chartExample3.options}
-                 
-               />
-             </div>
-           </CardBody>
-               
-              </Card>
-              
-            </Col>
-            <Col xl="4">
-            <Card className="shadow">
+          <Container className="mt--12">
+            <Row className="mt-5">
+              <Col className="mb-5 mb-xl-0" lg="12">
+                <Card className="table-container scroll-bar"id = 'stepperContainer'>
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
-                      <h3 className="mb-0">Connect User to Ledger</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
+                      <h3 className="mb-0">Supply Chain steps</h3>
                     </div>
                   </Row>
+                  <CardBody>
+                    <HomeStepper/>
+                  </CardBody>
                 </CardHeader>
-                <CardBody>
-                <ConnectUserModal show={this.state.show} handleClose={this.hideModal}>
-          <p>Modal</p>
-        </ConnectUserModal>
-                <Button onClick={this.showModal}>
-          Open
-        </Button>
-                 
-                </CardBody>
-               
               </Card>
             </Col>
           </Row>
+          </Container>
+
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="shadow">

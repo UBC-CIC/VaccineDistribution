@@ -121,14 +121,28 @@ class RegisterProductModal extends React.Component {
     
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
-    return (
+      const {PersonId,ProductName,ProductCode, ProductPrice,MinimumSellingAmount,ProductsPerContainer,ProductExpiry,
+          LowThreshTemp,HighThreshTemp,HighThreshHumidity,
+          ProductHSTarriffNumber,ManufacturerId} = this.state;
+      const formNotCompleted = PersonId.length===0||ProductName.length===0||ProductCode.length===0||ProductPrice.length===0
+          ||MinimumSellingAmount.length===0|| ProductsPerContainer.length===0||LowThreshTemp.length===0||ProductExpiry.length===0
+          ||HighThreshHumidity.length===0||ProductHSTarriffNumber.length===0||ManufacturerId.length===0||
+          HighThreshTemp.length===0
+
+      return (
       <div className={showHideClassName}>
-        <section className="modal-main">
+          <div className="modal-dialog modal-dialog-scrollable modal-lg" >
+              <div className="modal-content">
+                  <div className="modal-header">
+                      <h2 className="modal-title" id="exampleModalLabel">Register Product to Ledger</h2>
+                      <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
         <Form onSubmit={this.handleSubmit}>
           <Container>
             <Row>
               <Col>
-              <h2>Register Product to Ledger</h2>
               <FormGroup>
             <label
               className="form-control-label"
@@ -327,161 +341,10 @@ class RegisterProductModal extends React.Component {
               </Col>
             </Row>
           </Container>
-        
-          
-          {/*
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-search-input"
-            >
-              Search
-            </label>
-            <Input
-              defaultValue="Tell me your secret ..."
-              id="example-search-input"
-              type="search"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-email-input"
-            >
-              Email
-            </label>
-            <Input
-              defaultValue="argon@example.com"
-              id="example-email-input"
-              type="email"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-url-input">
-              URL
-            </label>
-            <Input
-              defaultValue="https://www.creative-tim.com"
-              id="example-url-input"
-              type="url"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-tel-input">
-              Phone
-            </label>
-            <Input
-              defaultValue="40-(770)-888-444"
-              id="example-tel-input"
-              type="tel"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-password-input"
-            >
-              Password
-            </label>
-            <Input
-              defaultValue="password"
-              id="example-password-input"
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-number-input"
-            >
-              Number
-            </label>
-            <Input
-              defaultValue="23"
-              id="example-number-input"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-datetime-local-input"
-            >
-              Datetime
-            </label>
-            <Input
-              defaultValue="2018-11-23T10:30:00"
-              id="example-datetime-local-input"
-              type="datetime-local"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-date-input"
-            >
-              Date
-            </label>
-            <Input
-              defaultValue="2018-11-23"
-              id="example-date-input"
-              type="date"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-month-input"
-            >
-              Month
-            </label>
-            <Input
-              defaultValue="2018-11"
-              id="example-month-input"
-              type="month"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-week-input"
-            >
-              Week
-            </label>
-            <Input
-              defaultValue="2018-W23"
-              id="example-week-input"
-              type="week"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-time-input"
-            >
-              Time
-            </label>
-            <Input
-              defaultValue="10:30:00"
-              id="example-time-input"
-              type="time"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-color-input"
-            >
-              Color
-            </label>
-            <Input
-              defaultValue="#5e72e4"
-              id="example-color-input"
-              type="color"
-            />
-          </FormGroup>
-          */}
-          <Button
+            <div className={"modal-footer"}>
+                <Row>
+                    <Col className={"align-items-center"}>
+                    <Button
                       className="float-right"
                       color="default"
                       
@@ -490,14 +353,19 @@ class RegisterProductModal extends React.Component {
                     >
                       Close
                     </Button>
-                    <br></br>
-                    <Button className="btn-fill" color="primary" type="submit">
+                    </Col>
+                    <Col>
+
+                    <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
                     Register Product
                   </Button>
-                  
+                    </Col>
+                </Row>
+            </div>
         </Form>
           
-        </section>
+        </div>
+          </div>
       </div>
     );
   }

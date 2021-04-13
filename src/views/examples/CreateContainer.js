@@ -47,7 +47,7 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
+import GeneralHeader from "components/Headers/GeneralHeader.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import ContainerForm from "components/Forms/ContainerForm.js";
 //Amplify.configure(awsExports)
@@ -60,34 +60,26 @@ class CreateContainer extends Component {
   render() {
     return (
       <>
-       <UserHeader />
+       <GeneralHeader title={"Add a New Container"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
-            
-            <Col className="order-xl-1" xl="8">
+            <Col>
               <Card className="bg-secondary shadow">
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="8">
-                      <h3 className="mb-0">Create Container</h3>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
+                      <h3 className="mb-0">Container Information</h3>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
-          <ContainerForm/>
-             
-          </CardBody>
+                  <div className="pl-lg-1">
+
+                    <ContainerForm/>
+                  </div>
+
+                </CardBody>
               </Card>
             </Col>
           </Row>
@@ -98,4 +90,4 @@ class CreateContainer extends Component {
   }
 }
 
-export default withAuthenticator(CreateContainer) ;
+export default withAuthenticator (CreateContainer) ;

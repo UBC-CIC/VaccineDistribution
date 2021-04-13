@@ -55,7 +55,8 @@ import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js"
 import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/ApprovalJoinRequestEntityTable.js";
 
 import axios from 'axios';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 
 
 
@@ -175,7 +176,7 @@ async getAllJoiningRequest(){
 
 
 async getYourScEntityId() {
-  
+
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
 
   PersonId: localStorage.getItem("qldbPersonId")
@@ -263,7 +264,7 @@ denyEntityData = (joiningRequestId, personId) => {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Entity Admin Panel"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
@@ -277,30 +278,16 @@ denyEntityData = (joiningRequestId, personId) => {
                     <Col xs="8">
                       <h1 className="mb-0">Approve Join Request of Entity</h1>
                     </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
-                    </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
                 <ApprovalJoinRequestEntityTable allJoiningRequest={this.state.allJoiningRequest} approveEntityData={this.approveEntityData} denyEntityData={this.denyEntityData}/>
-                
+
           </CardBody>
               </Card>
             </Col>
           </Row>
-
-       
-
-
 
         </Container>
        
