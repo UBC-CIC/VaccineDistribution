@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./ApprovalTable.css";
 import axios from 'axios'
+import FusionTablesLayer from 'react-google-maps/lib/components/FusionTablesLayer';
 
 
 const URL = 'https://jsonplaceholder.typicode.com/users'
@@ -20,7 +21,8 @@ class ApprovalEntityTable extends Component {
 
      
      renderBody = () => {
-        return this.props.entity && this.props.entity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode }) => {
+         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 && entity.isApprovedBySuperAdmin == false )
+        return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode, PersonIds}) => {
             return (
                 <tr key={ScEntityIdentificationCode}>
                     <td>{ScEntityIdentificationCode}</td>
@@ -28,9 +30,9 @@ class ApprovalEntityTable extends Component {
                     <td>{ScEntityContact.Email}</td>
                     <td>{ScEntityIdentificationCodeType}</td>
                     <td>{ScEntityTypeCode}</td>
-                    <td className='opration'>
-                        <button className='buttonApproval' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.removeEntityData.bind(this, ScEntityIdentificationCode)}>Deny</button>
+                    <td className='operation'>
+                        <button className='buttonApproval' onClick={this.props.approveEntityData.bind(this, ScEntityIdentificationCode, PersonIds[0])}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.approveEntityData.bind(this, ScEntityIdentificationCode,PersonIds[0])}>Deny</button>
                     </td>
                 </tr>
             )

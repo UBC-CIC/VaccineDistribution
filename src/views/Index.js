@@ -53,7 +53,7 @@ import {
 import Header from "components/Headers/Header.js";
 
 import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { getSensorReading, listContainers, listSensorReadings, listGpsReadings } from '../graphql/queries';
+import { getSensorReading, listContainers, listSensorReadings, listGPSReadings } from '../graphql/queries';
 import Select from 'react-select'
 //import awsExports from "../aws-exports";
 import Search from 'react-search'
@@ -65,12 +65,16 @@ import Piechart from "components/Dashboard/Piechart";
 import VectorMapTest from "components/Dashboard/VectorMapTest";
 import ConnectUserModal from "components/Modal/ConnectUserModal";
 import axios from "axios";
+
+import config from '../aws-exports';
+
 import '../assets/css/map.css'
 import Map from '../components/Map/Map';
 import{manufacturer} from '../components/Map/VaccineManufacturer'
 import GeneralHeader from "../components/Headers/GeneralHeader";
 let sensorTemp = []
 let sensorHumidity = []
+Amplify.configure(config);
 
 let sensorTemp2 = []
 let sensorHumidity2 = []
@@ -198,6 +202,33 @@ const location = {
 }
 
 class Index extends React.Component {
+  //Get all the Entities from "GET_ALL_ENTITIES" operation
+  async getEntityData() {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+        {
+          headers: {
+            //'Authorization': jwtToken
+          }})
+        .then(res => {
+          console.log(res.data);
+          console.log(res.data.body);
+          this.setState({entity:res.data.body});
+          const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
+              {
+                let info = { "text": entity.ScEntityName,
+                  "id": entity.ScEntityIdentificationCode
+                }
+                return info;
+              }
+
+          )
+          console.log("EntityData", entityData)
+          this.setState({filterEntityData: entityData})
+          //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+        })
+  }
+
   constructor(props){
 
     super(props);
@@ -217,7 +248,9 @@ class Index extends React.Component {
       dataName: '',
       gpsReadings: [],
       containerLocation: [],
-      show: false
+      show: false,
+      entity:[],
+      filterEntityData:[]
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -370,7 +403,7 @@ class Index extends React.Component {
   async getGPSForContainer(){
         console.log(this.state.containerId)
         try {
-          const currentGPSReadings = await API.graphql(graphqlOperation(listGpsReadings, {filter:{containerGpsReadingId:{eq:this.state.containerId}}}))
+          const currentGPSReadings = await API.graphql(graphqlOperation(listGPSReadings, {filter:{containerGpsReadingId:{eq:this.state.containerId}}}))
           //const currentReadings = await API.graphql(graphqlOperation(listSensorReadings,{filter :{ containerSensorReadingsId: {eq: this.state.containerId}}}))
           console.log('current GPS readings: ', currentGPSReadings)
           this.setState({
@@ -400,7 +433,7 @@ class Index extends React.Component {
     const{containerLocation} = this.state
     console.log(this.state)
     console.log(containerLocation)
-  
+
   
     return (
       <>

@@ -1,5 +1,5 @@
 import React, {Component, useEffect, useState } from 'react'
-import { listContainers } from '../../graphql/queries';
+import { listContainers, listLinkUsers } from '../../graphql/queries';
 //import awsExports from "../../aws-exports";
 
 
@@ -48,6 +48,7 @@ import axios from 'axios';
 
 import { createLinkUser } from './../../graphql/mutations';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
+import { parse } from 'uuid';
 //Amplify.configure(awsExports)
 
 
@@ -72,9 +73,15 @@ class SupplyChainFlow extends Component {
           userEmail: '',
           userPhone: '',
           userSub: '',
-          qldbPersonId:'',
-          manufacturerId:'',
-          entity: []
+          ScEntityId:'',
+          entity: [],
+          filterEntityData: [],
+          cognitoUserId: '',
+          qldbPersonId: '',
+
+       allMcgRequest:[],
+       currentScEntity:{}
+
         };
         
         
@@ -88,10 +95,6 @@ class SupplyChainFlow extends Component {
         this.showInitiateShipmentDistributorModal = this.showInitiateShipmentDistributorModal.bind(this);
 
 
-
-
-
-
         this.hideRegisterEntityModal = this.hideRegisterEntityModal.bind(this);
         this.hideRequestJoinModal = this.hideRequestJoinModal.bind(this);
         this.hideConnectUserModal = this.hideConnectUserModal.bind(this);
@@ -101,11 +104,6 @@ class SupplyChainFlow extends Component {
         this.hideInitiateShipmentManufacturerModal = this.hideInitiateShipmentManufacturerModal.bind(this);
         this.hideInitiateShipmentDistributorModal = this.hideInitiateShipmentDistributorModal.bind(this);
 
-
-
-
-
-        
       }
 
 
@@ -119,8 +117,17 @@ class SupplyChainFlow extends Component {
          console.log(user.attributes.email);
          console.log(user)   
          console.log('user attributes: ', user.attributes);
+         localStorage.setItem('cognitoUserId', this.state.userSub);
 
-         this.getEntityData();   
+         this.getEntityData();
+
+         this.getCognitoUserId()
+         this.getQldbPersonId()
+        // this.getAllMCGRequest()
+         this.getYourScEntityId()
+
+
+
       }
 
       //Display Modal form for user register in QLDB
@@ -185,10 +192,87 @@ class SupplyChainFlow extends Component {
   };
 
 
-
+//Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
-    
+
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({entity:res.data.body});
+/*
+        const entityData = this.state.entity.map( function(entity) {
+          if( entity.isApprovedBySuperAdmin === true ){
+              var info = { "text": entity.ScEntityName,
+                           "id": entity.ScEntityIdentificationCode
+                          }
+              return info;
+                        }
+
+         })
+         */
+         const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
+         {
+              var info = { "text": entity.ScEntityName,
+                           "id": entity.ScEntityIdentificationCode
+                          }
+              return info;
+                        }
+
+         )
+         console.log("EntityData", entityData)
+         this.setState({filterEntityData: entityData})
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  }
+
+
+  async getCognitoUserId() {
+    console.log("Loading Auth token")
+    user = await Auth.currentAuthenticatedUser();
+     jwtToken = user.signInUserSession.idToken.jwtToken;
+     //this.setState({Email: user.attributes.email});
+     //console.log(user.attributes.email);
+     this.setState({cognitoUserId: user.attributes.sub})
+
+     console.log(this.state.cognitoUserId)
+     localStorage.setItem('cognitoUserId', this. state.cognitoUserId);
+  }
+
+  async getQldbPersonId() {
+    console.log(this.state.qldbPersonId)
+      try {
+        console.log("Loading Auth token")
+        user = await Auth.currentAuthenticatedUser();
+         jwtToken = user.signInUserSession.idToken.jwtToken;
+         //this.setState({Email: user.attributes.email});
+         //console.log(user.attributes.email);
+         this.setState({cognitoUserId: user.attributes.sub})
+
+        const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
+
+        console.log('current readings: ', currentReadings)
+        this.setState({
+           qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
+        })
+        localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
+      } catch (err) {
+        console.log('error fetching LinkUser...', err)
+      }
+  }
+
+
+  async getYourScEntityId() {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+
+    PersonId: localStorage.getItem("qldbPersonId")
+
+  } ,
     {
       headers: {
         //'Authorization': jwtToken
@@ -197,10 +281,17 @@ class SupplyChainFlow extends Component {
         console.log(res);
         console.log(res.data);
         console.log(res.data.body);
-        this.setState({entity:res.data.body});
+        this.setState({currentScEntity:res.data.body});
+        //console.log("EntityId", this.state.currentScEntity[0].id)
+        this.setState({ScEntityId:this.state.currentScEntity[0].id});
+        localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
-  } 
+
+
+    //this.setState({entity: response.data})
+  }
+
   
 LinkCognito_QLDBUser = (qldbPersonId) => {
 
@@ -216,11 +307,12 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
      API.graphql(graphqlOperation(createLinkUser, {input: linkUser}));
     console.log('Created Link User!')
     alert('Created Link User!')
-  }catch(err){
-      console.log("Error creating Link User", err);
-
   }
-  
+  catch(err){
+      console.log("Error creating Link User", err);
+  }
+
+  this.hideConnectUserModal();
 
 }
 
@@ -253,7 +345,7 @@ async createUserLink(){
                 
 
               </div>
-              
+
             </div>
           </ListGroupItem>
 
@@ -267,7 +359,7 @@ async createUserLink(){
                         color="primary"
                        onClick={this.showRegisterEntityModal}> Joining Request  </Button>
 
-                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity}>
+                <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData} userEmail={this.state.userEmail} userPhone={this.state.userPhone} LinkCognito_QLDBUser = {this.LinkCognito_QLDBUser}>
           
                </JoiningRequestEntityModal>
               </div>
@@ -300,10 +392,10 @@ async createUserLink(){
                        onClick={this.showRegisterProductModal}> Register Product </Button>
 
 
-          <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.ScEntityId} >
           <p>Register Product Modal</p>
         </ RegisterProductModal>
-                
+
               </div>
             </div>
           </ListGroupItem>
@@ -325,7 +417,7 @@ async createUserLink(){
           <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
           <p>Create Batch Modal</p>
         </ CreateBatchModal>
-                
+
               </div>
             </div>
           </ListGroupItem>
@@ -371,9 +463,6 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
-
-
-
 
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">

@@ -7,9 +7,6 @@ body {
   padding: 0;
   color: #4d4d4d;
 }
-table {
-    margin: 0 auto;
-}
 
 #title {
   text-align: center;
@@ -33,8 +30,8 @@ table {
 #employee th {
   padding: 10px;
   text-align: center;
-    background: #b8b0f2;
-    color: black;
+  background-color: #4caf50;
+  color: white;
 }
 
 .operation {
@@ -46,12 +43,12 @@ table {
   outline: none;
   font-size: 11px;
   font-family: "Quicksand", sans-serif;
-  color: #007bff;
+  color: blue;
   padding: 3px 10px;
   margin-right: 10px;
   border-radius: 8px;
   cursor: pointer;
-  border: 1px solid #007bff;
+  border: 1px solid blue;
   background-color: transparent;
 }
 
@@ -60,14 +57,14 @@ table {
     outline: none;
     font-size: 11px;
     font-family: "Quicksand", sans-serif;
-    color: #dc3545;
+    color: #f44336;
     padding: 3px 10px;
     border-radius: 8px;
     cursor: pointer;
-    border: 1px solid #dc3545;
+    border: 1px solid #f44336;
     background-color: transparent;
   }
 
 .button:active {
-  border: 1px solid #007bff;
+  border: 1px solid blue;
 }

@@ -20,6 +20,7 @@ import {StepLabel} from "@material-ui/core";
 import {API, Auth, graphqlOperation} from "aws-amplify";
 import axios from "axios";
 import {createLinkUser} from "../../graphql/mutations";
+import {listLinkUsers} from "../../graphql/queries";
 
 const styles = theme => ({
     root: {
@@ -64,7 +65,13 @@ class HomeStepper extends React.Component {
             userSub: '',
             qldbPersonId:'',
             manufacturerId:'',
-            entity: []
+            entity: [],
+            filterEntityData: [],
+            cognitoUserId: '',
+
+            allMcgRequest:[],
+            currentScEntity:{}
+
         };
 
 
@@ -105,9 +112,108 @@ class HomeStepper extends React.Component {
         console.log(user.attributes.email);
         console.log(user)
         console.log('user attributes: ', user.attributes);
+        localStorage.setItem('cognitoUserId', this.state.userSub);
+        this.getEntityData()
 
-        this.getEntityData();
+
+        await this.getCognitoUserId()
+        await this.getQldbPersonId()
+        // this.getAllMCGRequest()
+        await this.getYourScEntityId()
+
+
+
     }
+//Get all the Entities from "GET_ALL_ENTITIES" operation
+    async getEntityData() {
+
+        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+            {
+                headers: {
+                    //'Authorization': jwtToken
+                }})
+            .then(res => {
+                console.log(res.data);
+                console.log(res.data.body);
+                this.setState({entity:res.data.body});
+                const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
+                    {
+                        var info = { "text": entity.ScEntityName,
+                            "id": entity.ScEntityIdentificationCode
+                        }
+                        return info;
+                    }
+
+                )
+                console.log("EntityData", entityData)
+                this.setState({filterEntityData: entityData})
+            })
+    }
+
+
+
+    async getCognitoUserId() {
+        console.log("Loading Auth token")
+        user = await Auth.currentAuthenticatedUser();
+        jwtToken = user.signInUserSession.idToken.jwtToken;
+        //this.setState({Email: user.attributes.email});
+        //console.log(user.attributes.email);
+        this.setState({cognitoUserId: user.attributes.sub})
+
+        console.log(this.state.cognitoUserId)
+        localStorage.setItem('cognitoUserId', this. state.cognitoUserId);
+    }
+
+    async getQldbPersonId() {
+        console.log(this.state.qldbPersonId)
+        try {
+            console.log("Loading Auth token")
+            user = await Auth.currentAuthenticatedUser();
+            jwtToken = user.signInUserSession.idToken.jwtToken;
+            //this.setState({Email: user.attributes.email});
+            //console.log(user.attributes.email);
+            this.setState({cognitoUserId: user.attributes.sub})
+
+            const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
+
+            console.log('current readings: ', currentReadings)
+            this.setState({
+                qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
+            })
+            localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
+        } catch (err) {
+            console.log('error fetching LinkUser...', err)
+        }
+    }
+
+
+    async getYourScEntityId() {
+
+        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+
+                PersonId: localStorage.getItem("qldbPersonId")
+
+            } ,
+            {
+                headers: {
+                    //'Authorization': jwtToken
+                }})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                console.log(res.data.body);
+                this.setState({currentScEntity:res.data.body});
+                //console.log("EntityId", this.state.currentScEntity[0].id)
+                this.setState({ScEntityId:this.state.currentScEntity[0].id});
+                localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+                //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+            })
+
+
+        //this.setState({entity: response.data})
+    }
+
+
 
      getSteps() {
     return ['User and Entity registration', 'Product', 'Order', 'Shipping'];
@@ -128,11 +234,7 @@ class HomeStepper extends React.Component {
                                                 onClick={this.showConnectUserModal}
                                         >
                                             Register User and Entity </Button>
-                                        <ConnectUserModal
-                                            show={this.state.showConnectUser} handleClose={this.hideConnectUserModal}
-                                            userEmail={this.state.userEmail} userPhone={this.state.userPhone}
-                                            LinkCognito_QLDBUser={this.LinkCognito_QLDBUser}>
-                                            >
+                                        <ConnectUserModal show={this.state.showConnectUser} handleClose={this.hideConnectUserModal} userEmail={this.state.userEmail} userPhone={this.state.userPhone} LinkCognito_QLDBUser = {this.LinkCognito_QLDBUser} >
                                             <p>Register User and Entity Modal</p>
                                         </ConnectUserModal>
                                     </div>
@@ -149,9 +251,7 @@ class HomeStepper extends React.Component {
                                             onClick={this.showRegisterEntityModal}
                                         > Joining Request </Button>
 
-                                        <JoiningRequestEntityModal
-                                            show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity}
-                                        >
+                                        <JoiningRequestEntityModal show={this.state.showRegisterEntity} handleClose={this.hideRegisterEntityModal} entity={this.state.entity} filterEntityData={this.state.filterEntityData} userEmail={this.state.userEmail} userPhone={this.state.userPhone} LinkCognito_QLDBUser = {this.LinkCognito_QLDBUser}>
 
                                         </JoiningRequestEntityModal>
                                     </div>
@@ -167,9 +267,7 @@ class HomeStepper extends React.Component {
                                             onClick={this.showRequestJoinModal}
                                         >
                                             Request join </Button>
-                                        <RequestJoinEntityModal
-                                            show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}
-                                        />
+                                        <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}/>
                                     </div>
                                 </div>
                             </ListGroupItem>
@@ -193,9 +291,7 @@ class HomeStepper extends React.Component {
                                             onClick={this.showRegisterProductModal}
                                         > Register Product </Button>
 
-                                        <RegisterProductModal
-                                            show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
-                                        >
+                                        <RegisterProductModal show={this.state.showRegisterProduct} handleClose={this.hideRegisterProductModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.ScEntityId} >
                                             <p>Register Product Modal</p>
                                         </ RegisterProductModal>
 
@@ -212,9 +308,7 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showCreateBatchModal}
                                         > Create Batch </Button>
-                                        <CreateBatchModal
-                                            show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId}
-                                        >
+                                        <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
                                             <p>Create Batch Modal</p>
                                         </ CreateBatchModal>
                                     </div>
@@ -237,9 +331,7 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showCreateManufacturerOrderModal}
                                         > Create Manufacturer Order </Button>
-                                        <CreateManufacturerOrderModal
-                                            show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId}
-                                        >
+                                        <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
                                             <p>Create Manufacturer Order Modal</p>
                                         </ CreateManufacturerOrderModal>
                                     </div>
@@ -256,7 +348,7 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showInitiateShipmentManufacturerModal}
                                         > Initiate Shipment Manufacturer </Button>
-                                        <InitiateShipmentManufacturerModal
+                                        <InitiateShipmentManufacturerModal show={this.state.showInitiateShipmentManufacturer} handleClose={this.hideInitiateShipmentManufacturerModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
                                             show={this.state.showInitiateShipmentManufacturer} handleClose={this.hideInitiateShipmentManufacturerModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId}
                                         >
                                             <p>Initiate Shipment Manufacturer Modal</p>
@@ -273,9 +365,7 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showInitiateShipmentDistributorModal}
                                         > Initiate Shipment Distributor </Button>
-                                        <InitiateShipmentDistributorModal
-                                            show={this.state.showInitiateShipmentDistributor} handleClose={this.hideInitiateShipmentDistributorModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId}
-                                        >
+                                        <InitiateShipmentDistributorModal show={this.state.showInitiateShipmentDistributor} handleClose={this.hideInitiateShipmentDistributorModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
                                             <p>Initiate Shipment Distributor Modal</p>
                                         </ InitiateShipmentDistributorModal>
                                     </div>
@@ -395,22 +485,6 @@ class HomeStepper extends React.Component {
     };
 
 
-
-    async getEntityData() {
-
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
-            {
-                headers: {
-                    //'Authorization': jwtToken
-                }})
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-                console.log(res.data.body);
-                this.setState({entity:res.data.body});
-                //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
-            })
-    }
 
     LinkCognito_QLDBUser = (qldbPersonId) => {
 

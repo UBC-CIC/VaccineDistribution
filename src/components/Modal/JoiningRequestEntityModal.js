@@ -45,11 +45,13 @@ class JoiningRequestEntityModal extends React.Component {
       ScEntityIdentificationCode: '',
       ScEntityIdentificationCodeType: '',
       qldbPersonId: '',
-      entity: [{value:"Moderna", label:"Moderna"}]
-    };
-    //todo Entity????
+      //entity: [{text:"Moderna", id:1}],
+        filterEntityData:[],
+      entity : [],
 
-      this.handleSubmit = this.handleSubmit.bind(this);
+    };
+    
+    this.handleSubmit = this.handleSubmit.bind(this);
   
 
 
@@ -62,7 +64,22 @@ class JoiningRequestEntityModal extends React.Component {
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
   }
- 
+
+  handleOnChangeSelect = event => {
+    this.setState({ [event.target.name] : event.target.value });
+
+    const selectedEntity = this.props.entity.filter(entity => entity.ScEntityIdentificationCode === event.target.value)
+
+    this.setState({ ScEntityName : selectedEntity[0].ScEntityName });
+    this.setState({ ScEntityContact_Email : selectedEntity[0].ScEntityContact.Email });
+    this.setState({ ScEntityContact_Address : selectedEntity[0].ScEntityContact.Address });
+    this.setState({ ScEntityContact_Phone : selectedEntity[0].ScEntityContact.Phone });
+    this.setState({ ScEntityTypeCode : selectedEntity[0].ScEntityTypeCode });
+    this.setState({ ScEntityIdentificationCode : selectedEntity[0].ScEntityIdentificationCode });
+    this.setState({ ScEntityIdentificationCodeType : selectedEntity[0].ScEntityIdentificationCodeType });
+
+  }
+
 
 
 
@@ -76,11 +93,11 @@ class JoiningRequestEntityModal extends React.Component {
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
      jwtToken = user.signInUserSession.idToken.jwtToken;
-     console.log(this.state.entity)
+
 
   }
 
-  
+
 
   handleSubmit = event => {
     event.preventDefault();
@@ -111,8 +128,8 @@ class JoiningRequestEntityModal extends React.Component {
       isSuperAdmin: this.state.isSuperAdmin,
 
       PersonContact:{
-        Email: this.state.Email,
-        Phone: this.state.Phone,
+        Email: this.props.userEmail,
+        Phone: this.props.userPhone,
         Address: this.state.Address
       }
 
@@ -145,19 +162,13 @@ class JoiningRequestEntityModal extends React.Component {
 
       })
   }
-
-    onSelect=selectedOption =>{
-      console.log(selectedOption);
-      this.setState({ScEntityName:selectedOption})
-
-  }
     
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     const {ScEntityName,EmployeeId, FirstName,LastName,Email,Phone,Address} = this.state;
       const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Email.length===0||
           Phone.length===0||Address.length===0||ScEntityName.length===0
-    const{entity}=this.props
+      console.log(this.props)
     return (
       <div className={showHideClassName}>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
@@ -172,19 +183,27 @@ class JoiningRequestEntityModal extends React.Component {
         <Container>
           <Row>
             <Col>
-                <FormGroup>
-                <label
-            className="form-control-label"
-            htmlFor="ScEntitySelect_id"
-          > Select the Entity </label>
+            <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="ScEntitySelect_id"
+            >
+              Select the Entity
+            </label>
+            <Input
+              id="ScEntitySelect_id"
+              type="select"
+              name="ScEntityIdentificationCode"
+              onChange={this.handleOnChangeSelect}
+            >
 
-            <Select
-             options={this.state.entity}
-             onChange={this.onSelect}
-           />
-                </FormGroup>
+              {this.props.filterEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
 
-                <FormGroup>
+
+              </Input>
+          </FormGroup>
+
+   <FormGroup>
           <label
             className="form-control-label"
             htmlFor="EmployeeId_id"
@@ -241,7 +260,7 @@ class JoiningRequestEntityModal extends React.Component {
             type="text"
             name="Email"
             //value={this.props.userEmail}
-            value={this.state.Email}
+            value={this.props.userEmail}
             onChange={this.handleOnChange}               
           />
         </FormGroup>
@@ -256,8 +275,7 @@ class JoiningRequestEntityModal extends React.Component {
             id="Phone_id"
             type="text"
             name="Phone"
-            //value={this.props.userPhone}
-            value={this.state.Phone}
+            value={this.props.userPhone}
             onChange={this.handleOnChange}               
           />
         </FormGroup>

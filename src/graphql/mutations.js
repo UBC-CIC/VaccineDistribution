@@ -415,8 +415,8 @@ export const deleteSensor = /* GraphQL */ `
     }
   }
 `;
-export const createGpsReading = /* GraphQL */ `
-  mutation CreateGpsReading(
+export const createGPSReading = /* GraphQL */ `
+  mutation CreateGPSReading(
     $input: CreateGPSReadingInput!
     $condition: ModelGPSReadingConditionInput
   ) {
@@ -446,8 +446,8 @@ export const createGpsReading = /* GraphQL */ `
     }
   }
 `;
-export const updateGpsReading = /* GraphQL */ `
-  mutation UpdateGpsReading(
+export const updateGPSReading = /* GraphQL */ `
+  mutation UpdateGPSReading(
     $input: UpdateGPSReadingInput!
     $condition: ModelGPSReadingConditionInput
   ) {
@@ -477,8 +477,8 @@ export const updateGpsReading = /* GraphQL */ `
     }
   }
 `;
-export const deleteGpsReading = /* GraphQL */ `
-  mutation DeleteGpsReading(
+export const deleteGPSReading = /* GraphQL */ `
+  mutation DeleteGPSReading(
     $input: DeleteGPSReadingInput!
     $condition: ModelGPSReadingConditionInput
   ) {
