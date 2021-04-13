@@ -25,6 +25,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   Form,
+    Button,
   FormGroup,
   InputGroupAddon,
   InputGroupText,
@@ -61,15 +62,6 @@ class AdminNavbar extends React.Component {
       console.log(user.attributes.email);
     }
     
-  async  signOut() {
-    try {
-        await Auth.signOut({ global: true });
-        console.log("signed out")
-        window.location.reload(true);
-    } catch (error) {
-        console.log('error signing out: ', error);
-    }
-}
   render() {
     return (
       <>

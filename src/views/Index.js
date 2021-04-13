@@ -474,7 +474,7 @@ class Index extends React.Component {
             <Col xl="4" >
             
             
-            <Card className="shadow bg-gradient-gray-dark shadow"  >
+            <Card className="shadow bg-gradient-gray-dark shadow" id={"vaccineMapContainer"} >
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
