@@ -403,6 +403,8 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
+
+          {/*
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-warning">
               <div className="checklist-info">
@@ -433,6 +435,7 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
+          */}
 
 
 
@@ -442,7 +445,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 4. Register a Product</h5>
+                <h5 className="checklist-title mb-0">Step 3. Register a Product</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showRegisterProductModal}> Register Product </Button>
@@ -481,7 +484,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 5. Create a Product Batch</h5>
+                <h5 className="checklist-title mb-0">Step 4. Create a Product Batch</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showCreateBatchModal}> Create Batch </Button>
@@ -523,7 +526,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 6. Create Manufacturer Order Modal</h5>
+                <h5 className="checklist-title mb-0">Step 5. Create Manufacturer Order Modal</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
@@ -562,7 +565,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Manufacturer</h5>
+                <h5 className="checklist-title mb-0">Step 6. Initiate Shipment for Manufacturer</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showInitiateShipmentManufacturerModal}> Initiate Shipment Manufacturer </Button>
@@ -599,7 +602,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 8. Initiate Shipment for Distributor</h5>
+                <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Distributor</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showInitiateShipmentDistributorModal}> Initiate Shipment Distributor </Button>
@@ -634,7 +637,7 @@ async createUserLink(){
             <div className="checklist-item checklist-item-info">
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">
-                Step 9. Request the vaccine container
+                Step 8. Request the vaccine container
                 </h5>
                 <Button className="float-right"
                         color="default"
@@ -660,7 +663,7 @@ async createUserLink(){
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-danger">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 10. Accept the request</h5>
+                <h5 className="checklist-title mb-0">Step 9. Accept the request</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
@@ -685,7 +688,7 @@ async createUserLink(){
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 11. Receive the Vaccine order</h5>
+                <h5 className="checklist-title mb-0">Step 10. Receive the Vaccine order</h5>
                 <Button className="float-right"
                         color="default"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>

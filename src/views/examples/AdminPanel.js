@@ -236,8 +236,8 @@ console.log(personId)
 
 }
 
-removeProductData = (productId, personId) => {
-  console.log(personId)
+removeProductData = (productId) => {
+  console.log(productId)
     axios.delete(`${URL}/${productId}`).then(res => {
         const del = this.state.products.filter(product => productId !== product.productId)
         this.setState({products:del})
@@ -283,13 +283,12 @@ RequestId: mcgRequest[0].RequestId
 
 }
 
-approveProductData = (scEntityId, productId) => {
+approveProductData = (productId) => {
 
   console.log("productId", productId)
 
-  const currentEntity = this.state.entity.filter(entity => entity.id == scEntityId)
-const personId = "abcd"
-const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
+  
+const mcgRequest = this.state.allMcgRequest.filter(requests => requests.DocumentId == productId)
 console.log("McgRequest filter", mcgRequest)
 console.log("McgRequestId filter", mcgRequest[0].RequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",

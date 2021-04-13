@@ -21,16 +21,17 @@ class ApprovalProductTable extends Component {
      
      renderBody = () => {
         const filterProducts = this.props.products.filter(product => product.isApprovedBySuperAdmin == false )
-        return filterProducts && filterProducts.map(({ ProductCode, ProductName, ProductHSTarriffNumber, ManufacturerId, ProductId}) => {
+        return filterProducts && filterProducts.map(({ ProductCode, ProductName, ManufacturerId, ProductHSTarriffNumber, ProductId}) => {
             return (
                 <tr key={ProductId}>
                     <td>{ProductCode}</td>
                     <td>{ProductName}</td>
-                    <td>{ProductHSTarriffNumber}</td>
                     <td>{ManufacturerId}</td>
+                    <td>{ProductHSTarriffNumber}</td>
+                   
                     <td className='operation'>
-                        <button className='buttonApproval' onClick={this.props.approveProductData.bind(this, ManufacturerId, ProductId)}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.approveProductData.bind(this, ManufacturerId,ProductId)}>Deny</button>
+                        <button className='buttonApproval' onClick={this.props.approveProductData.bind(this, ProductId)}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.removeProductData.bind(this,ProductId)}>Deny</button>
                     </td>
                 </tr>
             )
