@@ -154,7 +154,7 @@ class ProductTable extends Component {
                     </td>
                     <td>
 
-                        {products[i].ProductStorage.HighThreshHumidity+ "g/m3"}
+                        {products[i].ProductStorage.HighThreshHumidity+ "%"}
                     </td>
                     <td>
                         {products[i].ProductHSTarriffNumber}

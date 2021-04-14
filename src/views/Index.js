@@ -72,6 +72,7 @@ import '../assets/css/map.css'
 import Map from '../components/Map/Map';
 import{manufacturer} from '../components/Map/VaccineManufacturer'
 import GeneralHeader from "../components/Headers/GeneralHeader";
+import NotificationMessage from "../components/Notification/NotificationMessage";
 let sensorTemp = []
 let sensorHumidity = []
 Amplify.configure(config);
@@ -250,7 +251,8 @@ class Index extends React.Component {
       containerLocation: [],
       show: false,
       entity:[],
-      filterEntityData:[]
+      filterEntityData:[],
+      notificationOpen: false
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -398,7 +400,6 @@ class Index extends React.Component {
     this.setState({containerId: event.value}, () => this.getGPSForContainer())
       
   }
-
   //get gps coordinates for selected container
   async getGPSForContainer(){
         console.log(this.state.containerId)
@@ -427,7 +428,15 @@ class Index extends React.Component {
   hideModal = () => {
     this.setState({ show: false });
   };
-  
+
+  showNotification=()=>{
+    this.setState({notificationOpen:true})
+    setTimeout(function(){
+      this.setState({notificationOpen:false});
+    }.bind(this),5000);
+  }
+
+
    
   render() {
     const{containerLocation} = this.state
@@ -557,11 +566,13 @@ class Index extends React.Component {
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={this.showNotification}
                         size="sm"
                       >
                         See all
                       </Button>
+                      <NotificationMessage notificationOpen={this.state.notificationOpen}
+                                           message={"hi"}/>
                     </div>
                   </Row>
                 </CardHeader>
