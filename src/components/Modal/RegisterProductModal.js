@@ -101,7 +101,9 @@ class RegisterProductModal extends React.Component {
     },
     ProductHSTarriffNumber: this.state.ProductHSTarriffNumber,
     ManufacturerId: this.props.manufacturerId,
-    isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin
+    isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin,
+    BatchTableId: this.state.BatchTableId
+
     }
       
   }
@@ -124,10 +126,9 @@ class RegisterProductModal extends React.Component {
       const {PersonId,ProductName,ProductCode, ProductPrice,MinimumSellingAmount,ProductsPerContainer,ProductExpiry,
           LowThreshTemp,HighThreshTemp,HighThreshHumidity,
           ProductHSTarriffNumber,ManufacturerId} = this.state;
-      const formNotCompleted = PersonId.length===0||ProductName.length===0||ProductCode.length===0||ProductPrice.length===0
+      const formNotCompleted = ProductName.length===0||ProductCode.length===0||ProductPrice.length===0
           ||MinimumSellingAmount.length===0|| ProductsPerContainer.length===0||LowThreshTemp.length===0||ProductExpiry.length===0
-          ||HighThreshHumidity.length===0||ProductHSTarriffNumber.length===0||ManufacturerId.length===0||
-          HighThreshTemp.length===0
+          ||HighThreshHumidity.length===0||ProductHSTarriffNumber.length===0||HighThreshTemp.length===0
 
       return (
       <div className={showHideClassName}>

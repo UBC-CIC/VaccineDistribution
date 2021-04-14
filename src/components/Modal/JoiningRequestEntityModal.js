@@ -166,8 +166,7 @@ class JoiningRequestEntityModal extends React.Component {
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     const {ScEntityName,EmployeeId, FirstName,LastName,Email,Phone,Address} = this.state;
-      const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Email.length===0||
-          Phone.length===0||Address.length===0||ScEntityName.length===0
+      const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Address.length===0||ScEntityName.length===0
       console.log(this.props)
     return (
       <div className={showHideClassName}>

@@ -80,7 +80,9 @@ class SupplyChainFlow extends Component {
           qldbPersonId: '',
 
        allMcgRequest:[],
-       currentScEntity:{}
+       currentScEntity:{},
+       products:[],
+       filterProductData: []
 
         };
         
@@ -125,6 +127,8 @@ class SupplyChainFlow extends Component {
          this.getQldbPersonId()
         // this.getAllMCGRequest()
          this.getYourScEntityId()
+
+         this.getAllProducts();
 
 
 
@@ -230,6 +234,43 @@ class SupplyChainFlow extends Component {
     })
   }
 
+  //Get all the Entities from "GET_ALL_ENTITIES" operation
+  async getAllProducts() {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({products:res.data.body});
+/*
+        const entityData = this.state.entity.map( function(entity) {
+          if( entity.isApprovedBySuperAdmin === true ){
+              var info = { "text": entity.ScEntityName,
+                           "id": entity.ScEntityIdentificationCode
+                          }
+              return info;
+                        }
+
+         })
+         */
+         const productsData = this.state.products.filter( product => product.isApprovedBySuperAdmin === true).map(product =>
+         {
+              var info = { "text": product.ProductName,
+                           "id": product.ProductId
+                          }
+              return info;
+                        }
+
+         )
+         console.log("Products Data", productsData)
+         this.setState({filterProductData: productsData})
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  }
 
   async getCognitoUserId() {
     console.log("Loading Auth token")
@@ -417,7 +458,7 @@ async createUserLink(){
                        onClick={this.showCreateBatchModal}> Create Batch </Button>
 
 
-          <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
           <p>Create Batch Modal</p>
         </ CreateBatchModal>
 
