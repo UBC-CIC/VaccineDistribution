@@ -84,12 +84,12 @@ class AdminPanel extends Component {
  }
   async componentDidMount(){
     console.log('componentDidMount runs')
-    this.getEmployeeData();
-    this.getEntityData();
-    this.getCognitoUserId()
-    this.getQldbPersonId()
-    this.getAllMCGRequest()
-    this.getYourScEntityId()
+      await this.getEmployeeData();
+      await this.getEntityData();
+      await this.getCognitoUserId()
+      await this.getQldbPersonId()
+      await this.getAllMCGRequest()
+    await this.getYourScEntityId()
 
 
     this.getProductData();
@@ -207,8 +207,9 @@ async getYourScEntityId() {
       console.log(res.data);
       console.log(res.data.body);
       this.setState({currentScEntity:res.data.body});
-      //console.log("EntityId", this.state.currentScEntity[0].id)
-      localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+      if(this.state.currentScEntity[0]){
+          localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+      }
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
   })
 
@@ -331,8 +332,6 @@ RequestId: mcgRequest[0].RequestId
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
-            
-            
 
             <Col className="order-xl-1" xl="12">
               <Card className="bg-secondary shadow">
@@ -345,7 +344,7 @@ RequestId: mcgRequest[0].RequestId
                       <Button
                         color="primary"
                         href="#pablo"
-                        onClick={e => e.preventDefault()}
+                        onClick={e => e.hello()}
                         size="sm"
                       >
                         Reset

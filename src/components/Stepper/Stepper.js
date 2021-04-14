@@ -203,10 +203,11 @@ class HomeStepper extends React.Component {
                 console.log(res.data);
                 console.log(res.data.body);
                 this.setState({currentScEntity:res.data.body});
-                //console.log("EntityId", this.state.currentScEntity[0].id)
-                this.setState({ScEntityId:this.state.currentScEntity[0].id});
-                localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
-                //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+                if(this.state.currentScEntity[0]){
+                    this.setState({ScEntityId:this.state.currentScEntity[0].id});
+                    localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
+
+                }
             })
 
 

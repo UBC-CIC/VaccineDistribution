@@ -35,7 +35,7 @@ import ViewIOT from "views/examples/ViewIOT";
 import SupplyChainFlow from "views/examples/SupplyChainFlow";
 import AdminPanel from "views/examples/AdminPanel";
 import EntityAdminPanel from "views/examples/EntityAdminPanel";
-
+import ViewProduct from "./views/examples/ViewProduct";
 let createRoutes = [
   {
     path: "/CreateCompany",
@@ -77,6 +77,14 @@ let createRoutes = [
     component: ViewContainer,
     layout: "/admin"
   },
+      {
+        path: "/ViewProduct",
+        name: "View Product",
+        icon: "fas fa-box text-blue",
+        component: ViewProduct,
+        layout: "/admin"
+      },
+
       {
         path: "/tables",
         name: "View Container Status",
