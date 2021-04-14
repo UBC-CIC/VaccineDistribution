@@ -47,14 +47,13 @@ import {
   UncontrolledTooltip
 } from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
+import GeneralHeader from "components/Headers/GeneralHeader.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import InitializeQLDB from "components/AdminPanel/InitializeQLDB.js";
 import CreateIndexesAndAdmin from "components/AdminPanel/CreateIndexesAndAdmin.js";
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
-
 import axios from 'axios';
 import { Auth } from "aws-amplify"; 
 
@@ -326,7 +325,8 @@ RequestId: mcgRequest[0].RequestId
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"Admin Panel"} />
+
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>
@@ -386,31 +386,6 @@ RequestId: mcgRequest[0].RequestId
               </Card>
             </Col>
           </Row>
-          {/*
-
-
-          <Row className="mt-5">
-            
-            <Col className="order-xl-1" xl="12">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h1 className="mb-0">Initialize QLDB</h1>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      
-                    </Col>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                <InitializeQLDB/>
-          </CardBody>
-              </Card>
-            </Col>
-          </Row>
-    */}
-
           <Row className="mt-5">
             
             <Col className="order-xl-1" xl="12">

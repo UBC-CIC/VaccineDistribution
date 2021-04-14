@@ -3,6 +3,9 @@
 package-lock.json
 /build
 
+
+.env
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*

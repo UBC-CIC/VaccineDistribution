@@ -59,6 +59,7 @@ import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 import Timeline from 'components/Dashboard/Timeline';
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 //import Chart from "./../../components/Chart/Chart";
 
 class ViewIOT extends Component {
@@ -76,7 +77,7 @@ class ViewIOT extends Component {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"View IOT"} />
         {/* Page content */}
        
         

@@ -46,6 +46,7 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 
 //Amplify.configure(awsExports)
 
@@ -184,7 +185,7 @@ class Tables extends Component {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"View Container Status"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
           {/* Table */}

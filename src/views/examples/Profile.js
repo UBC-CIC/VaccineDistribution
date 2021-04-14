@@ -31,13 +31,13 @@ import {
   Col
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
+import GeneralHeader from "components/Headers/GeneralHeader.js";
 
 class Profile extends React.Component {
   render() {
     return (
       <>
-        <UserHeader />
+        <GeneralHeader />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
