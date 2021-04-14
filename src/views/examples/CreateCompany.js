@@ -32,24 +32,42 @@ import {
   Col
 } from "reactstrap";
 // core components
-import UserHeader from "components/Headers/UserHeader.js";
+import GeneralHeader from "components/Headers/GeneralHeader.js";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import Header from "components/Headers/Header";
 import CompanyForm from "components/Forms/CompanyForm";
+import VaccineForm from "../../components/Forms/VaccineForm";
 
 class CreateCompany extends React.Component {
 
   render() {
     return (
-     
         <>
-        <Header />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-          <CompanyForm/>
+          <GeneralHeader title={"Add a New Company"}/>
+          {/* Page content */}
+          <Container className="mt--7" fluid>
+            <Row>
+              <Col>
+                <Card className="bg-secondary shadow">
+                  <CardHeader className="bg-white border-0">
+                    <Row className="align-items-center">
+                      <Col xs="8">
+                        <h3 className="mb-0">Company Information</h3>
+                      </Col>
+                    </Row>
+                  </CardHeader>
+                  <CardBody>
+                    <div className="pl-lg-1">
+                    <CompanyForm/>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
 
-        </Container>
-      </>
+          </Container>
+        </>
+
     );
   }
 }

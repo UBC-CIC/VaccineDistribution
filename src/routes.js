@@ -36,73 +36,59 @@ import SupplyChainFlow from "views/examples/SupplyChainFlow";
 import AdminPanel from "views/examples/AdminPanel";
 import EntityAdminPanel from "views/examples/EntityAdminPanel";
 
-
-var routes = [
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    component: Index,
-    layout: "/admin"
-  },
-  {
-    path: "/icons",
-    name: "Containers",
-    icon: "ni ni-planet text-blue",
-    component: Icons,
-    layout: "/admin"
-  },
+let createRoutes = [
   {
     path: "/CreateCompany",
     name: "Create Company",
-    icon: "ni ni-fat-add text-primary",
+    icon: "fas fa-plus-square text-red",
     component: CreateCompany,
     layout: "/admin"
   },
-  /*
   {
-    path: "/createContainer",
+    path: "/CreateContainer",
     name: "Create Container",
-    icon: "ni ni-fat-add text-primary",
-    component: createContainerComponent,
+    icon: "fas fa-plus-square text-red",
+    component: CreateContainer,
     layout: "/admin"
   },
-  */
-
- {
-  path: "/CreateContainer",
-  name: "Create Container",
-  icon: "ni ni-fat-add text-primary",
-  component: CreateContainer,
-  layout: "/admin"
-},
 
   {
     path: "/CreateVaccine",
     name: "Create Vaccine",
-    icon: "ni ni-fat-add text-primary",
+    icon: "fas fa-plus-square  text-red",
     component: CreateVaccine,
     layout: "/admin"
   },
-  
+]
+
+
+    let viewRoutes =[
   {
     path: "/ViewCompany",
     name: "View Company",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-building text-blue",
     component: ViewCompany,
     layout: "/admin"
   },
   {
     path: "/ViewContainer",
     name: "View Container",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-box text-blue",
     component: ViewContainer,
     layout: "/admin"
   },
-  {
+      {
+        path: "/tables",
+        name: "View Container Status",
+        icon: "fas fa-table text-blue",
+        component: Tables,
+        layout: "/admin"
+      },
+
+      {
     path: "/ViewVaccine",
     name: "View Vaccine",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-syringe text-blue",
     component: ViewVaccine,
     layout: "/admin"
   },
@@ -110,21 +96,25 @@ var routes = [
   {
     path: "/ViewIOT",
     name: "View IOT",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-temperature-low text-blue",
     component: ViewIOT,
     layout: "/admin"
   },
+
+
+]
+let adminRoutes =[
   {
     path: "/SupplyChainFlow",
     name: "Supply Chain Flow",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-parachute-box text-green",
     component: SupplyChainFlow,
     layout: "/admin"
   },
   {
     path: "/AdminPanel",
     name: "Admin Panel",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-user-shield text-green",
     component: AdminPanel,
     layout: "/admin"
   },
@@ -132,50 +122,66 @@ var routes = [
   {
     path: "/EntityAdminPanel",
     name: "Entity Admin Panel",
-    icon: "ni ni-tv-2 text-blue",
+    icon: "fas fa-user-shield text-green",
     component: EntityAdminPanel,
     layout: "/admin"
   },
- 
 
-  {/*
+]
+let routes = [
   {
-    path: "/maps",
-    name: "Maps",
-    icon: "ni ni-pin-3 text-orange",
-    component: Maps,
+    path: "/index",
+    name: "Home",
+    icon: "fas fa-home text-green",
+    component: Index,
     layout: "/admin"
   },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin"
-  },
-*/},
-  {
-    path: "/tables",
-    name: "Tables",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Tables,
-    layout: "/admin"
-  },
-  {/*
-  {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
-    component: Login,
-    layout: "/auth"
-  },
-  {
-    path: "/register",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth"
-  }
-  */}
+//   // {
+//   //   path: "/icons",
+//   //   name: "Containers",
+//   //   icon: "ni ni-planet text-blue",
+//   //   component: Icons,
+//   //   layout: "/admin"
+//   // },
+//
+//
+//   {/*
+//   {
+//     path: "/maps",
+//     name: "Maps",
+//     icon: "ni ni-pin-3 text-orange",
+//     component: Maps,
+//     layout: "/admin"
+//   },
+//   {
+//     path: "/user-profile",
+//     name: "User Profile",
+//     icon: "ni ni-single-02 text-yellow",
+//     component: Profile,
+//     layout: "/admin"
+//   },
+// */},
+//   {/*
+//   {
+//     path: "/login",
+//     name: "Login",
+//     icon: "ni ni-key-25 text-info",
+//     component: Login,
+//     layout: "/auth"
+//   },
+//   {
+//     path: "/register",
+//     name: "Register",
+//     icon: "ni ni-circle-08 text-pink",
+//     component: Register,
+//     layout: "/auth"
+//   }
+//   */}
 ];
-export default routes;
+
+export {
+  createRoutes,
+  routes,
+  viewRoutes,
+    adminRoutes
+}

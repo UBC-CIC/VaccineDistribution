@@ -47,6 +47,7 @@ import {
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import CompanyTable from "components/Tables/CompanyTable.js";
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 //Amplify.configure(awsExports)
 
 
@@ -57,7 +58,7 @@ class Tables extends Component {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"View Companies"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <CompanyTable/>

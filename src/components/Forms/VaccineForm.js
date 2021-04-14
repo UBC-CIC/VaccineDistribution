@@ -153,32 +153,17 @@ handleError(err){
       justifyContent: "center",
       marginTop: '-50px'
     }
+    const {vaccineName,vaccineType} = this.state
     return (
       <>
         <Form onSubmit={this.handleSubmit}>
-        {/* 
           <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="Vac_ID_id"
-            >
-              Vaccine ID
-            </label>
-            <Input
-              
-              id="Vac_ID_id"
-              type="text"
-              name="Vac_ID"
-              onChange={this.handleVaccineIDChange}
-            />
-          </FormGroup>
-          */}
-          <FormGroup>
+            <h5>* indicates a required field</h5>
             <label
               className="form-control-label"
               htmlFor="vaccineType_id"
             >
-              Vaccine Type
+              Vaccine Type *
             </label>
             <Input
               id="vaccineType_id"
@@ -193,7 +178,7 @@ handleError(err){
               className="form-control-label"
               htmlFor="vaccineName_id"
             >
-              Vaccine Name
+              Vaccine Name *
             </label>
             <Input
               id="vaccineName_id"
@@ -204,12 +189,15 @@ handleError(err){
             />
           </FormGroup>
           <FormGroup>
-            <label
-              className="form-control-label"
-              
-            >
+            <Row>
+              <Col className={"d-flex justify-content-center"}>
+              <label className="form-control-label">
               QRCode Scanner
-            </label>
+              </label>
+              </Col>
+            </Row>
+            <Row className={"d-flex justify-content-center"}>
+
             {!this.state.scan && !this.state.scanResult && <Button color="primary" type="button" onClick={this.activeQR}>
           Activate QRScanner {' '}
          </Button>
@@ -227,173 +215,32 @@ handleError(err){
           //onRead={this.onSuccess}
           />}
           </div>
+            </Row>
           </FormGroup>
-          {/*
-          <FormGroup>
+          <Row>
+            <Col className={"d-flex justify-content-center"}>
             <label
-              className="form-control-label"
-              htmlFor="example-search-input"
-            >
-              Search
-            </label>
-            <Input
-              defaultValue="Tell me your secret ..."
-              id="example-search-input"
-              type="search"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-email-input"
-            >
-              Email
-            </label>
-            <Input
-              defaultValue="argon@example.com"
-              id="example-email-input"
-              type="email"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-url-input">
-              URL
-            </label>
-            <Input
-              defaultValue="https://www.creative-tim.com"
-              id="example-url-input"
-              type="url"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-tel-input">
-              Phone
-            </label>
-            <Input
-              defaultValue="40-(770)-888-444"
-              id="example-tel-input"
-              type="tel"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-password-input"
-            >
-              Password
-            </label>
-            <Input
-              defaultValue="password"
-              id="example-password-input"
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-number-input"
-            >
-              Number
-            </label>
-            <Input
-              defaultValue="23"
-              id="example-number-input"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-datetime-local-input"
-            >
-              Datetime
-            </label>
-            <Input
-              defaultValue="2018-11-23T10:30:00"
-              id="example-datetime-local-input"
-              type="datetime-local"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-date-input"
-            >
-              Date
-            </label>
-            <Input
-              defaultValue="2018-11-23"
-              id="example-date-input"
-              type="date"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-month-input"
-            >
-              Month
-            </label>
-            <Input
-              defaultValue="2018-11"
-              id="example-month-input"
-              type="month"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-week-input"
-            >
-              Week
-            </label>
-            <Input
-              defaultValue="2018-W23"
-              id="example-week-input"
-              type="week"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-time-input"
-            >
-              Time
-            </label>
-            <Input
-              defaultValue="10:30:00"
-              id="example-time-input"
-              type="time"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-color-input"
-            >
-              Color
-            </label>
-            <Input
-              defaultValue="#5e72e4"
-              id="example-color-input"
-              type="color"
-            />
-          </FormGroup>
-          */}
-          <Button
-                      className="float-right"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
-                    >
-                      Message
-                    </Button>
-                    <br></br>
-                    <Button className="btn-fill" color="primary" type="submit">
-                    Create Vaccine
-                  </Button>
-                  
+              className="form-control-label step"
+          >
+            Form Completed?
+          </label>
+              {!(vaccineName.length===0||vaccineType.length===0)?
+                  <i className={"far fa-check-circle"} style={{color: "green"}}/>
+                  :
+                  <i className={"far fa-times-circle"} style={{color: "red"}}/>
+              }
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className={"d-flex justify-content-center"}>
+              <Button className="btn-fill" color="primary" type="submit"
+                      disabled={(vaccineName.length===0||vaccineType.length===0)}>
+                Create Vaccine
+              </Button>
+            </Col>
+          </Row>
+
         </Form>
     
       </>

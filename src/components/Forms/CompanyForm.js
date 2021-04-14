@@ -7,10 +7,8 @@ import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import { Auth } from "aws-amplify"; 
 
 
-
 let user;
 let jwtToken;
-
 class CompanyForm extends React.Component {
 /*
   state = {
@@ -62,11 +60,16 @@ class CompanyForm extends React.Component {
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
-     jwtToken = user.signInUserSession.idToken.jwtToken;    
+     jwtToken = user.signInUserSession.idToken.jwtToken;
   }
 
   handleSubmit = event => {
     event.preventDefault();
+    const {Comp_ID} = this.state
+    if(!(parseInt(Comp_ID) && Comp_ID>=0)){
+        alert("Company ID has to be an integer greater or equal to 0")
+        return
+    }
 
     const company = {
     Operation: "POST",
@@ -83,7 +86,8 @@ class CompanyForm extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`, { Operation: "POST",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
+        { Operation: "POST",
     Comp_ID: parseInt(this.state.Comp_ID),
     companyType: this.state.companyType,
     companyName: this.state.companyName,
@@ -100,29 +104,16 @@ class CompanyForm extends React.Component {
   }
 
   render() {
+      const {Comp_ID, companyType,companyName,companyIC} = this.state
     return (
-      <>
         <Form onSubmit={this.handleSubmit}>
-        <FormGroup>
-            <label
-              className="form-control-label"
-              
-            >
-              Company ID
-            </label>
-            <Input
-              defaultValue=""
-              
-              type="text"
-              
-            />
-          </FormGroup>
+          <h5>* indicates a required field</h5>
           <FormGroup>
             <label
               className="form-control-label"
               htmlFor="Comp_ID_id"
             >
-              Company ID
+              Company ID *
             </label>
             <Input
               
@@ -137,7 +128,7 @@ class CompanyForm extends React.Component {
               className="form-control-label"
               htmlFor="companyType_id"
             >
-              Company Type
+              Company Type *
             </label>
             <Input
               id="companyType_id"
@@ -151,7 +142,7 @@ class CompanyForm extends React.Component {
               className="form-control-label"
               htmlFor="companyName_id"
             >
-              Company Name
+              Company Name *
             </label>
             <Input
               id="companyName_id"
@@ -165,7 +156,7 @@ class CompanyForm extends React.Component {
               className="form-control-label"
               htmlFor="companyIC_id"
             >
-              Company Identification Code
+              Company Identification Code *
             </label>
             <Input
               id="companyIC_id"
@@ -174,174 +165,32 @@ class CompanyForm extends React.Component {
               onChange={this.handleCompanyICChange} 
             />
           </FormGroup>
-          {/*
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-search-input"
-            >
-              Search
-            </label>
-            <Input
-              defaultValue="Tell me your secret ..."
-              id="example-search-input"
-              type="search"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-email-input"
-            >
-              Email
-            </label>
-            <Input
-              defaultValue="argon@example.com"
-              id="example-email-input"
-              type="email"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-url-input">
-              URL
-            </label>
-            <Input
-              defaultValue="https://www.creative-tim.com"
-              id="example-url-input"
-              type="url"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-tel-input">
-              Phone
-            </label>
-            <Input
-              defaultValue="40-(770)-888-444"
-              id="example-tel-input"
-              type="tel"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-password-input"
-            >
-              Password
-            </label>
-            <Input
-              defaultValue="password"
-              id="example-password-input"
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-number-input"
-            >
-              Number
-            </label>
-            <Input
-              defaultValue="23"
-              id="example-number-input"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-datetime-local-input"
-            >
-              Datetime
-            </label>
-            <Input
-              defaultValue="2018-11-23T10:30:00"
-              id="example-datetime-local-input"
-              type="datetime-local"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-date-input"
-            >
-              Date
-            </label>
-            <Input
-              defaultValue="2018-11-23"
-              id="example-date-input"
-              type="date"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-month-input"
-            >
-              Month
-            </label>
-            <Input
-              defaultValue="2018-11"
-              id="example-month-input"
-              type="month"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-week-input"
-            >
-              Week
-            </label>
-            <Input
-              defaultValue="2018-W23"
-              id="example-week-input"
-              type="week"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-time-input"
-            >
-              Time
-            </label>
-            <Input
-              defaultValue="10:30:00"
-              id="example-time-input"
-              type="time"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-color-input"
-            >
-              Color
-            </label>
-            <Input
-              defaultValue="#5e72e4"
-              id="example-color-input"
-              type="color"
-            />
-          </FormGroup>
-          */}
-          <Button
-                      className="float-right"
-                      color="default"
-                      href="#pablo"
-                      onClick={e => e.preventDefault()}
-                      size="sm"
-                    >
-                      Message
-                    </Button>
-                    <br></br>
-                    <Button className="btn-fill" color="primary" type="submit">
-                    Create Company
-                  </Button>
-                  
+          <Row>
+            <Col className={"d-flex justify-content-center"}>
+              <label
+                  className="form-control-label step"
+              >
+                Form Completed?
+              </label>
+              {!(Comp_ID.length===0||companyName.length===0
+              ||companyType.length===0||companyIC.length===0)?
+                  <i className={"far fa-check-circle"} style={{color: "green"}}/>
+                  :
+                  <i className={"far fa-times-circle"} style={{color: "red"}}/>
+              }
+            </Col>
+          </Row>
+          <Row>
+            <Col className={"d-flex justify-content-center"}>
+
+          <Button className="btn-fill" color="primary" type="submit"
+            disabled={Comp_ID.length===0||companyName.length===0
+            ||companyType.length===0||companyIC.length===0}>
+                Create Company
+            </Button>
+            </Col>
+          </Row>
         </Form>
-      </>
     );
   }
 }

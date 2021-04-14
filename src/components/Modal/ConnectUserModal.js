@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
+import { FormGroup, Form, Input,Container, Row, Col,Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 import { Auth } from "aws-amplify"; 
 
@@ -196,16 +196,29 @@ class ConnectUserModal extends React.Component {
     
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
+    const{EmployeeId, FirstName, LastName, Email, Phone,Address,
+      ScEntityName,ScEntityContact_Email,ScEntityContact_Address, ScEntityContact_Phone,
+        ScEntityTypeCode,ScEntityIdentificationCode,ScEntityIdentificationCodeType} = this.state
+    const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Email.length===0||
+        Phone.length===0||Address.length===0||ScEntityName.length===0||ScEntityContact_Email.length===0||
+        ScEntityContact_Address.length===0||ScEntityContact_Phone.length===0||ScEntityTypeCode.length===0||
+        ScEntityIdentificationCode.length===0||ScEntityIdentificationCodeType.length===0
     return (
       <div className={showHideClassName}>
-        <section className="modal-main">
-        <Form onSubmit={this.handleSubmit}>
+        <div className="modal-dialog modal-dialog-scrollable modal-lg" >
+        <div className="modal-content">
+          <div className="modal-header">
+            <h2 className="modal-title" id="exampleModalLabel">Register User and Entity</h2>
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <Form onSubmit={this.handleSubmit}>
           <Container>
             <Row>
               <Col>
-              <h2>Register User and Entity</h2>
               <FormGroup>
-            <label
+                <label
               className="form-control-label"
               htmlFor="EmployeeId_id"
             >
@@ -215,7 +228,7 @@ class ConnectUserModal extends React.Component {
               id="EmployeeId_id"
               type="text"
               name="EmployeeId"
-              onChange={this.handleEmployeeIdChange}              
+              onChange={this.handleEmployeeIdChange}
             />
           </FormGroup>
           <FormGroup>
@@ -229,7 +242,7 @@ class ConnectUserModal extends React.Component {
               id="FirstName_id"
               type="text"
               name="FirstName"
-              onChange={this.handleFirstNameChange}              
+              onChange={this.handleFirstNameChange}
             />
           </FormGroup>
           <FormGroup>
@@ -243,7 +256,7 @@ class ConnectUserModal extends React.Component {
               id="LastName_id"
               type="text"
               name="LastName"
-              onChange={this.handleLastNameChange}              
+              onChange={this.handleLastNameChange}
             />
           </FormGroup>
           <FormGroup>
@@ -288,7 +301,7 @@ class ConnectUserModal extends React.Component {
               id="Address_id"
               type="text"
               name="Address"
-              onChange={this.handleAddressChange}              
+              onChange={this.handleAddressChange}
             />
           </FormGroup>
 
@@ -306,11 +319,11 @@ class ConnectUserModal extends React.Component {
               id="ScEntityName_id"
               type="text"
               name="ScEntityName"
-              onChange={this.handleScEntityNameChange}              
+              onChange={this.handleScEntityNameChange}
             />
           </FormGroup>
 
-          
+
           <FormGroup>
             <label
               className="form-control-label"
@@ -322,7 +335,7 @@ class ConnectUserModal extends React.Component {
               id="ScEntityContact_Email_id"
               type="text"
               name="ScEntityContact_Email"
-              onChange={this.handleScEntityContact_EmailChange}              
+              onChange={this.handleScEntityContact_EmailChange}
             />
           </FormGroup>
 
@@ -375,7 +388,7 @@ class ConnectUserModal extends React.Component {
               <option value="3">Airports</option>
               <option value="4">Seaports</option>
               <option value="5">Hospitals</option>
-            
+
               </Input>
           </FormGroup>
 
@@ -413,179 +426,29 @@ class ConnectUserModal extends React.Component {
               </Col>
             </Row>
           </Container>
-        
-          
-          {/*
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-search-input"
-            >
-              Search
-            </label>
-            <Input
-              defaultValue="Tell me your secret ..."
-              id="example-search-input"
-              type="search"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-email-input"
-            >
-              Email
-            </label>
-            <Input
-              defaultValue="argon@example.com"
-              id="example-email-input"
-              type="email"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-url-input">
-              URL
-            </label>
-            <Input
-              defaultValue="https://www.creative-tim.com"
-              id="example-url-input"
-              type="url"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label className="form-control-label" htmlFor="example-tel-input">
-              Phone
-            </label>
-            <Input
-              defaultValue="40-(770)-888-444"
-              id="example-tel-input"
-              type="tel"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-password-input"
-            >
-              Password
-            </label>
-            <Input
-              defaultValue="password"
-              id="example-password-input"
-              type="password"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-number-input"
-            >
-              Number
-            </label>
-            <Input
-              defaultValue="23"
-              id="example-number-input"
-              type="number"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-datetime-local-input"
-            >
-              Datetime
-            </label>
-            <Input
-              defaultValue="2018-11-23T10:30:00"
-              id="example-datetime-local-input"
-              type="datetime-local"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-date-input"
-            >
-              Date
-            </label>
-            <Input
-              defaultValue="2018-11-23"
-              id="example-date-input"
-              type="date"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-month-input"
-            >
-              Month
-            </label>
-            <Input
-              defaultValue="2018-11"
-              id="example-month-input"
-              type="month"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-week-input"
-            >
-              Week
-            </label>
-            <Input
-              defaultValue="2018-W23"
-              id="example-week-input"
-              type="week"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-time-input"
-            >
-              Time
-            </label>
-            <Input
-              defaultValue="10:30:00"
-              id="example-time-input"
-              type="time"
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="example-color-input"
-            >
-              Color
-            </label>
-            <Input
-              defaultValue="#5e72e4"
-              id="example-color-input"
-              type="color"
-            />
-          </FormGroup>
-          */}
-          <Button
-                      className="float-right"
-                      color="default"
-                      
-                      onClick={this.props.handleClose}
-                      size="xl"
-                    >
-                      Close
-                    </Button>
-                    <br></br>
-                    <Button className="btn-fill" color="primary" type="submit">
-                    Connect User
-                  </Button>
-                  
-        </Form>
-          
-        </section>
+          <div className="modal-footer">
+            <Row>
+            <Col className={'align-items-center'}>
+              <Button
+                  color="default"
+
+                  onClick={this.props.handleClose}
+                  size="xl"
+              >
+                Close
+              </Button>
+              <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
+                Connect User
+              </Button>
+            </Col>
+          </Row>
+          </div>
+
+      </Form>
+        </div>
+        </div>
       </div>
-    );
+    )
   }
 }
 

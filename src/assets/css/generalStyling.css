@@ -1,0 +1,46 @@
+.table-container {
+    overflow: auto !important;
+    max-height: 400px !important;
+}
+
+.th-class {
+    position: sticky!important;
+    top: 0 !important;
+    opacity: 1 !important;
+    z-index: 99 !important;
+    background-color: #66d486 !important;
+    color: #ffffff !important;
+    text-align: left !important;
+}
+.th{
+    background-color: #66d486 !important;
+
+}
+#table{
+    border-collapse: collapse;
+    margin: 25px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: grey;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: white;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #b8b0f2;
+    border-radius: 10px;
+    border: transparent;
+}
+.modal {
+    overflow-y:auto !important;
+}

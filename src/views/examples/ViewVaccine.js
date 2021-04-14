@@ -47,6 +47,7 @@ import {
 import Header from "components/Headers/Header.js";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import VaccineTable from "components/Tables/VaccineTable.js";
+import GeneralHeader from "../../components/Headers/GeneralHeader";
 //Amplify.configure(awsExports)
 
 
@@ -57,11 +58,10 @@ class ViewVaccine extends Component {
   render() {
     return (
       <>
-        <Header />
+        <GeneralHeader title={"View Vaccines"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
           <VaccineTable/>
-
         </Container>
       </>
     );
