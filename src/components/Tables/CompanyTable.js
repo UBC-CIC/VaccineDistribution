@@ -176,57 +176,16 @@ catch (err) {
                   </th>
                   <td>{companyData[i].companyType}</td>
                   <td>
-                    
-                     
                       {companyData[i].companyName}
                    
                   </td>
                   <td>
-                    
-                     
                       {companyData[i].companyIC}
-                   
                   </td>
                   <td>
                       {companyData[i].isCompanyRegistered?"true":"false"}
                   </td>
-                  
-                 
-                  <td className="text-right">
-                    <UncontrolledDropdown>
-                      <DropdownToggle
-                        className="btn-icon-only text-light"
-                        href="#pablo"
-                        role="button"
-                        size="sm"
-                        color=""
-                        onClick={e => e.preventDefault()}
-                      >
-                        <i className="fas fa-ellipsis-v" />
-                      </DropdownToggle>
-                      <DropdownMenu className="dropdown-menu-arrow" right>
-                        <DropdownItem
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Action
-                        </DropdownItem>
-                        <DropdownItem
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Another action
-                        </DropdownItem>
-                        <DropdownItem
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Something else here
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </td>
-            </tr>
+              </tr>
         )
       
     }
@@ -242,7 +201,7 @@ catch (err) {
       <>
         
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--7">
           {/* Table */}
           <Row>
             <div className="col">
@@ -253,73 +212,19 @@ catch (err) {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Comp_ID</th>
-                      <th scope="col">Company Type</th>
-                      <th scope="col">Company Name</th>
-                      <th scope="col">Company IC</th>
-                      <th scope="col">IsCompanyRegistered</th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">IC</th>
+                      <th scope="col">Registered?</th>
                       <th scope="col" />
                     </tr>
                   </thead>
                   <tbody>
-                   
+
                      {this.state.itemsList}
-                   
-                  
                   </tbody>
                 </Table>
-                <CardFooter className="py-4">
-                  <nav aria-label="...">
-                    <Pagination
-                      className="pagination justify-content-end mb-0"
-                      listClassName="justify-content-end mb-0"
-                    >
-                      <PaginationItem className="disabled">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                          tabIndex="-1"
-                        >
-                          <i className="fas fa-angle-left" />
-                          <span className="sr-only">Previous</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem className="active">
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          1
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          2 <span className="sr-only">(current)</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          3
-                        </PaginationLink>
-                      </PaginationItem>
-                      <PaginationItem>
-                        <PaginationLink
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          <i className="fas fa-angle-right" />
-                          <span className="sr-only">Next</span>
-                        </PaginationLink>
-                      </PaginationItem>
-                    </Pagination>
-                  </nav>
-                </CardFooter>
               </Card>
             </div>
           </Row>

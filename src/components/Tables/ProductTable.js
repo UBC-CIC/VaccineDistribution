@@ -124,6 +124,7 @@ class ProductTable extends Component {
     //create table and fill in container data
 
     async createProductList(products, tmp){
+        //todo unit for humidity?
 
         for(var i=0; i < products.length; i++){
             tmp.push(
@@ -148,7 +149,12 @@ class ProductTable extends Component {
                         {products[i].ProductsPerContainer}
                     </td>
                     <td>
-                        {JSON.stringify(products[i].ProductStorage) }
+                        {products[i].ProductStorage.LowThreshTemp+  " to " +
+                            products[i].ProductStorage.HighThreshTemp + " °C"}
+                    </td>
+                    <td>
+
+                        {products[i].ProductStorage.HighThreshHumidity+ "g/m3"}
                     </td>
                     <td>
                         {products[i].ProductHSTarriffNumber}
@@ -183,7 +189,7 @@ class ProductTable extends Component {
                                 <CardHeader className="border-0">
                                     <h3 className="mb-0">Approved Products</h3>
                                 </CardHeader>
-                                <Table className="align-items-center table-flush" responsive>
+                                <Table className="align-items-center table-flush" responsive hover>
                                     <thead className="thead-light">
                                     <tr>
                                         <th scope="col">ID</th>
@@ -191,7 +197,8 @@ class ProductTable extends Component {
                                         <th scope="col">Price</th>
                                         <th scope="col">Units/Container</th>
                                         <th scope="col">Expiry</th>
-                                        <th scope="col">Storage</th>
+                                        <th scope="col">Storage Temperature range</th>
+                                        <th scope="col">Storage Max humidity</th>
                                         <th scope="col">HS Tariff Number</th>
                                         <th scope="col">Manufacturer Id</th>
                                         <th scope="col">BatchTable Id</th>
@@ -220,7 +227,7 @@ class ProductTable extends Component {
                             <CardHeader className="border-0">
                                 <h3 className="mb-0">Unapproved Products</h3>
                             </CardHeader>
-                            <Table className="align-items-center table-flush" responsive>
+                            <Table className="align-items-center table-flush" responsive hover>
                                 <thead className="thead-light">
                                 <tr>
                                     <th scope="col">ID</th>
@@ -228,7 +235,8 @@ class ProductTable extends Component {
                                     <th scope="col">Price</th>
                                     <th scope="col">Units/Container</th>
                                     <th scope="col">Expiry</th>
-                                    <th scope="col">Storage</th>
+                                    <th scope="col">Storage Temperature range</th>
+                                    <th scope="col">Storage Max humidity</th>
                                     <th scope="col">HS Tariff Number</th>
                                     <th scope="col">Manufacturer Id</th>
                                     <th scope="col">BatchTable Id</th>
