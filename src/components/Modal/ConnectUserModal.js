@@ -137,6 +137,7 @@ class ConnectUserModal extends React.Component {
   }
 
   handleSubmit = event => {
+    event.preventDefault()
 
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
     Person:{
@@ -182,7 +183,18 @@ class ConnectUserModal extends React.Component {
     this.showNotification("Error! Cannot connect user in Ledger", "error")
 
   }
-    
+  showNotification(message, type){
+    this.setState({
+      message:message,
+      notificationType:type
+    })
+    setTimeout(function(){
+      this.setState({
+        notificationOpen:true,
+      })
+    }.bind(this),5000);
+  }
+
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     const{EmployeeId, FirstName, LastName, Email, Phone,Address,
