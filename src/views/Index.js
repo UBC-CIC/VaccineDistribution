@@ -252,7 +252,8 @@ class Index extends React.Component {
       show: false,
       entity:[],
       filterEntityData:[],
-      notificationOpen: false
+      notificationOpen: false,
+      notificationType: "success"
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -430,7 +431,8 @@ class Index extends React.Component {
   };
 
   showNotification=()=>{
-    this.setState({notificationOpen:true})
+    this.setState({notificationOpen:true,
+      notificationType:"info"})
     setTimeout(function(){
       this.setState({notificationOpen:false});
     }.bind(this),5000);
@@ -571,8 +573,6 @@ class Index extends React.Component {
                       >
                         See all
                       </Button>
-                      <NotificationMessage notificationOpen={this.state.notificationOpen}
-                                           message={"hi"}/>
                     </div>
                   </Row>
                 </CardHeader>

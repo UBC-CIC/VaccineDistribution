@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -31,7 +32,10 @@ class RegisterEntityModal extends React.Component {
         PersonIds:[],
         JoiningRequests:[],
         ScEntityIdentificationCode: '',
-        ScEntityIdentificationCodeType: ''
+        ScEntityIdentificationCodeType: '',
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -50,7 +54,17 @@ class RegisterEntityModal extends React.Component {
   }
 
 
-
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:true,
+            })
+        }.bind(this),5000);
+    }
 
 
   handleScEntityNameChange = event => {
@@ -132,8 +146,9 @@ class RegisterEntityModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("User Created in ledger");
+        this.showNotification("User created in Ledger", "success")
       })
+      this.showNotification("Error! Cannot create user in Ledger", "error")
   }
     
   render(){
@@ -142,6 +157,8 @@ class RegisterEntityModal extends React.Component {
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
       <div className={showHideClassName}>
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">

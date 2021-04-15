@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -27,7 +28,10 @@ class CreateManufacturerOrderModal extends React.Component {
         OrdererScEntityId: '',
         OrdererPersonId: '',
         isOrderShipped: false,//this.props.userEmail,
-        OrderType: ''
+        OrderType: '',
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,12 +42,24 @@ class CreateManufacturerOrderModal extends React.Component {
   }
 
 
-  
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:true,
+            })
+        }.bind(this),5000);
+    }
 
 
-  
 
-  //handleIsCompanyRegisteredChange = event => {
+
+
+
+    //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
   //}
   async componentDidMount(){
@@ -96,13 +112,14 @@ class CreateManufacturerOrderModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("Created Manufacturer Order successful")
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        alert("MCGRequestId",res.data.body.McgRequestId);
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
+        this.showNotification("Created manufacturer order", "success")
+
+          //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
       })
+      this.showNotification("Error! Cannot create manufacturer order", "error")
   }
     
   render(){
@@ -115,6 +132,9 @@ class CreateManufacturerOrderModal extends React.Component {
           const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
       <div className={showHideClassName}>
+
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">

@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -41,7 +42,12 @@ class ConnectUserModal extends React.Component {
         PickUpRequests:[],
         ScEntityIdentificationCode: '',
         ScEntityIdentificationCodeType: '',
-        qldbPersonId: ''
+        qldbPersonId: '',
+
+
+      notificationOpen: false,
+      notificationType: "success",
+      message: ""
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -109,7 +115,7 @@ class ConnectUserModal extends React.Component {
   handleScEntityIdentificationCodeTypeChange = event => {
     this.setState({ ScEntityIdentificationCodeType: event.target.value });
   }
- 
+
 
 
 
@@ -131,26 +137,7 @@ class ConnectUserModal extends React.Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
 
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
     Person:{
       EmployeeId: this.state.EmployeeId,
@@ -186,12 +173,14 @@ class ConnectUserModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("User Created in ledger")
         console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+        this.showNotification("User connected in Ledger", "success")
 
       })
+    this.showNotification("Error! Cannot connect user in Ledger", "error")
+
   }
     
   render(){
@@ -205,6 +194,9 @@ class ConnectUserModal extends React.Component {
         ScEntityIdentificationCode.length===0||ScEntityIdentificationCodeType.length===0
     return (
       <div className={showHideClassName}>
+        <NotificationMessage notificationOpen={this.state.notificationOpen}
+                             message={this.state.message} type={this.state.notificationType}/>
+
         <div className="modal-dialog modal-dialog-scrollable modal-lg" >
         <div className="modal-content">
           <div className="modal-header">

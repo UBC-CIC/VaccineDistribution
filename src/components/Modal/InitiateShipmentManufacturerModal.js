@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -23,7 +24,10 @@ class InitiateShipmentManufacturerModal extends React.Component {
         PersonId: this.props.qldbPersonId,
         PurchaseOrderId: '',
         TransportType: 1,
-        CarrierCompanyId: ''
+        CarrierCompanyId: '',
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,12 +38,23 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
 
 
-  
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:true,
+            })
+        }.bind(this),5000);
+    }
 
 
-  
 
-  //handleIsCompanyRegisteredChange = event => {
+
+
+    //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
   //}
   async componentDidMount(){
@@ -86,13 +101,13 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("INITIATE SHIPMENT FOR MANUFACTURER successful")
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        alert("MCGRequestId",res.data.body.McgRequestId);
+        this.showNotification("Initiated shipment for manufacturer", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
       })
+      this.showNotification("Error! Cannot initiate shipment for manufacturer", "error")
   }
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
@@ -102,6 +117,8 @@ class InitiateShipmentManufacturerModal extends React.Component {
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
       <div className={showHideClassName}>
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">

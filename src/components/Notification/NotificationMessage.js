@@ -1,20 +1,16 @@
 
 import React, {Component } from 'react'
 import {Snackbar} from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 class NotificationMessage extends Component{
+
     constructor(props) {
         super(props);
-        this.state = {
-            notificationOpen: true,
-        }
-    }
-
-    handleClose = () => {
-        this.setState({
-            notificationOpen: false,
-        });
-
     }
 
     render(){
@@ -23,11 +19,13 @@ class NotificationMessage extends Component{
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'left',
+                    horizontal: 'center',
                 }}
                 open={notificationOpen}
-                message={message}
             >
+                <Alert severity={type} style={{width:"60vw"}}>
+                    {message}
+                </Alert>
             </Snackbar>
         )
     }

@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -23,7 +24,11 @@ class InitiateShipmentDistributorModal extends React.Component {
         PersonId: this.props.qldbPersonId,
         PurchaseOrderId: '',
         TransportType: 3,
-        CarrierCompanyId: ''
+        CarrierCompanyId: '',
+
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,7 +39,18 @@ class InitiateShipmentDistributorModal extends React.Component {
   }
 
 
-  
+
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:true,
+            })
+        }.bind(this),5000);
+    }
 
 
   
@@ -91,8 +107,11 @@ class InitiateShipmentDistributorModal extends React.Component {
         alert("MCGRequestId",res.data.body.McgRequestId);
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+          this.showNotification("Initiated shipment for distributor", "success")
 
       })
+
+      this.showNotification("Error! Cannot initiate shipment for distributor", "error")
   }
     
   render(){
@@ -103,6 +122,8 @@ class InitiateShipmentDistributorModal extends React.Component {
       const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
       <div className={showHideClassName}>
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
