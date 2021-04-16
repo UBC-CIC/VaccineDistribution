@@ -73,11 +73,11 @@ class InitiateShipmentManufacturerModal extends React.Component {
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
-    PersonId: this.state.PersonId,
+    PersonId: this.props.qldbPersonId,
 
     
     PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: this. state.TransportType,
+    TransportType: parseInt(this. state.TransportType),
     CarrierCompanyId: this.state.CarrierCompanyId
     
 }

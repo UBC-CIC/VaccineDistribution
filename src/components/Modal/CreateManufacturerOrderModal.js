@@ -26,7 +26,7 @@ class CreateManufacturerOrderModal extends React.Component {
         OrderQuantity: 2,
         OrdererScEntityId: '',
         OrdererPersonId: '',
-        isOrderShipped: false,//this.props.userEmail,
+        isOrderShipped: false,
         OrderType: ''
     };
     
@@ -39,6 +39,13 @@ class CreateManufacturerOrderModal extends React.Component {
 
 
   
+  handleOnChangeSelect = event => {
+    this.setState({ [event.target.name] : event.target.value });
+
+    const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
+
+    //this.setState({ ProductName : selectedProduct[0].ProductName});
+  }
 
 
   
@@ -77,12 +84,12 @@ class CreateManufacturerOrderModal extends React.Component {
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
-    PersonId: this.state.PersonId,
+    PersonId: this.props.qldbPersonId,
 
     PurchaseOrder:{
     PurchaseOrderNumber: this.state.PurchaseOrderNumber,
     ProductId: this. state.ProductId,
-    OrderQuantity: this.state.OrderQuantity,
+    OrderQuantity: parseInt(this.state.OrderQuantity),
     Orderer:{
             OrdererScEntityId: this.state.OrdererScEntityId,
             OrdererPersonId: this.state.OrdererPersonId
@@ -97,8 +104,6 @@ class CreateManufacturerOrderModal extends React.Component {
         console.log(res);
         console.log(res.data);
         alert("Created Manufacturer Order successful")
-        console.log("MCGRequestId",res.data.body.McgRequestId);
-        alert("MCGRequestId",res.data.body.McgRequestId);
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
@@ -109,8 +114,7 @@ class CreateManufacturerOrderModal extends React.Component {
       const{PersonId,PurchaseOrderNumber,ProductId,OrderQuantity,OrdererScEntityId,OrdererPersonId,isOrderShipped,
               OrderType} = this.state
 
-      const formNotCompleted = PersonId.length===0||ProductId.length===0||PurchaseOrderNumber.length===0||OrderQuantity.length===0||
-          OrdererScEntityId.length===0||OrdererPersonId.length===0 || isOrderShipped.length===0||OrderType.length===0
+      const formNotCompleted = ProductId.length===0||OrderQuantity.length===0||isOrderShipped.length===0
 
           const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -127,51 +131,29 @@ class CreateManufacturerOrderModal extends React.Component {
           <Container>
             <Row>
               <Col>
+
               <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="PersonId_id"
+              htmlFor="ProductIdSelect_id"
             >
-              Person Id
+              Select Product
             </label>
             <Input
-              id="PersonId_id"
-              type="text"
-              name="PersonId"
-              value={this.state.PersonId}
-              onChange={this.handleOnChange}              
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="PurchaseOrderNumber_id"
-            >
-              Purchase Order Number
-            </label>
-            <Input
-              id="PurchaseOrderNumber_id"
-              type="text"
-              name="PurchaseOrderNumber"
-              value={this.state.PurchaseOrderNumber}
-              onChange={this.handleOnChange}              
-            />
-          </FormGroup>
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="ProductId_id"
-            >
-              Product Id
-            </label>
-            <Input
-              id="ProductId_id"
-              type="text"
+              id="ProductIdSelect_id"
+              type="select"
               name="ProductId"
-              value={this.state.ProductId}
-              onChange={this.handleOnChange}               
-            />
+              onChange={this.handleOnChangeSelect}
+            >
+              <option value={1}>-select-</option>
+
+              {this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}
+
+
+              </Input>
           </FormGroup>
+          
+          
 
           <FormGroup>
             <label
@@ -189,69 +171,7 @@ class CreateManufacturerOrderModal extends React.Component {
             />
           </FormGroup>
 
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="OrdererScEntityId_id"
-            >
-              Orderer ScEntityId
-            </label>
-            <Input
-              id="OrdererScEntityId_id"
-              type="text"
-              name="OrdererScEntityId"
-              value={this.state.OrdererScEntityId}
-              onChange={this.handleOnChange}               
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="OrdererPersonId_id"
-            >
-             Orderer PersonId
-            </label>
-            <Input
-              id="OrdererPersonId_id"
-              type="text"
-              name="OrdererPersonId"
-              value={this.state.OrdererPersonId}
-              onChange={this.handleOnChange}               
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="isOrderShipped_id"
-            >
-             is Order Shipped
-            </label>
-            <Input
-              id="isOrderShipped_id"
-              type="text"
-              name="isOrderShipped"
-              value={this.state.isOrderShipped}
-              onChange={this.handleOnChange}               
-            />
-          </FormGroup>
-
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="OrderType_id"
-            >
-             Order Type
-            </label>
-            <Input
-              id="OrderType_id"
-              type="text"
-              name="OrderType"
-              value={this.state.OrderType}
-              onChange={this.handleOnChange}               
-            />
-          </FormGroup>
+          
               </Col>
             </Row>
           </Container>

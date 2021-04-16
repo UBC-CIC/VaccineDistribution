@@ -480,7 +480,7 @@ async createUserLink(){
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
 
 
-          <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
           <p>Create Manufacturer Order Modal</p>
         </ CreateManufacturerOrderModal>
               </div>
