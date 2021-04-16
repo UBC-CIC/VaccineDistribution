@@ -32,12 +32,153 @@ import {
 } from "reactstrap";
 // core components
 import GeneralHeader from "components/Headers/GeneralHeader.js";
+import { Auth } from 'aws-amplify';
+import NotificationMessage from "../../components/Notification/NotificationMessage";
+
 
 class Profile extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      userEmail: "",
+      userName:"",
+      emailVerified : false,
+      oldPassword: "",
+      newPassword:"",
+      newEmailAddress:" ",
+      newPasswordTwo:"",
+      notificationOpen: false,
+      notificationType: "success",
+      message: "",
+      verificationCode:""
+
+    }
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleEmailSubmit = this.handleEmailSubmit.bind(this)
+    this.handlePasswordSubmit=this.handlePasswordSubmit.bind(this)
+    this.handleVerificationCodeSubmit=this.handleVerificationCodeSubmit.bind(this)
+  }
+  componentDidMount() {
+
+    Auth.currentAuthenticatedUser({
+      bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+    }).then(
+        user => {
+          console.log(user)
+          this.setState({
+            userEmail: user.attributes.email,
+            userName: user.username,
+            emailVerified : user.attributes.email_verified
+          })
+          console.log(user.attributes)
+        })
+        .catch(err => console.log(err));
+
+  }
+  handleOnChange = event => {
+    console.log(event.target.value)
+    this.setState({ [event.target.name] : event.target.value });
+  }
+
+  showNotification(message, type){
+    this.setState({
+      message:message,
+      notificationType:type
+    })
+    setTimeout(function(){
+      this.setState({
+        notificationOpen:true,
+      })
+    }.bind(this),3000);
+
+  }
+  handleSubmit = event => {
+    console.log("hello")
+    event.preventDefault()
+  }
+
+
+  async handleEmailSubmit(){
+    const {newEmailAddress} = this.state
+    let user = await Auth.currentAuthenticatedUser();
+
+    let result = await Auth.updateUserAttributes(user, {
+      'email': newEmailAddress,
+    });
+    if(result==="SUCCESS"){
+      this.showNotification(result,"success");
+    }else{
+      this.showNotification(result,"error")
+    }
+
+
+  }
+  handlePasswordSubmit(){
+    const {oldPassword,newPassword,newPasswordTwo} = this.state
+    if(newPassword===newPasswordTwo){
+      Auth.currentAuthenticatedUser()
+          .then(user => {
+            return Auth.changePassword(user, oldPassword, newPassword);
+          })
+          .then(data => {
+            this.showNotification("Password updated","success")
+            console.log(data)
+            this.setState({
+              oldPassword:"",
+              newPassword:"",
+              newPasswordTwo:""
+            })
+          })
+          .catch(err => {
+            this.showNotification(err.message,"error")
+            this.setState({
+              oldPassword:"",
+              newPassword:"",
+              newPasswordTwo:""
+            })
+            console.log(err)
+          });
+    }else{
+      this.showNotification("Passwords do not match","error")
+      return
+    }
+
+
+  }
+
+  handleVerificationCodeSubmit(){
+    const {verificationCode} = this.state
+    Auth.currentAuthenticatedUser()
+        .then(user => {
+          return Auth.verifyUserAttributeSubmit(user, 'email',verificationCode);
+        })
+        .then(data => {
+          this.showNotification("Email verified","success")
+          console.log(data)
+        })
+        .catch(err => {
+          this.showNotification(err.message,"error")
+          console.log(err)
+        });
+
+  }
+
+
+
   render() {
+    const {userEmail,newEmailAddress,userName,emailVerified,oldPassword, newPassword, newPasswordTwo} = this.state
+
+    const passwordFormIncomplete = oldPassword.length===0||newPassword.length<8||
+        newPasswordTwo.length<8 || newPasswordTwo !== newPassword
+
+
     return (
       <>
         <GeneralHeader title={"User Profile"} />
+        <NotificationMessage notificationOpen={this.state.notificationOpen}
+                             message={this.state.message} type={this.state.notificationType}/>
+
+
         {/* Page content */}
         <Container className="mt--7" fluid>
           <Row>
@@ -48,23 +189,19 @@ class Profile extends React.Component {
                     <Col xs="8">
                       <h3 className="mb-0">My account</h3>
                     </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Settings
-                      </Button>
-                    </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
                   <Form>
-                    <h6 className="heading-small text-muted mb-4">
-                      User information
-                    </h6>
+                    <Row>
+                      <Col>
+                        <h6 className="heading-small text-muted mb-4">
+                          Change user email
+                        </h6>
+
+                      </Col>
+
+                    </Row>
                     <div className="pl-lg-4">
                       <Row>
                         <Col lg="6">
@@ -73,13 +210,12 @@ class Profile extends React.Component {
                               className="form-control-label"
                               htmlFor="input-username"
                             >
-                              Username
+                              Current email address
                             </label>
                             <Input
                               className="form-control-alternative"
-                              defaultValue="lucky.jesse"
-                              id="input-username"
-                              placeholder="Username"
+                              defaultValue={userEmail}
+                              disabled
                               type="text"
                             />
                           </FormGroup>
@@ -89,148 +225,143 @@ class Profile extends React.Component {
                             <label
                               className="form-control-label"
                               htmlFor="input-email"
+
                             >
-                              Email address
+                              New Email address
                             </label>
                             <Input
                               className="form-control-alternative"
                               id="input-email"
-                              placeholder="jesse@example.com"
+                              placeHolder={"New email"}
                               type="email"
+                              name="newEmailAddress"
+                              value={this.state.newEmailAddress}
+                              onChange={this.handleOnChange}
                             />
                           </FormGroup>
+
+                        <Row>
+                            <Col>
+                              <Button className={'float-right'} color={"primary"} onClick={this.handleEmailSubmit}>
+                                Submit
+                              </Button>
+                            </Col>
+                          </Row>
+
                         </Col>
                       </Row>
-                      <Row>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-first-name"
-                            >
-                              First name
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              defaultValue="Lucky"
-                              id="input-first-name"
-                              placeholder="First name"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-last-name"
-                            >
-                              Last name
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              defaultValue="Jesse"
-                              id="input-last-name"
-                              placeholder="Last name"
-                              type="text"
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    </div>
                     <hr className="my-4" />
-                    {/* Address */}
+                    </div>
+                  </Form>
+
+                  <Form>
                     <h6 className="heading-small text-muted mb-4">
-                      Contact information
+                      Verify Email
                     </h6>
                     <div className="pl-lg-4">
                       <Row>
-                        <Col md="12">
+                        <Col lg="12">
                           <FormGroup>
                             <label
-                              className="form-control-label"
-                              htmlFor="input-address"
+                                className="form-control-label"
+                                htmlFor="input-username"
                             >
-                              Address
+                              6 digit code
                             </label>
                             <Input
-                              className="form-control-alternative"
-                              defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                              id="input-address"
-                              placeholder="Home Address"
-                              type="text"
+                                className="form-control-alternative"
+                                placeholder="Code sent to your new email"
+                                type="text"
+                                name="verificationCode"
+                                value={this.state.verificationCode}
+                                onChange={this.handleOnChange}
                             />
                           </FormGroup>
                         </Col>
                       </Row>
                       <Row>
+                        <Col>
+                          <Button className={'float-right'} color={"primary"}
+                                  onClick={this.handleVerificationCodeSubmit} disabled={emailVerified}>
+                            Verify
+                          </Button>
+
+                        </Col>
+                      </Row>
+                    </div>
+                  </Form>
+                  <hr className="my-4" />
+
+                  <Form>
+                    <h6 className="heading-small text-muted mb-4">
+                      Change password
+                    </h6>
+                    <div className="pl-lg-4">
+                      <Row>
                         <Col lg="4">
                           <FormGroup>
                             <label
-                              className="form-control-label"
-                              htmlFor="input-city"
+                                className="form-control-label"
+                                htmlFor="input-username"
                             >
-                              City
+                              Old password
                             </label>
                             <Input
-                              className="form-control-alternative"
-                              defaultValue="New York"
-                              id="input-city"
-                              placeholder="City"
-                              type="text"
+                                className="form-control-alternative"
+                                placeholder="Old password"
+                                type="password"
+                                name="oldPassword"
+                                value={this.state.oldPassword}
+                                onChange={this.handleOnChange}
+
                             />
                           </FormGroup>
                         </Col>
                         <Col lg="4">
                           <FormGroup>
                             <label
-                              className="form-control-label"
-                              htmlFor="input-country"
+                                className="form-control-label"
                             >
-                              Country
+                              New Password
                             </label>
                             <Input
-                              className="form-control-alternative"
-                              defaultValue="United States"
-                              id="input-country"
-                              placeholder="Country"
-                              type="text"
+                                className="form-control-alternative"
+                                type="password"
+                                placeholder="New password"
+                                name="newPassword"
+                                value={this.state.newPassword}
+                                onChange={this.handleOnChange}
+
                             />
                           </FormGroup>
                         </Col>
                         <Col lg="4">
                           <FormGroup>
                             <label
-                              className="form-control-label"
-                              htmlFor="input-country"
+                                className="form-control-label"
                             >
-                              Postal code
+                              New Password Again
                             </label>
                             <Input
-                              className="form-control-alternative"
-                              id="input-postal-code"
-                              placeholder="Postal code"
-                              type="number"
+                                className="form-control-alternative"
+                                type="password"
+                                placeholder="New Password Again"
+                                name="newPasswordTwo"
+                                value={this.state.newPasswordTwo}
+                                onChange={this.handleOnChange}
+
                             />
                           </FormGroup>
                         </Col>
                       </Row>
-                    </div>
-                    <hr className="my-4" />
-                    {/* Description */}
-                    <h6 className="heading-small text-muted mb-4">About me</h6>
-                    <div className="pl-lg-4">
-                      <FormGroup>
-                        <label>About Me</label>
-                        <Input
-                          className="form-control-alternative"
-                          placeholder="A few words about you ..."
-                          rows="4"
-                          defaultValue="A beautiful Dashboard for Bootstrap 4. It is Free and
-                          Open Source."
-                          type="textarea"
-                        />
-                      </FormGroup>
+                      <Row>
+                        <Col>
+                          <Button className={'float-right'} color={"primary"} disabled={passwordFormIncomplete}
+                                  onClick={this.handlePasswordSubmit}>
+                            Submit
+                          </Button>
+                        </Col>
+                      </Row>
                     </div>
                   </Form>
                 </CardBody>

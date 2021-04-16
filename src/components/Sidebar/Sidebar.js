@@ -130,13 +130,7 @@ class Sidebar extends React.Component {
           {/* Brand */}
           {logo ? (
             <NavbarBrand className="pt-0" {...navbarBrandProps}>
-               {
-               <img
-                alt={logo.imgAlt}
-                className="navbar-brand-img"
-                src={logo.imgSrc}
-              /> }
-               {/*<div>VACCINE IOT Oregon</div>*/}
+               <div>Vaccine Distribution</div>
             </NavbarBrand>
           ) : null}
           {/* User */}

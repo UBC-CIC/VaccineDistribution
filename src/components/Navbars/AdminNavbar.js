@@ -95,8 +95,8 @@ class AdminNavbar extends React.Component {
                     <h6 className="text-overflow m-0">Welcome!</h6>
                   </DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem href="#pablo" onClick={e => e.preventDefault()}>
-                    <span><AmplifySignOut slot="sign-out"/></span>
+                  <DropdownItem href="#pablo">
+                    <AmplifySignOut slot="sign-out"/>
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
