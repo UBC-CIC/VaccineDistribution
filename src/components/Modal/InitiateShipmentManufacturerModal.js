@@ -78,7 +78,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
     
     PurchaseOrderId: this.state.PurchaseOrderId,
     TransportType: parseInt(this. state.TransportType),
-    CarrierCompanyId: this.state.CarrierCompanyId
+    CarrierCompanyId: this.props.manufacturerId
     
 }
      )
@@ -96,8 +96,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
-        const formNotCompleted = PersonId.length===0||PurchaseOrderId.length===0||
-            TransportType.length===0||CarrierCompanyId.length===0
+        const formNotCompleted = TransportType.length===0
 
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -144,6 +143,8 @@ class InitiateShipmentManufacturerModal extends React.Component {
               onChange={this.handleOnChange}              
             />
           </FormGroup>
+
+
           <FormGroup>
             <label
               className="form-control-label"
@@ -153,12 +154,17 @@ class InitiateShipmentManufacturerModal extends React.Component {
             </label>
             <Input
               id="TransportType_id"
-              type="text"
+              type="select"
               name="TransportType"
-              value={this.state.TransportType}
-              onChange={this.handleOnChange}               
-            />
+              onChange={this.handleOnChange}              
+            >
+              <option value="1">Air</option>
+              <option value="2">Ocean</option>
+              <option value="3">ByRoad</option>
+             
+              </Input>
           </FormGroup>
+
 
           <FormGroup>
             <label
