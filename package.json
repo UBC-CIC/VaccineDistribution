@@ -45,6 +45,7 @@
     "@aws-amplify/ui-react": "^1.0.6",
     "@fortawesome/fontawesome-free": "5.12.1",
     "@material-ui/core": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
     "aws-amplify": "^3.3.26",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
@@ -72,6 +73,10 @@
     "react-select": "^4.3.0",
     "reactstrap": "8.4.1",
     "redux": "^4.0.5",
+    "redux-thunk": "^2.3.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3",
+    "web-vitals": "^0.2.4",
     "socket.io": "^3.1.1",
     "socket.io-client": "^3.1.1",
     "uuid": "^8.3.2"

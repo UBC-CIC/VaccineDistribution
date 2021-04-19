@@ -13,6 +13,7 @@ import { Auth } from "aws-amplify";
 
 
 import Select from 'react-select';
+import NotificationMessage from "../Notification/NotificationMessage";
 
 let user;
 let jwtToken;
@@ -48,6 +49,9 @@ class JoiningRequestEntityModal extends React.Component {
       //entity: [{text:"Moderna", id:1}],
         filterEntityData:[],
       entity : [],
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
 
     };
     
@@ -97,29 +101,24 @@ class JoiningRequestEntityModal extends React.Component {
 
   }
 
+  showNotification(message, type){
+      this.setState({
+          message:message,
+          notificationType:type
+      })
+      setTimeout(function(){
+          this.setState({
+              notificationOpen:true,
+          })
+      }.bind(this),5000);
+  }
+
+
+
 
 
   handleSubmit = event => {
     event.preventDefault();
-
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
     Person:{
       EmployeeId: this.state.EmployeeId,
@@ -159,8 +158,11 @@ class JoiningRequestEntityModal extends React.Component {
         console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+        this.showNotification("User created in Ledger", "success")
 
       })
+      this.showNotification("Error! cannot create user in Ledger", "error")
+
   }
     
   render(){
@@ -170,6 +172,8 @@ class JoiningRequestEntityModal extends React.Component {
       console.log(this.props)
     return (
       <div className={showHideClassName}>
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">

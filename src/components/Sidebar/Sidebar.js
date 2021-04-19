@@ -138,7 +138,7 @@ class Sidebar extends React.Component {
                 src={logo.imgSrc}
               /> }
                */}
-               <div>VACCINE IOT Oregon</div>
+               <div>Vaccine Distribution</div>
             </NavbarBrand>
           ) : null}
           {/* User */}

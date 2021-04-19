@@ -20,7 +20,7 @@ import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
-import Tables from "views/examples/Tables.js";
+import Tables from "views/examples/ViewContainerStatus.js";
 import Icons from "views/examples/Icons.js";
 import createContainerComponent from "views/createContainerComponent";
 import CreateCompany from "views/examples/CreateCompany";
@@ -35,7 +35,7 @@ import ViewIOT from "views/examples/ViewIOT";
 import SupplyChainFlow from "views/examples/SupplyChainFlow";
 import AdminPanel from "views/examples/AdminPanel";
 import EntityAdminPanel from "views/examples/EntityAdminPanel";
-
+import ViewProduct from "./views/examples/ViewProduct";
 let createRoutes = [
   {
     path: "/CreateCompany",
@@ -77,11 +77,19 @@ let createRoutes = [
     component: ViewContainer,
     layout: "/admin"
   },
+
       {
         path: "/tables",
         name: "View Container Status",
         icon: "fas fa-table text-blue",
         component: Tables,
+        layout: "/admin"
+      },
+      {
+        path: "/ViewProduct",
+        name: "View Product",
+        icon: "fas fa-box text-blue",
+        component: ViewProduct,
         layout: "/admin"
       },
 
@@ -136,6 +144,14 @@ let routes = [
     component: Index,
     layout: "/admin"
   },
+  {
+    path: "/user-profile",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin"
+  },
+
 //   // {
 //   //   path: "/icons",
 //   //   name: "Containers",
@@ -151,13 +167,6 @@ let routes = [
 //     name: "Maps",
 //     icon: "ni ni-pin-3 text-orange",
 //     component: Maps,
-//     layout: "/admin"
-//   },
-//   {
-//     path: "/user-profile",
-//     name: "User Profile",
-//     icon: "ni ni-single-02 text-yellow",
-//     component: Profile,
 //     layout: "/admin"
 //   },
 // */},

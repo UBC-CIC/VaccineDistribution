@@ -7,7 +7,8 @@ import axios from 'axios';
 // reactstrap components
 import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
 import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import { Auth } from "aws-amplify";
+import NotificationMessage from "../Notification/NotificationMessage";
 
 
 
@@ -35,13 +36,29 @@ class RegisterProductModal extends React.Component {
         ManufacturerId: '',
 
         isApprovedBySuperAdmin: false,
-        BatchTableId: ""
+        BatchTableId: "",
+        notificationOpen: false,
+        notificationType: "success",
+        message: ""
+
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:true,
+            })
+        }.bind(this),5000);
+    }
 
-  handleOnChange = event => {
+
+    handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
   }
 
@@ -112,13 +129,13 @@ class RegisterProductModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("Product Registered in ledger")
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        alert("MCGRequestId",res.data.body.McgRequestId);
+        this.showNotification("Product registered in Ledger", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
       })
+      this.showNotification("Error! Cannot register product in Ledger", "error")
   }
     
   render(){
@@ -132,6 +149,8 @@ class RegisterProductModal extends React.Component {
 
       return (
       <div className={showHideClassName}>
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">

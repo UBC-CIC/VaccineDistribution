@@ -32,7 +32,7 @@ class GeneralHeader extends React.Component {
                 {/* Mask */}
                 <span className="mask bg-gradient-blue opacity-8" />
                 {/* Header container */}
-                <Container className="d-flex align-items-center" fluid>
+                <Container className="d-flex align-items-center" >
                     <Row>
                         <Col lg="12" md="12">
                             <h1 className="display-2 text-white">
