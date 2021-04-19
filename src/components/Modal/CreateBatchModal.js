@@ -128,6 +128,7 @@ class CreateBatchModal extends React.Component {
     const {PersonId,ProductId,BatchNo,UnitsProduced,UnitsRemaining,MfgDate} = this.state;
     const formNotCompleted = ProductId.length===0||UnitsProduced.length===0||
               MfgDate.length===0
+          console.log(this.props.filterProductData)
     return (
       <div className={showHideClassName}>
           <NotificationMessage notificationOpen={this.state.notificationOpen}
@@ -176,8 +177,8 @@ class CreateBatchModal extends React.Component {
               onChange={this.handleOnChangeSelect}
             >
               <option value={1}>-select-</option>
-
-              {this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}
+                {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}
+              {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
 
 
               </Input>

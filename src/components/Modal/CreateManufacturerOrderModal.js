@@ -170,7 +170,8 @@ class CreateManufacturerOrderModal extends React.Component {
             >
               <option value={1}>-select-</option>
 
-              {this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}
+              {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
+                {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}
 
 
               </Input>
