@@ -24,10 +24,11 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import {createRoutes,
+import {
+  createRoutes,
   routes,
   viewRoutes,
-  adminRoutes
+  adminRoutes, authRoutes
 } from "routes.js";
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
@@ -88,6 +89,8 @@ class Admin extends React.Component {
             {this.getRoutes(createRoutes)}
             {this.getRoutes(adminRoutes)}
             {this.getRoutes(viewRoutes)}
+            {this.getRoutes(authRoutes)}
+
 
             <Redirect from="*" to="/admin/index" />
           </Switch>

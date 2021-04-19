@@ -196,7 +196,7 @@ class Profile extends React.Component {
                     <Row>
                       <Col>
                         <h6 className="heading-small text-muted mb-4">
-                          Change user email
+                          View user email
                         </h6>
 
                       </Col>
@@ -204,13 +204,13 @@ class Profile extends React.Component {
                     </Row>
                     <div className="pl-lg-4">
                       <Row>
-                        <Col lg="6">
+                        <Col lg="12">
                           <FormGroup>
                             <label
                               className="form-control-label"
                               htmlFor="input-username"
                             >
-                              Current email address
+                              Email address
                             </label>
                             <Input
                               className="form-control-alternative"
@@ -220,77 +220,12 @@ class Profile extends React.Component {
                             />
                           </FormGroup>
                         </Col>
-                        <Col lg="6">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-email"
-
-                            >
-                              New Email address
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-email"
-                              placeHolder={"New email"}
-                              type="email"
-                              name="newEmailAddress"
-                              value={this.state.newEmailAddress}
-                              onChange={this.handleOnChange}
-                            />
-                          </FormGroup>
-
-                        <Row>
-                            <Col>
-                              <Button className={'float-right'} color={"primary"} onClick={this.handleEmailSubmit}>
-                                Submit
-                              </Button>
-                            </Col>
-                          </Row>
-
-                        </Col>
                       </Row>
                     <hr className="my-4" />
                     </div>
                   </Form>
 
-                  <Form>
-                    <h6 className="heading-small text-muted mb-4">
-                      Verify Email
-                    </h6>
-                    <div className="pl-lg-4">
-                      <Row>
-                        <Col lg="12">
-                          <FormGroup>
-                            <label
-                                className="form-control-label"
-                                htmlFor="input-username"
-                            >
-                              6 digit code
-                            </label>
-                            <Input
-                                className="form-control-alternative"
-                                placeholder="Code sent to your new email"
-                                type="text"
-                                name="verificationCode"
-                                value={this.state.verificationCode}
-                                onChange={this.handleOnChange}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Button className={'float-right'} color={"primary"}
-                                  onClick={this.handleVerificationCodeSubmit} disabled={emailVerified}>
-                            Verify
-                          </Button>
 
-                        </Col>
-                      </Row>
-                    </div>
-                  </Form>
-                  <hr className="my-4" />
 
                   <Form>
                     <h6 className="heading-small text-muted mb-4">

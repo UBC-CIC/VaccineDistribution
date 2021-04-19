@@ -17,6 +17,8 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+
 import { Auth } from 'aws-amplify';
 // reactstrap components
 import {
@@ -61,7 +63,12 @@ class AdminNavbar extends React.Component {
       this.email = user.attributes.email
       console.log(user.attributes.email);
     }
-    
+  viewProfile=()=> {
+    let path = `/user-profile`;
+    let history = useHistory();
+    history.push(path);
+  }
+
   render() {
     return (
       <>
@@ -95,6 +102,11 @@ class AdminNavbar extends React.Component {
                     <h6 className="text-overflow m-0">Welcome!</h6>
                   </DropdownItem>
                   <DropdownItem divider />
+                  <DropdownItem href="user-profile">
+                    <i className="fas fa-user" color={"blue"}/>
+                      View Profile
+                  </DropdownItem>
+
                   <DropdownItem href="#pablo">
                     <AmplifySignOut slot="sign-out"/>
                   </DropdownItem>

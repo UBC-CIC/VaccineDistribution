@@ -24,7 +24,7 @@ import { Container, Row, Col } from "reactstrap";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
-import {routes} from "routes.js";
+import {authRoutes, routes} from "routes.js";
 
 class Auth extends React.Component {
   componentDidMount() {
@@ -87,7 +87,9 @@ class Auth extends React.Component {
           <Container className="mt--8 pb-5">
             <Row className="justify-content-center">
               <Switch>
+                {this.getRoutes(authRoutes)}
                 {this.getRoutes(routes)}
+
                 <Redirect from="*" to="/auth/login" />
               </Switch>
             </Row>
