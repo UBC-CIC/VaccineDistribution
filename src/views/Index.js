@@ -619,12 +619,4 @@ class Index extends React.Component {
   }
 }
 
-export default withAuthenticator(Index,{
-  includeGreetings: true,
-  signUpConfig: {
-    hiddenDefaults: ['phone_number']
-  }
-
-
-
-});
+export default (Index);

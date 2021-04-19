@@ -27,8 +27,8 @@ class GeneralHeader extends React.Component {
 
         <>
             <div
-                className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-            style={{width: "80vw"}}>
+                className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center ml-2"
+            style={{width: "100vw"}}>
                 {/* Mask */}
                 <span className="mask bg-gradient-blue opacity-8" />
                 {/* Header container */}

@@ -68,4 +68,4 @@ class ViewVaccine extends Component {
   }
 }
 
-export default withAuthenticator(ViewVaccine) ;
+export default (ViewVaccine) ;

@@ -416,4 +416,4 @@ RequestId: mcgRequest[0].RequestId
   }
 }
 
-export default withAuthenticator(AdminPanel) ;
+export default (AdminPanel) ;

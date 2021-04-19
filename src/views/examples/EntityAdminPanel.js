@@ -297,4 +297,4 @@ denyEntityData = (joiningRequestId, personId) => {
   }
 }
 
-export default withAuthenticator(EntityAdminPanel) ;
+export default (EntityAdminPanel) ;

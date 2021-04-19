@@ -72,4 +72,4 @@ class CreateCompany extends React.Component {
   }
 }
 
-export default withAuthenticator(CreateCompany)
+export default (CreateCompany)

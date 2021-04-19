@@ -87,4 +87,4 @@ class CreateVaccine extends Component {
   }
 }
 
-export default withAuthenticator (CreateVaccine) ;
+export default  (CreateVaccine) ;

@@ -133,4 +133,4 @@ class ViewIOT extends Component {
   }
 }
 
-export default withAuthenticator(ViewIOT) ;
+export default (ViewIOT) ;

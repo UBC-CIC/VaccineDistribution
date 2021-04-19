@@ -68,4 +68,4 @@ class ViewContainerStatus extends Component {
   }
 }
 
-export default withAuthenticator(ViewContainerStatus) ;
+export default (ViewContainerStatus) ;

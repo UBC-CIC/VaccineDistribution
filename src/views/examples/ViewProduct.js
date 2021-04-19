@@ -67,4 +67,4 @@ class ViewProduct extends Component {
     }
 }
 
-export default withAuthenticator(ViewProduct) ;
+export default (ViewProduct) ;

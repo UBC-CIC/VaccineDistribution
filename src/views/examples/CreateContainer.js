@@ -90,4 +90,4 @@ class CreateContainer extends Component {
   }
 }
 
-export default withAuthenticator (CreateContainer) ;
+export default  (CreateContainer) ;

@@ -527,4 +527,4 @@ async createUserLink(){
   }
 }
 
-export default withAuthenticator(SupplyChainFlow) ;
+export default (SupplyChainFlow) ;

@@ -69,4 +69,4 @@ class Tables extends Component {
   }
 }
 
-export default withAuthenticator(Tables) ;
+export default (Tables) ;
