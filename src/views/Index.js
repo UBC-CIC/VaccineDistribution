@@ -82,20 +82,20 @@ let sensorHumidity2 = []
 
 
 var Options = [
-  {label:'TEMPERATURE', value: 0},
-  {label:'HUMIDITY', value: 1},
+  {label:'TEMPERATURE', value: 0, x_axis: "Time (Hr)", y_axis: "Temp (°C)"},
+  {label:'HUMIDITY', value: 1, x_axis: "Time (Hr)", y_axis: "Humidity (%)"},
   {label: 'LOCATION', value:2}
-  
+
 ]
 /*
 data 1 and data 2 are the sensors
 they are filled in following functions
 */
 var data1 = {
- 
+
   datasets: [
     {
-      label: 'Temperature',
+      label: 'Sensor 1 (°C)',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -113,12 +113,12 @@ var data1 = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      
-      
+
+
     }
     ,
     {
-      label: 'Temperature2',
+      label: 'Sensor 2 (°C)',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -136,17 +136,17 @@ var data1 = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      
-      
+
+
     }
   ]
 };
 
 var data2 = {
-  
+
   datasets: [
     {
-      label: 'Humidity',
+      label: 'Sensor 1 (%)',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -164,11 +164,11 @@ var data2 = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-      
-      
+
+
     },
     {
-      label: 'Humidity2',
+      label: 'Sensor 2 (%)',
       fill: false,
       lineTension: 0.1,
       backgroundColor: 'rgba(75,192,192,0.4)',
@@ -186,21 +186,15 @@ var data2 = {
       pointHoverBorderWidth: 2,
       pointRadius: 1,
       pointHitRadius: 10,
-     
-      
+
+
     }
   ]
 };
 
 let containerOptions = []
 
-//the default location of the google maps api
 
-const location = {
-  address: '1600 Amphitheatre Parkway, Mountain View, california.',
-  lat: 37.42216,
-  lng: -122.08427,
-}
 
 class Index extends React.Component {
   //Get all the Entities from "GET_ALL_ENTITIES" operation
@@ -253,7 +247,9 @@ class Index extends React.Component {
       entity:[],
       filterEntityData:[],
       notificationOpen: false,
-      notificationType: "success"
+      notificationType: "success",
+      y_axis: "",
+      x_axis:""
     };
     this.chartReference = React.createRef();
     if (window.Chart) {
@@ -264,7 +260,7 @@ class Index extends React.Component {
 
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
-   
+
   }
   //code to change the type of data that's shown
   toggleNavs = (e, index) => {
@@ -275,11 +271,11 @@ class Index extends React.Component {
       chartExample1Data:
         this.state.chartExample1Data === "data1" ? "data2" : "data1",
       dataType: index
-       
-        
+
+
     });
-   
-    
+
+
     console.log(this.state.dataArray)
   };
 
@@ -326,16 +322,16 @@ class Index extends React.Component {
     this.state.containers.forEach(element => {
       containerOptions.push({value: element.id, label: element.name})
     });
-   
 
-    
+
+
   }
   //get sensor readings for selected containers on dropdown
   async getSensorForContainer(){
     console.log(this.state.containerId)
     try {
       const currentReadings = await API.graphql(graphqlOperation(listSensorReadings, {filter:{containerSensorReadingsId:{eq:this.state.containerId}}}))
-      
+
       console.log('current readings: ', currentReadings)
       this.setState({
          currentReadings: currentReadings.data.listSensorReadings.items
@@ -346,52 +342,53 @@ class Index extends React.Component {
 
     let fakeArray = []
     let labelArray = []
-    
+
     this.state.currentReadings.forEach(element => {
-      
+
       if(element.sensorID === '1'){
         sensorTemp.push(element.temperature)
         sensorHumidity.push(element.humidity)
-        
+
       }
       else if(element.sensorID === '2'){
         sensorTemp2.push(element.temperature)
         sensorHumidity2.push(element.humidity)
       }
-      
-     
+
+
     });
     let index = 0
     for(index = 0; index < 10; index++){
       labelArray.push(index)
     }
-    
+
     //console.log(sensorTemp)
-    
+
     data1.datasets[0].data = sensorTemp;
     data1.datasets[1].data = sensorTemp2;
    data1.labels = labelArray;
-    
-    
+   console.log("hello", labelArray)
+
+
     data2.datasets[0].data = sensorHumidity;
     data2.datasets[1].data = sensorHumidity2;
    data2.labels = labelArray;
-    
-    
+
+
     fakeArray.push(data1)
     fakeArray.push(data2)
-    
+
     this.setState({dataArray: fakeArray})
     this.setState({data1: data1})
     this.setState({data2: data2})
-   console.log(data1)
-    
+   console.log("hello ", data1)
+
   }
 
-  //handles code for data type dropdown 
+  //handles code for data type dropdown
   handleSensorDropdown(event){
-    this.setState({dataType : event.value})
-    this.setState({dataName: event.label})
+    this.setState({dataType : event.value,dataName: event.label, x_axis:event.x_axis,y_axis:event.y_axis})
+
   }
 
   //handles code for container dropdown
@@ -399,7 +396,7 @@ class Index extends React.Component {
     this.setState({containerName: event.name})
     this.setState({containerId: event.value}, () => this.getSensorForContainer())
     this.setState({containerId: event.value}, () => this.getGPSForContainer())
-      
+
   }
   //get gps coordinates for selected container
   async getGPSForContainer(){
@@ -409,18 +406,16 @@ class Index extends React.Component {
           //const currentReadings = await API.graphql(graphqlOperation(listSensorReadings,{filter :{ containerSensorReadingsId: {eq: this.state.containerId}}}))
           console.log('current GPS readings: ', currentGPSReadings)
           this.setState({
-            
+
             currentLocation: currentGPSReadings.data.listGPSReadings.items
           })
         } catch (err) {
           console.log('error fetching current containers...', err)
         }
 
-      location.lat = location.lat//parseFloat(this.state.currentLocation[0].lat);
-      location.lng = location.lng//parseFloat(this.state.currentLocation[0].lng);
 
   }
-  
+
 //Display Modal form for user register in QLDB
   showModal = () => {
     this.setState({ show: true });
@@ -439,13 +434,13 @@ class Index extends React.Component {
   }
 
 
-   
+
   render() {
     const{containerLocation} = this.state
     console.log(this.state)
     console.log(containerLocation)
 
-  
+
     return (
       <>
         <GeneralHeader title={"Home"} />
@@ -456,69 +451,73 @@ class Index extends React.Component {
         <Container className="mt--7" fluid>
           <Row>
             <Col className="mb-5 mb-xl-0" xl="8">
-              <Card className="bg-gradient-gray-dark shadow">
+              <Card className="bg-gradient-gray-dark shadow" id={"chartAndMapCard"}>
                 <CardHeader className="bg-transparent">
                   <Row className="align-items-center">
                     <div className="col">
-                      
+
                       <h6 className="text-uppercase ls-1 mb-1">
                           <Select onChange={this.handleContainerDropdown} options={containerOptions}/>
                       </h6>
-                      
+
                       {/* <h2 className="text-white mb-0">Sensor Data</h2> */}
                     </div>
                     <div className="col">
                     <h6 className="text-uppercase ls-1 mb-1">
-                      
+
                         <Select onChange={this.handleSensorDropdown}  options={Options}/>
-                        
+
                     </h6>
-                      
-                     
+
+
                     </div>
                   </Row>
                 </CardHeader>
-                
+
                 <CardBody>
                   {/* Chart */}
-                 
-                  <div className="chart">
-                    
-                    {
-                    this.state.dataType === 0 && (
-                     <Line ref="chart" data={data1} 
-                     />
-                    )
-                    }
-                    {
-                      this.state.dataType === 1 && (
-                        <Line ref="chart" data={data2}
-                         />
-                       )
-
-                    }
-                    {
-                     
-                      this.state.dataType === 2 && (
-                        
-                          <Map markers = {containerLocation}/>
-
-
-                      )
-                    }
-                  </div>
-                 
-                 
-                 
-                
-                  <h2 className="text-white mb-0">{this.state.dataName}</h2>
+                  <Row  xl={"12"}>
+                    <Col lg="2" className={"mt-8"}>
+                      <h5 id={"axis-labels"}>
+                        {this.state.y_axis}
+                      </h5>
+                    </Col>
+                    <Col>
+                      <div className="chart">
+                        {
+                          this.state.dataType === 0 && (
+                              <Line ref="chart" data={data1}
+                              />
+                          )
+                        }
+                        {
+                          this.state.dataType === 1 && (
+                              <Line ref="chart" data={data2}
+                              />
+                          )
+                        }
+                        {
+                          this.state.dataType === 2 && (
+                              <Map markers = {containerLocation} height={383}/>
+                          )
+                        }
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <h5 id={"axis-labels"} className={"ml-8"}>
+                        {this.state.x_axis}
+                      </h5>
+                    </Col>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
             <Col xl="4" >
-            
-            
-            <Card className="shadow bg-gradient-gray-dark shadow" id={"vaccineMapContainer"} >
+
+
+            <Card className="shadow bg-gradient-gray-dark shadow" id={"chartAndMapCard"} >
                 <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
@@ -528,7 +527,7 @@ class Index extends React.Component {
                 </CardHeader>
                 <CardBody>
 
-                <Map markers = {manufacturer}/>
+                <Map markers = {manufacturer} height={400}/>
 
                 </CardBody>
 
@@ -577,13 +576,13 @@ class Index extends React.Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                
+
                   <Timeline/>
-                 
+
                 </CardBody>
-               
+
               </Card>
-              
+
             </Col>
             <Col xl="4">
             <Card className="shadow">
@@ -605,11 +604,11 @@ class Index extends React.Component {
                   </Row>
                 </CardHeader>
                 <CardBody>
-                
+
                   <Piechart/>
-                 
+
                 </CardBody>
-               
+
               </Card>
             </Col>
           </Row>

@@ -31,7 +31,7 @@ class Map extends Component{
     }
     render() {
         return(
-            <div ref = {this.mapContainer} className = "mapContainer"/>
+            <div ref = {this.mapContainer} className = "mapContainer" style={{width:"100%",height:this.props.height}}/>
         )
     }
 }

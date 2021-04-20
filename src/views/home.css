@@ -3,6 +3,13 @@
     width:100%
 }
 
-#vaccineMapContainer{
+#chartAndMapCard{
     min-height: 500px;
+    max-height: 700px;
+
+}
+
+#axis-labels{
+    color:white;
+
 }

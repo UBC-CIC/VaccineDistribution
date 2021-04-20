@@ -12,10 +12,8 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 
 
-
 function App(props) {
     const {loginState, updateLoginState} = props;
-
     const [currentLoginState, updateCurrentLoginState] = useState(loginState);
 
 
@@ -58,7 +56,7 @@ function App(props) {
                       * [darkMode (changes font/logo color): true, false]
                       * [disableSignUp: true, false]
                       * */
-                      <Login logo={"custom"} type={"static"} themeColor={"standard"} animateTitle={false}
+                      <Login logo={"custom"} type={"static"} themeColor={"standard"} animateTitle={true}
                              title={"Vaccine distribution"} darkMode={true}
                              disableSignUp={false}
                       />

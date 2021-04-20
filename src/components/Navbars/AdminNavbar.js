@@ -17,8 +17,7 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
-
+import { useHistory} from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 // reactstrap components
 import {
@@ -57,16 +56,19 @@ class AdminNavbar extends React.Component {
   };
 }
 
-    async componentDidMount()
-    {
-      user = await Auth.currentAuthenticatedUser();  
-      this.email = user.attributes.email
-      console.log(user.attributes.email);
+  async componentWillMount(){
+    user = await Auth.currentAuthenticatedUser();
+    this.state.email = user.attributes.email
+
+  }
+
+  async signOut() {
+    try {
+      await Auth.signOut();
+      window.location.reload()
+    } catch (error) {
+      console.log('error signing out: ', error);
     }
-  viewProfile=()=> {
-    let path = `/user-profile`;
-    let history = useHistory();
-    history.push(path);
   }
 
   render() {
@@ -78,7 +80,6 @@ class AdminNavbar extends React.Component {
               className="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block"
               to="/"
             >
-              {/*{this.props.brandText}*/}
             </Link>
             <Nav className="align-items-center d-none d-md-flex" navbar>
               <UncontrolledDropdown nav>
@@ -92,7 +93,7 @@ class AdminNavbar extends React.Component {
                     </span>
                     <Media className="ml-2 d-none d-lg-block">
                       <span className="mb-0 text-sm font-weight-bold">
-                      {this.email}
+                      {this.state.email}
                       </span>
                     </Media>
                   </Media>
@@ -103,12 +104,13 @@ class AdminNavbar extends React.Component {
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem href="user-profile">
-                    <i className="fas fa-user" color={"blue"}/>
+                    <i className="fas fa-user text-blue" />
                       View Profile
                   </DropdownItem>
 
-                  <DropdownItem href="#pablo">
-                    <AmplifySignOut slot="sign-out"/>
+                  <DropdownItem onClick={this.signOut}>
+                    <i className="fas fa-sign-out-alt text-red"/>
+                    Sign Out
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

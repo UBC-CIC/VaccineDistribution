@@ -54,6 +54,7 @@ import {
 import {createRoutes, routes, viewRoutes, adminRoutes} from "../../routes"
 import {DropdownButton, Dropdown} from "react-bootstrap";
 import {AmplifySignOut} from "@aws-amplify/ui-react";
+import {Auth} from "aws-amplify";
 var ps;
 
 class Sidebar extends React.Component {
@@ -80,6 +81,15 @@ class Sidebar extends React.Component {
       collapseOpen: false
     });
   };
+  async signOut() {
+    try {
+      await Auth.signOut();
+      window.location.reload()
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -159,8 +169,14 @@ class Sidebar extends React.Component {
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem>
-                  <span><AmplifySignOut slot="sign-out"/></span>
+                <DropdownItem href="user-profile">
+                  <i className="fas fa-user text-blue" />
+                  View Profile
+                </DropdownItem>
+
+                <DropdownItem onClick={this.signOut}>
+                  <i className="fas fa-sign-out-alt text-red"/>
+                  Sign Out
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -218,43 +234,6 @@ class Sidebar extends React.Component {
             <Nav navbar>
               {this.createLinks(adminRoutes)}
             </Nav>
-
-            {/*<Nav navbar>*/}
-            {/*  {this.createLinks(routes)}*/}
-            {/*</Nav>*/}
-
-            {/* Divider */}
-            {/* Heading */}
-            {/* <h6 className="navbar-heading text-muted">Documentation</h6>*/}
-            {/* Navigation */}
-            {/* <Nav className="mb-md-3" navbar>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Getting started
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
-                  <i className="ni ni-palette" />
-                  Foundation
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
-                  <i className="ni ni-ui-04" />
-                  Components
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav className="mb-md-3" navbar>
-              <NavItem className="active-pro active">
-                <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Upgrade to PRO
-                </NavLink>
-              </NavItem>
-                    </Nav> */}
           </Collapse>
         </Container>
       </Navbar>
