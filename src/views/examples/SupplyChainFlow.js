@@ -80,7 +80,9 @@ class SupplyChainFlow extends Component {
           qldbPersonId: '',
 
        allMcgRequest:[],
-       currentScEntity:{}
+       currentScEntity:{},
+       products:[],
+       filterProductData: []
 
         };
         
@@ -125,6 +127,8 @@ class SupplyChainFlow extends Component {
          this.getQldbPersonId()
         // this.getAllMCGRequest()
          this.getYourScEntityId()
+
+         this.getAllProducts();
 
 
 
@@ -230,6 +234,43 @@ class SupplyChainFlow extends Component {
     })
   }
 
+  //Get all the Entities from "GET_ALL_ENTITIES" operation
+  async getAllProducts() {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res.data);
+        console.log(res.data.body);
+        this.setState({products:res.data.body});
+/*
+        const entityData = this.state.entity.map( function(entity) {
+          if( entity.isApprovedBySuperAdmin === true ){
+              var info = { "text": entity.ScEntityName,
+                           "id": entity.ScEntityIdentificationCode
+                          }
+              return info;
+                        }
+
+         })
+         */
+         const productsData = this.state.products.filter( product => product.isApprovedBySuperAdmin === true).map(product =>
+         {
+              var info = { "text": product.ProductName,
+                           "id": product.ProductId
+                          }
+              return info;
+                        }
+
+         )
+         console.log("Products Data", productsData)
+         this.setState({filterProductData: productsData})
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+    })
+  }
 
   async getCognitoUserId() {
     console.log("Loading Auth token")
@@ -367,6 +408,8 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
+
+          {/*
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-warning">
               <div className="checklist-info">
@@ -379,6 +422,7 @@ async createUserLink(){
               </div>
             </div>
           </ListGroupItem>
+          */}
 
 
 
@@ -388,7 +432,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 4. Register a Product</h5>
+                <h5 className="checklist-title mb-0">Step 3. Register a Product</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showRegisterProductModal}> Register Product </Button>
@@ -410,13 +454,13 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 5. Create a Product Batch</h5>
+                <h5 className="checklist-title mb-0">Step 4. Create a Product Batch</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showCreateBatchModal}> Create Batch </Button>
 
 
-          <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
           <p>Create Batch Modal</p>
         </ CreateBatchModal>
 
@@ -432,13 +476,13 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 6. Create Manufacturer Order Modal</h5>
+                <h5 className="checklist-title mb-0">Step 5. Create Manufacturer Order Modal</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
 
 
-          <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+          <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
           <p>Create Manufacturer Order Modal</p>
         </ CreateManufacturerOrderModal>
               </div>
@@ -453,7 +497,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Manufacturer</h5>
+                <h5 className="checklist-title mb-0">Step 6. Initiate Shipment for Manufacturer</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showInitiateShipmentManufacturerModal}> Initiate Shipment Manufacturer </Button>
@@ -472,7 +516,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 8. Initiate Shipment for Distributor</h5>
+                <h5 className="checklist-title mb-0">Step 7. Initiate Shipment for Distributor</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showInitiateShipmentDistributorModal}> Initiate Shipment Distributor </Button>
@@ -491,7 +535,7 @@ async createUserLink(){
             <div className="checklist-item checklist-item-info">
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">
-                Step 9. Request the vaccine container
+                Step 8. Request the vaccine container
                 </h5>
                 <Button className="float-right"
                         color="primary"
@@ -502,7 +546,7 @@ async createUserLink(){
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-danger">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 10. Accept the request</h5>
+                <h5 className="checklist-title mb-0">Step 9. Accept the request</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
@@ -512,7 +556,7 @@ async createUserLink(){
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 11. Receive the Vaccine order</h5>
+                <h5 className="checklist-title mb-0">Step 10. Receive the Vaccine order</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>

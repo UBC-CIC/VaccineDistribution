@@ -88,13 +88,12 @@ class InitiateShipmentDistributorModal extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
-    PersonId: this.state.PersonId,
-
-    
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
+    PersonId: this.props.qldbPersonId,
+        
     PurchaseOrderId: this.state.PurchaseOrderId,
     TransportType: this. state.TransportType,
-    CarrierCompanyId: this.state.CarrierCompanyId
+    CarrierCompanyId: this.props.manufacturerId
     
 }
      )
@@ -103,8 +102,8 @@ class InitiateShipmentDistributorModal extends React.Component {
         console.log(res);
         console.log(res.data);
         alert("INITIATE SHIPMENT FOR DISTRIBUTOR sucessfull")
-        console.log("MCGRequestId",res.data.body.McgRequestId);
-        alert("MCGRequestId",res.data.body.McgRequestId);
+        console.log("MCGRequestId",res.data.body);
+        
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
           this.showNotification("Initiated shipment for distributor", "success")
@@ -166,6 +165,7 @@ class InitiateShipmentDistributorModal extends React.Component {
               onChange={this.handleOnChange}              
             />
           </FormGroup>
+        
           <FormGroup>
             <label
               className="form-control-label"
@@ -175,11 +175,15 @@ class InitiateShipmentDistributorModal extends React.Component {
             </label>
             <Input
               id="TransportType_id"
-              type="text"
+              type="select"
               name="TransportType"
-              value={this.state.TransportType}
-              onChange={this.handleOnChange}               
-            />
+              onChange={this.handleOnChange}              
+            >
+              <option value="1">Air</option>
+              <option value="2">Ocean</option>
+              <option value="3">ByRoad</option>
+             
+              </Input>
           </FormGroup>
 
           <FormGroup>

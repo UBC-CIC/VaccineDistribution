@@ -53,6 +53,7 @@ import InitializeQLDB from "components/AdminPanel/InitializeQLDB.js";
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/ApprovalJoinRequestEntityTable.js";
+import ApprovalPurchaseOrderTable from "components/EntityAdminPanel/ApprovalPurchaseOrderTable.js";
 
 import axios from 'axios';
 import { Auth } from "aws-amplify";
@@ -79,7 +80,8 @@ class EntityAdminPanel extends Component {
        cognitoUserId: '',
        qldbPersonId: '',
        allJoiningRequest:[],
-       currentScEntity:{}
+       currentScEntity:{},
+       purchaseOrderIds:[]
     }
  }
   async componentDidMount(){
@@ -90,6 +92,8 @@ class EntityAdminPanel extends Component {
     this.getQldbPersonId()
     this.getAllJoiningRequest()
     this.getYourScEntityId()
+
+    this.getPurchaseOrder()
 }
 
   async getEmployeeData() {
@@ -200,6 +204,33 @@ async getYourScEntityId() {
   //this.setState({entity: response.data})
 }
 
+
+
+async getPurchaseOrder() {
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PURCHASE_ORDER_IDS",
+
+  PersonId: localStorage.getItem("qldbPersonId"),
+  FetchType: "Recieved"
+
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.body);
+      this.setState({purchaseOrderIds: res.data.body.PurchaseOrderIds});
+      //console.log("EntityId", this.state.currentScEntity[0].id)
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+  //this.setState({entity: response.data})
+}
+
 removeData = (id) => {
 
   axios.delete(`${URL}/${id}`).then(res => {
@@ -254,11 +285,45 @@ JoiningRequestId: joiningRequest[0].JoiningRequestId
 
 }
 
+
+approvePurchaseOrder = (purchaseOrderId) => {
+
+axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_PURCHASE_ORDER",
+
+PersonId: localStorage.getItem("qldbPersonId"),
+PurchaseOrderId: purchaseOrderId
+} ,
+  {
+    headers: {
+      //'Authorization': jwtToken
+    }})
+  .then(res => {
+      console.log(res);
+      console.log(res.data);
+      if(res.data.statusCode == 200){
+      console.log(res.data.body);
+     alert("PurchaseOrder is approved")
+    }
+    else{
+      alert("PurchaseOrder approval failed")
+    }
+
+    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+  })
+
+
+
+}
+
 denyEntityData = (joiningRequestId, personId) => {
 
   alert("Denied Joining Request")
 }
 
+denyPurchaseOrder = ( purchaseOrderId) => {
+
+  alert("Denied Purchase Order")
+}
 
 
   render() {
@@ -283,6 +348,28 @@ denyEntityData = (joiningRequestId, personId) => {
                 <CardBody>
                   <JoinRequest_Entity/>
                 <ApprovalJoinRequestEntityTable allJoiningRequest={this.state.allJoiningRequest} approveEntityData={this.approveEntityData} denyEntityData={this.denyEntityData}/>
+
+          </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            
+            
+
+            <Col className="order-xl-1" xl="12">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h1 className="mb-0">Approve Join Request of Entity</h1>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <JoinRequest_Entity/>
+                <ApprovalPurchaseOrderTable purchaseOrderIds={this.state.purchaseOrderIds} approvePurchaseOrder={this.approvePurchaseOrder} denyPurchaseOrder={this.denyPurchaseOrder}/>
 
           </CardBody>
               </Card>

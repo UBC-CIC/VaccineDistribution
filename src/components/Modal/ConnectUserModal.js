@@ -200,8 +200,7 @@ class ConnectUserModal extends React.Component {
     const{EmployeeId, FirstName, LastName, Email, Phone,Address,
       ScEntityName,ScEntityContact_Email,ScEntityContact_Address, ScEntityContact_Phone,
         ScEntityTypeCode,ScEntityIdentificationCode,ScEntityIdentificationCodeType} = this.state
-    const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Email.length===0||
-        Phone.length===0||Address.length===0||ScEntityName.length===0||ScEntityContact_Email.length===0||
+    const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Address.length===0||ScEntityName.length===0||ScEntityContact_Email.length===0||
         ScEntityContact_Address.length===0||ScEntityContact_Phone.length===0||ScEntityTypeCode.length===0||
         ScEntityIdentificationCode.length===0||ScEntityIdentificationCodeType.length===0
     return (

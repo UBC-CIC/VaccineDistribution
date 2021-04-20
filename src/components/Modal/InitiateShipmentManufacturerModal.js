@@ -88,12 +88,12 @@ class InitiateShipmentManufacturerModal extends React.Component {
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
-    PersonId: this.state.PersonId,
+    PersonId: this.props.qldbPersonId,
 
     
     PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: this. state.TransportType,
-    CarrierCompanyId: this.state.CarrierCompanyId
+    TransportType: parseInt(this. state.TransportType),
+    CarrierCompanyId: this.props.manufacturerId
     
 }
      )
@@ -111,8 +111,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
-        const formNotCompleted = PersonId.length===0||PurchaseOrderId.length===0||
-            TransportType.length===0||CarrierCompanyId.length===0
+        const formNotCompleted = TransportType.length===0
 
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -161,6 +160,8 @@ class InitiateShipmentManufacturerModal extends React.Component {
               onChange={this.handleOnChange}              
             />
           </FormGroup>
+
+
           <FormGroup>
             <label
               className="form-control-label"
@@ -170,12 +171,17 @@ class InitiateShipmentManufacturerModal extends React.Component {
             </label>
             <Input
               id="TransportType_id"
-              type="text"
+              type="select"
               name="TransportType"
-              value={this.state.TransportType}
-              onChange={this.handleOnChange}               
-            />
+              onChange={this.handleOnChange}              
+            >
+              <option value="1">Air</option>
+              <option value="2">Ocean</option>
+              <option value="3">ByRoad</option>
+             
+              </Input>
           </FormGroup>
+
 
           <FormGroup>
             <label
