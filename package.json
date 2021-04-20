@@ -76,10 +76,10 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "web-vitals": "^0.2.4",
     "socket.io": "^3.1.1",
     "socket.io-client": "^3.1.1",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "web-vitals": "^0.2.4"
   },
   "devDependencies": {
     "@aws-amplify/core": "^3.8.21",
