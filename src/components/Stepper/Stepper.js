@@ -68,6 +68,8 @@ class HomeStepper extends React.Component {
             entity: [],
             filterEntityData: [],
             cognitoUserId: '',
+            products:[],
+            filterProductData: [],
 
             allMcgRequest:[],
             currentScEntity:{}
@@ -120,10 +122,38 @@ class HomeStepper extends React.Component {
         await this.getQldbPersonId()
         // this.getAllMCGRequest()
         await this.getYourScEntityId()
+        await this.getAllProducts();
 
 
 
     }
+    //Get all the Entities from "GET_ALL_ENTITIES" operation
+    async getAllProducts() {
+
+        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
+            {
+                headers: {
+                    //'Authorization': jwtToken
+                }})
+            .then(res => {
+                console.log(res.data);
+                console.log(res.data.body);
+                this.setState({products:res.data.body});
+                const productsData = this.state.products.filter( product => product.isApprovedBySuperAdmin === true).map(product =>
+                    {
+                        var info = { "text": product.ProductName,
+                            "id": product.ProductId
+                        }
+                        return info;
+                    }
+
+                )
+                console.log("Products Data", productsData)
+                this.setState({filterProductData: productsData})
+                //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+            })
+    }
+
 //Get all the Entities from "GET_ALL_ENTITIES" operation
     async getEntityData() {
 
@@ -309,7 +339,7 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showCreateBatchModal}
                                         > Create Batch </Button>
-                                        <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+                                        <CreateBatchModal show={this.state.showCreateBatch} handleClose={this.hideCreateBatchModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
                                             <p>Create Batch Modal</p>
                                         </ CreateBatchModal>
                                     </div>
@@ -332,7 +362,8 @@ class HomeStepper extends React.Component {
                                                 color="primary"
                                             onClick={this.showCreateManufacturerOrderModal}
                                         > Create Manufacturer Order </Button>
-                                        <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
+                                        <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId}
+                                                                      filterProductData={this.state.filterProductData} products={this.state.products}>
                                             <p>Create Manufacturer Order</p>
                                         </ CreateManufacturerOrderModal>
                                     </div>
