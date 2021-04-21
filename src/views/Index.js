@@ -476,14 +476,14 @@ class Index extends React.Component {
 
                 <CardBody>
                   {/* Chart */}
-                  <Row  xl={"12"}>
+                  <Row  lg={"12"}>
                     <Col lg="2" className={"mt-8"}>
                       <h5 id={"axis-labels"}>
                         {this.state.y_axis}
                       </h5>
                     </Col>
-                    <Col>
-                      <div className="chart">
+                    <Col lg="10" >
+                      <div className="chart" style={{height:"350px"}}>
                         {
                           this.state.dataType === 0 && (
                               <Line ref="chart" data={data1}

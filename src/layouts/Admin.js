@@ -135,6 +135,7 @@ class Admin extends React.Component {
             {this.getRoutes(routes)}
             {this.getRoutes(createRoutes)}
             {this.getRoutes(viewRoutes)}
+            {this.getRoutes(authRoutes)}
             <div>
               {(() => {
                 if (this.state.isSuperAdmin) {
@@ -150,7 +151,6 @@ class Admin extends React.Component {
             </div>
 
 
-            {this.getRoutes(authRoutes)}
 
 
             <Redirect from="*" to="/admin/index" />
