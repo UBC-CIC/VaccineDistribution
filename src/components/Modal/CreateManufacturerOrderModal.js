@@ -145,7 +145,7 @@ class CreateManufacturerOrderModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">Create Batch to Ledger</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Create Manufacturer Order to Ledger</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>

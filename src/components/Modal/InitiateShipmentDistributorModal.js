@@ -98,15 +98,7 @@ class InitiateShipmentDistributorModal extends React.Component {
 }
      )
       .then(res => {
-
-        console.log(res);
-        console.log(res.data);
-        alert("INITIATE SHIPMENT FOR DISTRIBUTOR sucessfull")
-        console.log("MCGRequestId",res.data.body);
-        
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
-        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-          this.showNotification("Initiated shipment for distributor", "success")
+        this.showNotification("Initiated shipment for distributor", "success")
 
       })
 
@@ -126,7 +118,7 @@ class InitiateShipmentDistributorModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">INITIATE SHIPMENT FOR DISTRIBUTOR</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Initiate Shipment for Distributor</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>

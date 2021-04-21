@@ -32,11 +32,25 @@ import {
 } from "routes.js";
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
-import Amplify, {Auth} from 'aws-amplify';
+import Amplify, {API, Auth, graphqlOperation} from 'aws-amplify';
 import config from '../aws-exports';
+import {listLinkUsers} from "../graphql/queries";
+import axios from "axios";
 Amplify.configure(config);
 
 class Admin extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isSuperAdmin:false,
+      qldbPersonId:"",
+      cognitoUserId:""
+    }
+  }
+  componentDidMount() {
+    this.getQldbPersonId()
+  }
 
   componentDidUpdate(e) {
     document.documentElement.scrollTop = 0;
@@ -70,6 +84,37 @@ class Admin extends React.Component {
     }
     return "Brand";
   };
+  async getQldbPersonId() {
+    console.log(this.state.qldbPersonId)
+    try {
+      console.log("Loading Auth token")
+      let user = await Auth.currentAuthenticatedUser();
+     let  jwtToken = user.signInUserSession.idToken.jwtToken;
+      this.setState({cognitoUserId: user.attributes.sub})
+
+      const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
+
+      console.log('current readings: ', currentReadings)
+      this.setState({
+        qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
+      })
+      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PERSON",
+            PersonId: this.state.qldbPersonId
+          } ,
+          {
+            headers: {
+              //'Authorization': jwtToken
+            }})
+          .then(res => {
+            console.log(res.data.body[0].isSuperAdmin);
+            this.setState({isSuperAdmin: res.data.body[0].isSuperAdmin})
+          })
+
+    } catch (err) {
+      console.log('error fetching LinkUser...', err)
+    }
+  }
+
   render() {
     return (
       <>
@@ -79,6 +124,7 @@ class Admin extends React.Component {
           logo={{
             innerLink: "/admin/index",
           }}
+          isSuperAdmin={this.state.isSuperAdmin}
         />
         <div className="main-content" ref="mainContent">
           <AdminNavbar
@@ -88,8 +134,22 @@ class Admin extends React.Component {
           <Switch>
             {this.getRoutes(routes)}
             {this.getRoutes(createRoutes)}
-            {this.getRoutes(adminRoutes)}
             {this.getRoutes(viewRoutes)}
+            <div>
+              {(() => {
+                if (this.state.isSuperAdmin) {
+                  return (
+                      this.getRoutes(adminRoutes)
+                  )
+                } else {
+                  return (
+                      <div/>
+                  )
+                }
+              })()}
+            </div>
+
+
             {this.getRoutes(authRoutes)}
 
 

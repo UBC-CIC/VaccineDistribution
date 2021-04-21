@@ -111,7 +111,8 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
-        const formNotCompleted = TransportType.length===0
+        const formNotCompleted = PersonId.length===0 || PurchaseOrderId.length===0
+        ||CarrierCompanyId.length===0
 
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -121,7 +122,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">INITIATE SHIPMENT FOR MANUFACTURER</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Initiate Shipment for Manufacturer</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -219,7 +220,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
                     <Col>
 
                     <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Initiate Shipment Manufacturer
+                    Initiate Shipment to Manufacturer
                   </Button>
                     </Col>
 

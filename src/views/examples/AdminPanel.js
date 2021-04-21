@@ -133,6 +133,7 @@ async getProductData() {
       this.setState({products:res.data.body});
     
   })
+
 }
 
 async getCognitoUserId() {
@@ -163,7 +164,7 @@ async getQldbPersonId() {
       this.setState({
          qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
       })
-      localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
+      localStorage.setItem('qldbPersonId', this.state.qldbPersonId);
     } catch (err) {
       console.log('error fetching LinkUser...', err)
     }
@@ -187,6 +188,7 @@ async getAllMCGRequest(){
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
   console.log("AllMCGRequest", this.state.allMcgRequest)
+
 
 }
 
@@ -250,7 +252,7 @@ approveEntityData = (ScEntityIdentificationCode, personId) => {
   console.log("personId", personId)
 
 
-const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId == personId)
+const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId === personId)
 console.log("McgRequest filter", mcgRequest)
 console.log("McgRequestId filter", mcgRequest[0].RequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
@@ -265,7 +267,7 @@ RequestId: mcgRequest[0].RequestId
   .then(res => {
       console.log(res);
       console.log(res.data);
-      if(res.data.statusCode == 200){
+      if(res.data.statusCode === 200){
       console.log(res.data.body);
      alert("Entity is approved")
 
@@ -288,7 +290,7 @@ approveProductData = (productId) => {
   console.log("productId", productId)
 
   
-const mcgRequest = this.state.allMcgRequest.filter(requests => requests.DocumentId == productId)
+const mcgRequest = this.state.allMcgRequest.filter(requests => requests.DocumentId === productId)
 console.log("McgRequest filter", mcgRequest)
 console.log("McgRequestId filter", mcgRequest[0].RequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
@@ -303,7 +305,7 @@ RequestId: mcgRequest[0].RequestId
   .then(res => {
       console.log(res);
       console.log(res.data);
-      if(res.data.statusCode == 200){
+      if(res.data.statusCode === 200){
       console.log(res.data.body);
      alert("Product is approved")
 

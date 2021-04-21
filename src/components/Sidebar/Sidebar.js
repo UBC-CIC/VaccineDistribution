@@ -17,7 +17,7 @@
 */
 /*eslint-disable*/
 import React from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import {NavLink as NavLinkRRD, Link, Switch} from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 
@@ -228,12 +228,28 @@ class Sidebar extends React.Component {
             <Nav navbar>
               {this.createLinks(viewRoutes)}
             </Nav>
-            <hr className="my-3" />
-            <h6 className="navbar-heading text-muted text-green">Admin</h6>
+            <hr className="my-3"/>
+            <div>
+              {(() => {
+                if (this.props.isSuperAdmin) {
+                  return (
+                      <div>
+                      <h6 className="navbar-heading text-green"/>
+                        Admin
+                        <Nav navbar>
+                          {this.createLinks(adminRoutes)}
+                        </Nav>
+                      </div>
+                  )
+                } else {
+                  return (
+                      <div/>
+                  )
+                }
+              })()}
+            </div>
 
-            <Nav navbar>
-              {this.createLinks(adminRoutes)}
-            </Nav>
+
           </Collapse>
         </Container>
       </Navbar>

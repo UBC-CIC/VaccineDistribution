@@ -65,61 +65,62 @@ let createRoutes = [
 
     let viewRoutes =[
   {
-    path: "/ViewCompany",
-    name: "View Company",
+    path: "/Companies",
+    name: "Companies",
     icon: "fas fa-building text-blue",
     component: ViewCompany,
     layout: "/admin"
   },
   {
-    path: "/ViewContainer",
-    name: "View Container",
+    path: "/Containers",
+    name: "Containers",
     icon: "fas fa-box text-blue",
     component: ViewContainer,
     layout: "/admin"
   },
 
       {
-        path: "/tables",
-        name: "View Container Status",
+        path: "/container-status",
+        name: "Container Status",
         icon: "fas fa-table text-blue",
         component: ViewContainerStatus,
         layout: "/admin"
       },
       {
-        path: "/ViewProduct",
-        name: "View Product",
+        path: "/Products",
+        name: "Products",
         icon: "fas fa-box text-blue",
         component: ViewProduct,
         layout: "/admin"
       },
 
       {
-    path: "/ViewVaccine",
-    name: "View Vaccine",
+    path: "/Vaccines",
+    name: "Vaccines",
     icon: "fas fa-syringe text-blue",
     component: ViewVaccine,
     layout: "/admin"
   },
 
   {
-    path: "/ViewIOT",
-    name: "View IOT",
+    path: "/IOT",
+    name: "IOT",
     icon: "fas fa-temperature-low text-blue",
     component: ViewIOT,
     layout: "/admin"
   },
+      {
+        path: "/SupplyChainFlow",
+        name: "Supply Chain Flow",
+        icon: "fas fa-parachute-box text-blue",
+        component: SupplyChainFlow,
+        layout: "/admin"
+      },
 
 
-]
+
+    ]
 let adminRoutes =[
-  {
-    path: "/SupplyChainFlow",
-    name: "Supply Chain Flow",
-    icon: "fas fa-parachute-box text-green",
-    component: SupplyChainFlow,
-    layout: "/admin"
-  },
   {
     path: "/AdminPanel",
     name: "Admin Panel",

@@ -58,7 +58,7 @@ class CreateIndexesAndAdmin extends React.Component {
         const cognitoUser = localStorage.getItem('cognitoUserId');
     this.setState({cognitoUserId: cognitoUser})
     console.log("CognitoUserID: ", cognitoUser)
-        if(res.data.statusCode == 200){
+        if(res.data.statusCode === 200){
         this.LinkCognito_AdminQLDBUser(res.data.body.AdminPersonId[0])
         alert("Indexes and MCG Admin created suuccessfully", res.data)
     }

@@ -327,13 +327,13 @@ class HomeStepper extends React.Component {
                                 <div className="checklist-item checklist-item-success">
                                     <div className="checklist-info">
                                         <h5 className="checklist-title mb-0">Step 6. Create Manufacturer Order
-                                            Modal</h5>
+                                            </h5>
                                         <Button className="float-right"
                                                 color="primary"
                                             onClick={this.showCreateManufacturerOrderModal}
                                         > Create Manufacturer Order </Button>
                                         <CreateManufacturerOrderModal show={this.state.showCreateManufacturerOrder} handleClose={this.hideCreateManufacturerOrderModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} >
-                                            <p>Create Manufacturer Order Modal</p>
+                                            <p>Create Manufacturer Order</p>
                                         </ CreateManufacturerOrderModal>
                                     </div>
                                 </div>
