@@ -66,11 +66,10 @@ function App(props) {
                   currentLoginState === "signedIn" && (
                       <BrowserRouter>
                           <Switch>
-
-                        <Route path="/admin" render={props => <AdminLayout {...props} />} />
-                        {/*<Route path="/auth" render={props => <AuthLayout {...props} />} />*/}
-                        <Redirect from="/" to="/admin/index" />
-                    </Switch>
+                            <Route path="/admin" render={props => <AdminLayout {...props} />} />
+                            {/*<Route path="/auth" render={props => <AuthLayout {...props} />} />*/}
+                            <Redirect from="/" to="/admin/index" />
+                        </Switch>
                 </BrowserRouter>
                   )
               }

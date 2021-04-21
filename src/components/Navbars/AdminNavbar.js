@@ -58,7 +58,7 @@ class AdminNavbar extends React.Component {
 
   async componentWillMount(){
     user = await Auth.currentAuthenticatedUser();
-    this.state.email = user.attributes.email
+    this.setState({email: user.attributes.email})
 
   }
 
