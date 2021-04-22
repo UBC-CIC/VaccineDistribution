@@ -60,6 +60,7 @@ import classnames from "classnames";
 import Chart from "chart.js";
 import Timeline from 'components/Dashboard/Timeline';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
+import IoTTable from "../../components/Tables/IoTTable";
 //import Chart from "./../../components/Chart/Chart";
 
 class ViewIOT extends Component {
@@ -79,25 +80,16 @@ class ViewIOT extends Component {
       <>
         <GeneralHeader title={"View IOT"} />
         {/* Page content */}
-       
-        
-        <Row className="mt-5">
+       <IoTTable/>
+          <Container className="mt-8">
+
+          <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
             <Card className="bg-default">
             <CardHeader className="border-0">
                   <Row className="align-items-center">
                     <div className="col">
                       <h3 className="mb-0">Temperature chart</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
                     </div>
                   </Row>
                 </CardHeader>
@@ -127,6 +119,7 @@ class ViewIOT extends Component {
     <Chart sensorId="2" x-ticks="20" />
     <Chart sensorId="3" x-ticks="20"/>
     */}
+          </Container>
        
       </>
     );

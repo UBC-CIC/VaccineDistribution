@@ -75,7 +75,7 @@ class ProductTable extends Component {
         console.log("Loading tables now")
         user = await Auth.currentAuthenticatedUser();
         jwtToken = user.signInUserSession.idToken.jwtToken;
-        await this.getAllProducts();
+        // await this.getAllProducts();
 
     }
 
@@ -122,7 +122,6 @@ class ProductTable extends Component {
     //create table and fill in container data
 
     async createProductList(products, tmp){
-
         for(var i=0; i < products.length; i++){
             tmp.push(
                 <tr key={i}>
@@ -130,38 +129,20 @@ class ProductTable extends Component {
                         <Media className="align-items-center">
                             <Media>
                         <span className="mb-0 text-sm">
-                        {products[i].ProductCode}
+                        {products[i].id}
                         </span>
                             </Media>
                         </Media>
                     </th>
-                    <td>{products[i].ProductName}</td>
+                    <td>{products[i].IoTNumber}</td>
                     <td>
-                        {products[i].ProductPrice}
+                        {products[i].IoTType}
                     </td>
                     <td>
-                        {products[i].MinimumSellingAmount}
+                        {products[i].IoTName}
                     </td>
                     <td>
-                        {products[i].ProductsPerContainer}
-                    </td>
-                    <td>
-                        {products[i].ProductStorage.LowThreshTemp+  " to " +
-                            products[i].ProductStorage.HighThreshTemp + " °C"}
-                    </td>
-                    <td>
-
-                        {products[i].ProductStorage.HighThreshHumidity+ "%"}
-                    </td>
-                    <td>
-                        {products[i].ProductHSTarriffNumber}
-                    </td>
-
-                    <td>
-                        {products[i].ManufacturerId}
-                    </td>
-                    <td>
-                        {products[i].BatchTableId}
+                        {products[i].ContainerId}
                     </td>
 
                 </tr>
@@ -184,21 +165,16 @@ class ProductTable extends Component {
                         <Col className="mb-5">
                             <Card className="table-container scroll-bar">
                                 <CardHeader className="border-0">
-                                    <h3 className="mb-0">Approved Products</h3>
+                                    <h3 className="mb-0">IoTs</h3>
                                 </CardHeader>
                                 <Table className="align-items-center table-flush" responsive hover>
                                     <thead className="thead-light">
                                     <tr>
-                                        <th scope="col">ID</th>
+                                        <th scope="col">Id</th>
+                                        <th scope="col">IOT Number</th>
+                                        <th scope="col">Type</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Units/Container</th>
-                                        <th scope="col">Expiry</th>
-                                        <th scope="col">Storage Temperature range</th>
-                                        <th scope="col">Storage Max humidity</th>
-                                        <th scope="col">HS Tariff Number</th>
-                                        <th scope="col">Manufacturer Id</th>
-                                        <th scope="col">BatchTable Id</th>
+                                        <th scope="col">Container Id</th>
 
                                     </tr>
                                     </thead>
@@ -211,47 +187,7 @@ class ProductTable extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {/* Dark table */}
-
                 </Container>
-
-            {/* Page content */}
-            <Container className="mt--12">
-                {/* Table */}
-                <Row>
-                    <Col className="mb-5">
-                        <Card className="table-container scroll-bar">
-                            <CardHeader className="border-0">
-                                <h3 className="mb-0">Unapproved Products</h3>
-                            </CardHeader>
-                            <Table className="align-items-center table-flush" responsive hover>
-                                <thead className="thead-light">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Units/Container</th>
-                                    <th scope="col">Expiry</th>
-                                    <th scope="col">Storage Temperature range</th>
-                                    <th scope="col">Storage Max humidity</th>
-                                    <th scope="col">HS Tariff Number</th>
-                                    <th scope="col">Manufacturer Id</th>
-                                    <th scope="col">BatchTable Id</th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                {this.state.unapprovedItemsList}
-
-                                </tbody>
-                            </Table>
-                        </Card>
-                    </Col>
-                </Row>
-                {/* Dark table */}
-
-            </Container>
         </>
 
         );

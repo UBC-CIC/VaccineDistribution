@@ -69,24 +69,19 @@ class LinkIOTModal extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_IOT",
+        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ASSIGN_IOT",
                 PersonId: this.props.qldbPersonId,
-                IoT:{
-                    IoTNumber:"",
-                    IoTType:this.state.IOTType,
-                    IoTName: this.state.IOTName,
-                    ContainerId:""
-                }
+                IotId: this.state.IotId,
+                ContainerId:this.state.ContainerId
             }
         )
             .then(res => {
                 console.log(res.data.statusCode)
                 if(res.data.statusCode===200){
-                    this.showNotification("IOT device registered", "success")
+                    this.showNotification("IOT device linked", "success")
                 }else{
                     this.showNotification("Error: "+ res.data.body,"error")
                 }
-
             })
     }
     //todo List all IOTs
