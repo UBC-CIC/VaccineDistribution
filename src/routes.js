@@ -121,6 +121,17 @@ let createRoutes = [
 
     ]
 let adminRoutes =[
+    {
+    path: "/EntityAdminPanel",
+    name: "Entity Admin Panel",
+    icon: "fas fa-user-shield text-green",
+    component: EntityAdminPanel,
+    layout: "/admin"
+  },
+
+]
+
+let superAdminRoutes =[
   {
     path: "/AdminPanel",
     name: "Admin Panel",
@@ -199,5 +210,6 @@ export {
   routes,
   viewRoutes,
     adminRoutes,
-    authRoutes
+    authRoutes,
+  superAdminRoutes
 }

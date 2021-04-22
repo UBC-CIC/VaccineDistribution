@@ -51,7 +51,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-import {createRoutes, routes, viewRoutes, adminRoutes} from "../../routes"
+import {createRoutes, routes, viewRoutes, adminRoutes, superAdminRoutes} from "../../routes"
 import {DropdownButton, Dropdown} from "react-bootstrap";
 import {AmplifySignOut} from "@aws-amplify/ui-react";
 import {Auth} from "aws-amplify";
@@ -234,8 +234,16 @@ class Sidebar extends React.Component {
                 if (this.props.isSuperAdmin) {
                   return (
                       <div>
-                      <h6 className="navbar-heading text-green"/>
-                        Admin
+                      <h6 className="navbar-heading text-green">Admin</h6>
+                        <Nav navbar>
+                          {this.createLinks(superAdminRoutes)}
+                        </Nav>
+                      </div>
+                  )
+                }else if(this.props.isAdmin){
+                  return (
+                      <div>
+                        <h6 className="navbar-heading text-green">Admin</h6>
                         <Nav navbar>
                           {this.createLinks(adminRoutes)}
                         </Nav>

@@ -28,7 +28,7 @@ import {
   createRoutes,
   routes,
   viewRoutes,
-  adminRoutes, authRoutes
+  adminRoutes, authRoutes,superAdminRoutes
 } from "routes.js";
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 
@@ -44,6 +44,7 @@ class Admin extends React.Component {
     super(props);
     this.state = {
       isSuperAdmin:false,
+      isAdmin:false,
       qldbPersonId:"",
       cognitoUserId:""
     }
@@ -106,8 +107,10 @@ class Admin extends React.Component {
               //'Authorization': jwtToken
             }})
           .then(res => {
-            console.log(res.data.body[0].isSuperAdmin);
-            this.setState({isSuperAdmin: res.data.body[0].isSuperAdmin})
+            this.setState({
+              isSuperAdmin: res.data.body[0].isSuperAdmin,
+              isAdmin: res.data.body[0].isAdmin
+            })
           })
 
     } catch (err) {
@@ -125,6 +128,7 @@ class Admin extends React.Component {
             innerLink: "/admin/index",
           }}
           isSuperAdmin={this.state.isSuperAdmin}
+          isAdmin={this.state.isAdmin}
         />
         <div className="main-content" ref="mainContent">
           <AdminNavbar
@@ -139,6 +143,10 @@ class Admin extends React.Component {
             <div>
               {(() => {
                 if (this.state.isSuperAdmin) {
+                  return (
+                      this.getRoutes(superAdminRoutes)
+                  )
+                }else if(this.state.isAdmin){
                   return (
                       this.getRoutes(adminRoutes)
                   )
