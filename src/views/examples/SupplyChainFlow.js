@@ -49,6 +49,8 @@ import axios from 'axios';
 import { createLinkUser } from './../../graphql/mutations';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
 import { parse } from 'uuid';
+import CreateIOTModal from "../../components/Modal/CreateIOTModal";
+import LinkIOTModal from "../../components/Modal/LinkIOTModal";
 //Amplify.configure(awsExports)
 
 
@@ -69,6 +71,8 @@ class SupplyChainFlow extends Component {
           showCreateManufacturerOrder: false,
           showInitiateShipmentManufacturer: false,
           showInitiateShipmentDistributor: false,
+            showRegisterIOT:false,
+            showLinkIOT:false,
 
           userEmail: '',
           userPhone: '',
@@ -78,6 +82,8 @@ class SupplyChainFlow extends Component {
           filterEntityData: [],
           cognitoUserId: '',
           qldbPersonId: '',
+            containers:[],
+            containerOptions : [],
 
        allMcgRequest:[],
        currentScEntity:{},
@@ -106,6 +112,11 @@ class SupplyChainFlow extends Component {
         this.hideInitiateShipmentManufacturerModal = this.hideInitiateShipmentManufacturerModal.bind(this);
         this.hideInitiateShipmentDistributorModal = this.hideInitiateShipmentDistributorModal.bind(this);
 
+        this.showRegisterIOTModal = this.showRegisterIOTModal.bind(this)
+        this.hideRegisterIOTModal = this.hideRegisterIOTModal.bind(this)
+        this.showLinkIOTModal = this.showLinkIOTModal.bind(this)
+        this.hideLinkIOTModal = this.hideLinkIOTModal.bind(this)
+
       }
 
 
@@ -122,6 +133,7 @@ class SupplyChainFlow extends Component {
          localStorage.setItem('cognitoUserId', this.state.userSub);
 
          this.getEntityData();
+         this.getContainers();
 
          this.getCognitoUserId()
          this.getQldbPersonId()
@@ -195,6 +207,21 @@ class SupplyChainFlow extends Component {
     this.setState({ showInitiateShipmentDistributor: false });
   };
 
+    showRegisterIOTModal = () => {
+        this.setState({ showRegisterIOT: true });
+    };
+
+    hideRegisterIOTModal = () => {
+        this.setState({ showRegisterIOT: false });
+    };
+
+    showLinkIOTModal = () => {
+        this.setState({ showLinkIOT: true });
+    };
+
+    hideLinkIOTModal = () => {
+        this.setState({ showLinkIOT: false });
+    };
 
 //Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
@@ -359,9 +386,25 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
 }
 
-async createUserLink(){
-  
-}
+    async getContainers() {
+        let containerFiltered = []
+        try {
+            let containerList = await API.graphql(graphqlOperation(listContainers))
+            console.log('containers:', containerList)
+            this.setState({
+                containers: containerList.data.listContainers.items
+            })
+        } catch (err) {
+            console.log('error fetching containers...', err)
+        }
+        this.state.containers.forEach(element => {
+            containerFiltered.push({id: element.id, name: element.name})
+        });
+        this.setState({
+            containerOptions: containerFiltered
+        })
+        console.log(containerFiltered)
+    }
 
 
   render() {
@@ -476,7 +519,7 @@ async createUserLink(){
                 
               <div className="checklist-info">
              
-                <h5 className="checklist-title mb-0">Step 5. Create Manufacturer Order Modal</h5>
+                <h5 className="checklist-title mb-0">Step 5. Create Manufacturer Order</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showCreateManufacturerOrderModal}> Create Manufacturer Order </Button>
@@ -487,9 +530,47 @@ async createUserLink(){
         </ CreateManufacturerOrderModal>
               </div>
             </div>
+
           </ListGroupItem>
+            <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
+                <div className="checklist-item checklist-item-success">
+
+                    <div className="checklist-info">
+
+                        <h5 className="checklist-title mb-0">Register IOT device</h5>
+                        <Button className="float-right"
+                                color="primary"
+                                onClick={this.showRegisterIOTModal}> Register IOT device </Button>
 
 
+                        <CreateIOTModal show={this.state.showRegisterIOT} handleClose={this.hideRegisterIOTModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
+                            <p>Register IOT device</p>
+                        </ CreateIOTModal>
+                    </div>
+                </div>
+            </ListGroupItem>
+
+
+            <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
+                <div className="checklist-item checklist-item-success">
+
+                    <div className="checklist-info">
+
+                        <h5 className="checklist-title mb-0">Link IOT Device to Container</h5>
+                        <Button className="float-right"
+                                color="primary"
+                                onClick={this.showLinkIOTModal}> Link IOT Device</Button>
+
+
+                        <LinkIOTModal show={this.state.showLinkIOT}
+                                      handleClose={this.hideLinkIOTModal}
+                                      qldbPersonId={this.state.qldbPersonId}
+                                      containers={this.state.containerOptions} >
+                            <p>Register IOT device</p>
+                        </ LinkIOTModal>
+                    </div>
+                </div>
+            </ListGroupItem>
 
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
