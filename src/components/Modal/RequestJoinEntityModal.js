@@ -54,18 +54,6 @@ class RegisterEntityModal extends React.Component {
   }
 
 
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
 
   handleScEntityNameChange = event => {
     this.setState({ ScEntityName: event.target.value });
@@ -88,12 +76,12 @@ class RegisterEntityModal extends React.Component {
   handleScEntityIdentificationCodeTypeChange = event => {
     this.setState({ ScEntityIdentificationCodeType: event.target.value });
   }
- 
 
 
 
 
-  
+
+
 
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
@@ -143,15 +131,35 @@ class RegisterEntityModal extends React.Component {
   }
      )
       .then(res => {
-
         console.log(res);
         console.log(res.data);
-        this.showNotification("User created in Ledger", "success")
+          if(res.data.statusCode===200){
+              this.showNotification("User created in Ledger", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
+
       })
-      this.showNotification("Error! Cannot create user in Ledger", "error")
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
       const {ScEntityContact_Email,ScEntityContact_Address} = this.state
       const formNotCompleted = ScEntityContact_Email.length===0||ScEntityContact_Address.length===0
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";

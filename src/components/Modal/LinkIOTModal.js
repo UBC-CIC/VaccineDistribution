@@ -83,7 +83,24 @@ class LinkIOTModal extends React.Component {
                     this.showNotification("Error: "+ res.data.body,"error")
                 }
             })
+            .catch((error) => {
+                this.showNotification("Error: "+JSON.stringify(error.message),"error")
+            })
+
     }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
     //todo List all IOTs
 
     render(){
@@ -98,7 +115,7 @@ class LinkIOTModal extends React.Component {
                 <div className="modal-dialog modal-dialog-scrollable modal-lg" >
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h2 className="modal-title" id="exampleModalLabel">Create IOT in Ledger</h2>
+                            <h2 className="modal-title" id="exampleModalLabel">Link IOT with Container</h2>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                                 <span aria-hidden="true">&times;</span>
                             </button>

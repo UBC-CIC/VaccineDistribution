@@ -177,22 +177,27 @@ class ConnectUserModal extends React.Component {
         console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-        this.showNotification("User connected in Ledger", "success")
-
+        if(res.data.statusCode===200){
+          this.showNotification("User connected in Ledger", "success")
+        }else{
+          this.showNotification("Error: "+ res.data.body,"error")
+        }
       })
-    this.showNotification("Error! Cannot connect user in Ledger", "error")
-
+        .catch((error) => {
+          this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
   }
   showNotification(message, type){
     this.setState({
       message:message,
-      notificationType:type
+      notificationType:type,
+      notificationOpen:true,
     })
     setTimeout(function(){
       this.setState({
-        notificationOpen:true,
+        notificationOpen:false,
       })
-    }.bind(this),5000);
+    }.bind(this),7000);
   }
 
   render(){

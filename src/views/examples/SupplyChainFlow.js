@@ -51,6 +51,7 @@ import GeneralHeader from "../../components/Headers/GeneralHeader";
 import { parse } from 'uuid';
 import CreateIOTModal from "../../components/Modal/CreateIOTModal";
 import LinkIOTModal from "../../components/Modal/LinkIOTModal";
+import NotificationMessage from "../../components/Notification/NotificationMessage";
 //Amplify.configure(awsExports)
 
 
@@ -88,7 +89,11 @@ class SupplyChainFlow extends Component {
        allMcgRequest:[],
        currentScEntity:{},
        products:[],
-       filterProductData: []
+       filterProductData: [],
+            notificationOpen: false,
+            notificationType: "success",
+            message: ""
+
 
         };
         
@@ -376,15 +381,29 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
   try {
      API.graphql(graphqlOperation(createLinkUser, {input: linkUser}));
     console.log('Created Link User!')
-    alert('Created Link User!')
+      this.showNotification("Created Link User", "success")
   }
   catch(err){
-      console.log("Error creating Link User", err);
+      this.showNotification("Error creating Link User", "error")
+      console.log(err)
+
   }
 
   this.hideConnectUserModal();
 
 }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
 
     async getContainers() {
         let containerFiltered = []
@@ -410,7 +429,10 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
   render() {
     return (
       <>
-        <GeneralHeader title={"Supply Chain Flow"} />
+          <NotificationMessage notificationOpen={this.state.notificationOpen}
+                               message={this.state.message} type={this.state.notificationType}/>
+
+          <GeneralHeader title={"Supply Chain Flow"} />
         {/* Page content */}
         <Container className="mt--7" fluid>
         <ListGroup data-toggle="checklist" flush>
@@ -532,45 +554,6 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
             </div>
 
           </ListGroupItem>
-            <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
-                <div className="checklist-item checklist-item-success">
-
-                    <div className="checklist-info">
-
-                        <h5 className="checklist-title mb-0">Register IOT device</h5>
-                        <Button className="float-right"
-                                color="primary"
-                                onClick={this.showRegisterIOTModal}> Register IOT device </Button>
-
-
-                        <CreateIOTModal show={this.state.showRegisterIOT} handleClose={this.hideRegisterIOTModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>
-                            <p>Register IOT device</p>
-                        </ CreateIOTModal>
-                    </div>
-                </div>
-            </ListGroupItem>
-
-
-            <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
-                <div className="checklist-item checklist-item-success">
-
-                    <div className="checklist-info">
-
-                        <h5 className="checklist-title mb-0">Link IOT Device to Container</h5>
-                        <Button className="float-right"
-                                color="primary"
-                                onClick={this.showLinkIOTModal}> Link IOT Device</Button>
-
-
-                        <LinkIOTModal show={this.state.showLinkIOT}
-                                      handleClose={this.hideLinkIOTModal}
-                                      qldbPersonId={this.state.qldbPersonId}
-                                      containers={this.state.containerOptions} >
-                            <p>Register IOT device</p>
-                        </ LinkIOTModal>
-                    </div>
-                </div>
-            </ListGroupItem>
 
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
@@ -590,9 +573,49 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
               </div>
             </div>
           </ListGroupItem>
+            {/*<ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">*/}
+            {/*    <div className="checklist-item checklist-item-success">*/}
+
+            {/*        <div className="checklist-info">*/}
+
+            {/*            <h5 className="checklist-title mb-0">Register IOT device</h5>*/}
+            {/*            <Button className="float-right"*/}
+            {/*                    color="primary"*/}
+            {/*                    onClick={this.showRegisterIOTModal}> Register IOT device </Button>*/}
 
 
-          <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
+            {/*            <CreateIOTModal show={this.state.showRegisterIOT} handleClose={this.hideRegisterIOTModal} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} filterProductData={this.state.filterProductData} products={this.state.products}>*/}
+            {/*                <p>Register IOT device</p>*/}
+            {/*            </ CreateIOTModal>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</ListGroupItem>*/}
+
+
+            {/*<ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">*/}
+            {/*    <div className="checklist-item checklist-item-success">*/}
+
+            {/*        <div className="checklist-info">*/}
+
+            {/*            <h5 className="checklist-title mb-0">Link IOT Device to Container</h5>*/}
+            {/*            <Button className="float-right"*/}
+            {/*                    color="primary"*/}
+            {/*                    onClick={this.showLinkIOTModal}> Link IOT Device</Button>*/}
+
+
+            {/*            <LinkIOTModal show={this.state.showLinkIOT}*/}
+            {/*                          handleClose={this.hideLinkIOTModal}*/}
+            {/*                          qldbPersonId={this.state.qldbPersonId}*/}
+            {/*                          containers={this.state.containerOptions} >*/}
+            {/*                <p>Register IOT device</p>*/}
+            {/*            </ LinkIOTModal>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</ListGroupItem>*/}
+
+
+
+            <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
                 
               <div className="checklist-info">

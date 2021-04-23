@@ -44,24 +44,10 @@ class CreateBatchModal extends React.Component {
   handleOnChangeSelect = event => {
     this.setState({ [event.target.name] : event.target.value });
 
-    const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
-
-    //this.setState({ ProductName : selectedProduct[0].ProductName});
   }
 
 
 
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
 
   //handleIsCompanyRegisteredChange = event => {
   //  this.setState({ isCompanyRegistered: event.target.value });
@@ -118,12 +104,33 @@ class CreateBatchModal extends React.Component {
               console.log("MCGRequestId", res.data.body.McgRequestId);
               //this.setState({ qldbPersonId: res.data.body.PersonId });
               //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-              this.showNotification("Created product batch in Ledger", "success")
-          })
-      this.showNotification("Error! Cannot create batch in Ledger", "error")
-  }
+              if(res.data.statusCode===200){
+                  this.showNotification("Created product batch in Ledger", "success")
+              }else{
+                  this.showNotification("Error: "+ res.data.body,"error")
+              }
 
-      render(){
+          })
+          .catch((error) => {
+              this.showNotification("Error: "+JSON.stringify(error.message),"error")
+          })
+
+  }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     const {PersonId,ProductId,BatchNo,UnitsProduced,UnitsRemaining,MfgDate} = this.state;
     const formNotCompleted = ProductId.length===0||UnitsProduced.length===0||
@@ -176,7 +183,7 @@ class CreateBatchModal extends React.Component {
               name="ProductId"
               onChange={this.handleOnChangeSelect}
             >
-              <option value={1}>-select-</option>
+              <option value={''}>-select-</option>
                 {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}
               {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
 

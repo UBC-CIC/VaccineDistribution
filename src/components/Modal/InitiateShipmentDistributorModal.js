@@ -39,20 +39,6 @@ class InitiateShipmentDistributorModal extends React.Component {
   }
 
 
-
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
-
   
 
   //handleIsCompanyRegisteredChange = event => {
@@ -98,14 +84,35 @@ class InitiateShipmentDistributorModal extends React.Component {
 }
      )
       .then(res => {
-        this.showNotification("Initiated shipment for distributor", "success")
+          if(res.data.statusCode===200){
+              this.showNotification("Initiated shipment for distributor", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
+
 
       })
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
 
-      this.showNotification("Error! Cannot initiate shipment for distributor", "error")
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
       const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
       const formNotCompleted = PersonId.length===0||PurchaseOrderId.length===0||
           TransportType.length===0||CarrierCompanyId.length===0

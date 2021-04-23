@@ -39,20 +39,6 @@ class CreateIOTModal extends React.Component {
   }
 
 
-
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
-
   
 
   //handleIsCompanyRegisteredChange = event => {
@@ -76,7 +62,7 @@ class CreateIOTModal extends React.Component {
         IoT:{
             IoTNumber:"",
             IoTType:parseInt(this.state.IOTType),
-            IoTName: this.state.IOTName,
+            IoTName: "",
             ContainerId:""
         }
     }
@@ -90,11 +76,27 @@ class CreateIOTModal extends React.Component {
           }
 
       })
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
+
   }
-    
-  render(){
-      const{IOTName} = this.state
-      const formNotCompleted = IOTName.length===0
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
+      const formNotCompleted = this.state.IOTType.length===0
 
       const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -113,21 +115,6 @@ class CreateIOTModal extends React.Component {
           <Container>
             <Row>
               <Col>
-              <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="IOTName_id"
-            >
-              IOT Name
-            </label>
-                  <Input
-                      id="IOTName_id"
-                      type="text"
-                      name="IOTName"
-                      value={this.state.IOTName}
-                      onChange={this.handleOnChange}
-                  />
-          </FormGroup>
 
           <FormGroup>
             <label

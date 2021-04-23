@@ -38,18 +38,6 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
 
 
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
 
 
 
@@ -98,17 +86,30 @@ class InitiateShipmentManufacturerModal extends React.Component {
 }
      )
       .then(res => {
-
-        console.log(res);
-        console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
-        this.showNotification("Initiated shipment for manufacturer", "success")
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
-        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+          if(res.data.statusCode===200){
+              this.showNotification("Initiated shipment for manufacturer", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
 
       })
-      this.showNotification("Error! Cannot initiate shipment for manufacturer", "error")
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
   }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
         const formNotCompleted = PersonId.length===0 || PurchaseOrderId.length===0

@@ -45,17 +45,6 @@ class RegisterProductModal extends React.Component {
     
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
 
 
     handleOnChange = event => {
@@ -130,15 +119,34 @@ class RegisterProductModal extends React.Component {
         console.log(res);
         console.log(res.data);
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        this.showNotification("Product registered in Ledger", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-
+          if(res.data.statusCode===200){
+              this.showNotification("Product registered in Ledger", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
       })
-      this.showNotification("Error! Cannot register product in Ledger", "error")
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
       const {PersonId,ProductName,ProductCode, ProductPrice,MinimumSellingAmount,ProductsPerContainer,ProductExpiry,
           LowThreshTemp,HighThreshTemp,HighThreshHumidity,
