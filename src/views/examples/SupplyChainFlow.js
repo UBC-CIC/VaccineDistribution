@@ -1,56 +1,22 @@
-import React, {Component, useEffect, useState } from 'react'
-import { listContainers, listLinkUsers } from '../../graphql/queries';
+import React, {Component} from 'react'
+import {listContainers, listLinkUsers} from '../../graphql/queries';
 //import awsExports from "../../aws-exports";
-
-
-
-
 // reactstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col,
-  ListGroupItem,
-  ListGroup,
-  UncontrolledTooltip
-} from "reactstrap";
+import {Button, Container, ListGroup, ListGroupItem} from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
-import Amplify, {Auth, API, container, graphqlOperation } from 'aws-amplify'
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import ContainerTable from "components/Tables/ContainerTable.js";
-import { Link } from 'react-router-dom';
+import {API, Auth, graphqlOperation} from 'aws-amplify'
 import ConnectUserModal from "components/Modal/ConnectUserModal";
 import JoiningRequestEntityModal from "components/Modal/JoiningRequestEntityModal";
-import RequestJoinEntityModal from "components/Modal/RequestJoinEntityModal";
 import RegisterProductModal from "components/Modal/RegisterProductModal";
 import CreateBatchModal from "components/Modal/CreateBatchModal";
-import CreateManufacturerOrderModal from "components/Modal/CreateManufacturerOrderModal"; 
-import InitiateShipmentManufacturerModal from "components/Modal/InitiateShipmentManufacturerModal"; 
-import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentDistributorModal"; 
+import CreateManufacturerOrderModal from "components/Modal/CreateManufacturerOrderModal";
+import InitiateShipmentManufacturerModal from "components/Modal/InitiateShipmentManufacturerModal";
+import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentDistributorModal";
 
 import axios from 'axios';
 
-import { createLinkUser } from './../../graphql/mutations';
+import {createLinkUser} from './../../graphql/mutations';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
-import { parse } from 'uuid';
-import CreateIOTModal from "../../components/Modal/CreateIOTModal";
-import LinkIOTModal from "../../components/Modal/LinkIOTModal";
 import NotificationMessage from "../../components/Notification/NotificationMessage";
 //Amplify.configure(awsExports)
 

@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
-import axios from 'axios'
 
-
-const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class ApprovalProductTable extends Component {
 
@@ -20,7 +17,7 @@ class ApprovalProductTable extends Component {
 
      
      renderBody = () => {
-        const filterProducts = this.props.products.filter(product => product.isApprovedBySuperAdmin == false )
+         const filterProducts = this.props.products.filter(product => product.isApprovedBySuperAdmin === false)
         return filterProducts && filterProducts.map(({ ProductCode, ProductName, ManufacturerId, ProductHSTarriffNumber, ProductId}) => {
             return (
                 <tr key={ProductId}>

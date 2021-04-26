@@ -15,48 +15,19 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers, listLinkUsers } from '../../graphql/queries';
+import React, {Component} from 'react'
+import {API, Auth, graphqlOperation} from 'aws-amplify'
+import {listLinkUsers} from '../../graphql/queries';
 //import awsExports from "../../aws-exports";
-
-
-
-
 // reactstrap components
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col,
-  Button,
-  CardBody,
-  UncontrolledTooltip
-} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
 import GeneralHeader from "components/Headers/GeneralHeader.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import InitializeQLDB from "components/AdminPanel/InitializeQLDB.js";
 import CreateIndexesAndAdmin from "components/AdminPanel/CreateIndexesAndAdmin.js";
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
 import axios from 'axios';
-import { Auth } from "aws-amplify"; 
-
 
 
 //Amplify.configure(awsExports)

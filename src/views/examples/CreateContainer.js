@@ -15,41 +15,14 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
+import React, {Component} from 'react'
 //import awsExports from "../../aws-exports";
-
-
-
-
 // reactstrap components
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Button,
-  CardBody,
-  Col,
-  UncontrolledTooltip
-} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
 import GeneralHeader from "components/Headers/GeneralHeader.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
 import ContainerForm from "components/Forms/ContainerForm.js";
+
 //Amplify.configure(awsExports)
 
 

@@ -1,28 +1,21 @@
 import React from "react";
 import "./modal.css";
-import PropTypes from "prop-types";
- // react plugin used to create DropdownMenu for selecting items
-
+// react plugin used to create DropdownMenu for selecting items
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
-
-
-
-import Select from 'react-select';
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
 
 let user;
 let jwtToken;
 
 class JoiningRequestEntityModal extends React.Component {
-  
-  constructor(props){
-    super(props);
-    this.state = {
+
+    constructor(props) {
+        super(props);
+        this.state = {
       Operation: "REGISTER_NEW_USER_AND_SCENTITY",
       EmployeeId: '',
       FirstName: '',

@@ -1,16 +1,14 @@
 import {Grid} from "semantic-ui-react";
 import './App.css';
 import Login from "./components/Authentication/Login";
-import {API, Auth, graphqlOperation, Hub} from "aws-amplify";
-import React, {useState, useEffect} from "react";
-import { connect } from "react-redux";
-import {updateLoginState} from "./Actions/loginActions";
+import {Hub} from "aws-amplify";
+import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
+import {updateLoginState} from "./actions/loginActions";
 
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
 
 import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
-import {listLinkUsers} from "./graphql/queries";
 
 
 function App(props) {

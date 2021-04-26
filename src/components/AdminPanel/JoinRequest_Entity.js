@@ -1,49 +1,22 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 //import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
+import {Auth} from 'aws-amplify'
 //import awsExports from "../../aws-exports";
-
-
-
-
 // reactstrap components
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip
-} from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
 import axios from 'axios';
 
 //Amplify.configure(awsExports)
 
 
-let Comp_ID = [];
-let companyType = [];
-let companyName = [];
-let companyIC = [];
-let isCompanyRegistered = [];
-let items = [];
-let temp = [];
+// let Comp_ID = [];
+// let companyType = [];
+// let companyName = [];
+// let companyIC = [];
+// let isCompanyRegistered = [];
+// let items = [];
+// let temp = [];
 let companyData = [];
 let session;
 let user;

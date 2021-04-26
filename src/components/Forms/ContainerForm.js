@@ -2,10 +2,9 @@ import React from "react";
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid";
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
+import {Button, Col, Form, FormGroup, Input, Row} from "reactstrap";
 import QrReader from 'react-qr-scanner'
-import { Auth } from "aws-amplify"; 
+import {Auth} from "aws-amplify";
 
 let user;
 let jwtToken;
@@ -65,22 +64,25 @@ class ContainerForm extends React.Component {
 
   handleSubmit = event => {
 
-    const vaccine = {
-    Operation: "POST",
-    Cont_ID: this.state.Cont_ID,
-    containerType: this.state.containerType,
-    containerName: this.state.containerName,
-    isContainerSafe: true
-    };
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, { Operation: "POST",
-    Cont_ID: this.state.Cont_ID,
-    containerType: this.state.containerType,
-    containerName: this.state.containerName,
-    isContainerSafe: true },{
+    // const vaccine = {
+    // Operation: "POST",
+    // Cont_ID: this.state.Cont_ID,
+    // containerType: this.state.containerType,
+    // containerName: this.state.containerName,
+    // isContainerSafe: true
+    // };
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, {
+      Operation: "POST",
+      Cont_ID: this.state.Cont_ID,
+      containerType: this.state.containerType,
+      containerName: this.state.containerName,
+      isContainerSafe: true
+    }, {
       headers: {
         'Authorization': jwtToken
-      }} )
-      .then(res => {
+      }
+    })
+        .then(res => {
 
         console.log(res);
         console.log(res.data);

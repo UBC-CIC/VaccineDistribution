@@ -16,28 +16,19 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
-import { useHistory} from 'react-router-dom';
-import { Auth } from 'aws-amplify';
+import {Link} from "react-router-dom";
+import {Auth} from 'aws-amplify';
 // reactstrap components
 import {
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Form,
-    Button,
-  FormGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input,
-  InputGroup,
-  Navbar,
-  Nav,
   Container,
-  Media
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Media,
+  Nav,
+  Navbar,
+  UncontrolledDropdown
 } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
 
 let user;
 

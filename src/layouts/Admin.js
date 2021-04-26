@@ -16,26 +16,21 @@
 
 */
 import React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 // reactstrap components
-import { Container } from "reactstrap";
+import {Container} from "reactstrap";
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
-import {
-  createRoutes,
-  routes,
-  viewRoutes,
-  adminRoutes, authRoutes,superAdminRoutes
-} from "routes.js";
-import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import {adminRoutes, authRoutes, createRoutes, routes, superAdminRoutes, viewRoutes} from "routes.js";
 
 import Amplify, {API, Auth, graphqlOperation} from 'aws-amplify';
 import config from '../aws-exports';
 import {listLinkUsers} from "../graphql/queries";
 import axios from "axios";
+
 Amplify.configure(config);
 
 class Admin extends React.Component {

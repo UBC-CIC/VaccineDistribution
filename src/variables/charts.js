@@ -301,7 +301,7 @@ function parseOptions(parent, options) {
   }
 }
 
-// Example 1 of Chart inside src/views/Index.js (Sales value - Card)
+// Example 1 of Chart inside src/views/HomePage.js (Sales value - Card)
 let chartExample1 = {
   options: {
     scales: {
@@ -362,7 +362,7 @@ let chartExample1 = {
   }
 };
 
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+// Example 2 of Chart inside src/views/HomePage.js (Total orders - Card)
 let chartExample2 = {
   options: {
     scales: {
@@ -406,7 +406,7 @@ let chartExample2 = {
   }
 };
 
-// Example 3 of Chart inside src/views/Index.js (IOT data Sensor1 - Temp)
+// Example 3 of Chart inside src/views/HomePage.js (IOT data Sensor1 - Temp)
 let chartExample3 = {
   options: {
     scales: {
@@ -450,7 +450,7 @@ let chartExample3 = {
   }
 };
 
-// Example 4 of Chart inside src/views/Index.js (IOT data Sensor2 - Temp)
+// Example 4 of Chart inside src/views/HomePage.js (IOT data Sensor2 - Temp)
 let chartExample4 = {
   options: {
     scales: {
@@ -494,7 +494,7 @@ let chartExample4 = {
   }
 };
 
-// Example 2 of Chart inside src/views/Index.js (Total orders - Card)
+// Example 2 of Chart inside src/views/HomePage.js (Total orders - Card)
 let chartExample6 = {
   options: {
     scales: {
@@ -539,11 +539,11 @@ let chartExample6 = {
 };
 
 module.exports = {
-  chartOptions, // used inside src/views/Index.js
-  parseOptions, // used inside src/views/Index.js
-  chartExample1, // used inside src/views/Index.js
-  chartExample2, // used inside src/views/Index.js
-  chartExample3, // used inside src/views/Index.js
-  chartExample4, // used inside src/views/Index.js
-  chartExample6 // used inside src/views/Index.js
+    chartOptions, // used inside src/views/HomePage.js
+    parseOptions, // used inside src/views/HomePage.js
+    chartExample1, // used inside src/views/HomePage.js
+    chartExample2, // used inside src/views/HomePage.js
+    chartExample3, // used inside src/views/HomePage.js
+    chartExample4, // used inside src/views/HomePage.js
+    chartExample6 // used inside src/views/HomePage.js
 };

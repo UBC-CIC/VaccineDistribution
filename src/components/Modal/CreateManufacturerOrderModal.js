@@ -1,24 +1,21 @@
 import React from "react";
 import "./modal.css";
-import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class CreateManufacturerOrderModal extends React.Component {
-  
-  constructor(props){
-    super(props);
+
+    constructor(props) {
+        super(props);
     this.state = {
         Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
         PersonId: this.props.qldbPersonId,

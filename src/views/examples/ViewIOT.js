@@ -15,52 +15,25 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
+import React, {Component} from 'react'
 //import awsExports from "../../aws-exports";
-
-import { Line, Bar } from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 
 
 // reactstrap components
-import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    NavItem,
-    NavLink,
-    Nav,
-    Progress,
-    Table,
-    Container,
-    Row,
-    Col
-  } from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import VaccineTable from "components/Tables/VaccineTable.js";
 //Amplify.configure(awsExports)
-
 // core components
-import {
-    chartOptions,
-    parseOptions,
-    chartExample1,
-    chartExample2,
-    chartExample3,
-    chartExample4
-  } from "variables/charts";
+import {chartExample3, chartOptions, parseOptions} from "variables/charts";
 
-  // node.js library that concatenates classes (strings)
-import classnames from "classnames";
+// node.js library that concatenates classes (strings)
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 import Timeline from 'components/Dashboard/Timeline';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
 import IoTTable from "../../components/Tables/IoTTable";
+
 //import Chart from "./../../components/Chart/Chart";
 
 class ViewIOT extends Component {

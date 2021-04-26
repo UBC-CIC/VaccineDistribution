@@ -2,10 +2,8 @@ import React from "react";
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
-
+import {Button} from "reactstrap";
+import {Auth} from "aws-amplify";
 
 
 let user;
@@ -13,9 +11,9 @@ let jwtToken;
 
 class InitializeQLDB extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
+    constructor(props) {
+        super(props);
+        this.state = {
         Operation: "CREATE_LEDGER_AND_TABLES"
         
     };

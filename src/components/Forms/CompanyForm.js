@@ -2,24 +2,24 @@ import React from "react";
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import {Button, Col, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 
 
 let user;
 let jwtToken;
-class CompanyForm extends React.Component {
-/*
-  state = {
-    Operation: "POST",
-    Vac_ID: '',
-    vaccineType: '',
-    vaccineName: '',
-    isVaccineSafe: true
 
-  }
-  */
+class CompanyForm extends React.Component {
+    /*
+      state = {
+        Operation: "POST",
+        Vac_ID: '',
+        vaccineType: '',
+        vaccineName: '',
+        isVaccineSafe: true
+
+      }
+      */
 
   constructor(props){
     super(props);
@@ -64,31 +64,32 @@ class CompanyForm extends React.Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
-    const {Comp_ID} = this.state
-    if(!(parseInt(Comp_ID) && Comp_ID>=0)){
-        alert("Company ID has to be an integer greater or equal to 0")
-        return
-    }
+      event.preventDefault();
+      const {Comp_ID} = this.state
+      if (!(parseInt(Comp_ID) && Comp_ID >= 0)) {
+          alert("Company ID has to be an integer greater or equal to 0")
+          return
+      }
 
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
-        { Operation: "POST",
-    Comp_ID: parseInt(this.state.Comp_ID),
+      // const company = {
+      // Operation: "POST",
+      // Comp_ID: this.state.Comp_ID,
+      // companyType: this.state.companyType,
+      // companyName: this.state.companyName,
+      // companyIC: this .state.companyIC,
+      // isCompanyRegistered: false
+      // };
+      /*
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader("Access-Control-Max-Age", "1800");
+      res.setHeader("Access-Control-Allow-Headers", "content-type");
+      res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
+      */
+      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
+          {
+              Operation: "POST",
+              Comp_ID: parseInt(this.state.Comp_ID),
     companyType: this.state.companyType,
     companyName: this.state.companyName,
     companyIC: this.state.companyIC,

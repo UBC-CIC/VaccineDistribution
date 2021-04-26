@@ -18,21 +18,10 @@
 import React from "react";
 
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
 // core components
 import GeneralHeader from "components/Headers/GeneralHeader.js";
-import { Auth } from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 import NotificationMessage from "../../components/Notification/NotificationMessage";
 
 

@@ -1,23 +1,20 @@
 import React from "react";
 import "./modal.css";
-import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class ConnectUserModal extends React.Component {
-  
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
         Operation: "REGISTER_NEW_USER_AND_SCENTITY",

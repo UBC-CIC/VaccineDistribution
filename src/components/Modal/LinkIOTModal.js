@@ -1,15 +1,12 @@
 import React from "react";
 import "./modal.css";
-import PropTypes from "prop-types";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
@@ -17,7 +14,7 @@ let jwtToken;
 
 class LinkIOTModal extends React.Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
@@ -35,17 +32,6 @@ class LinkIOTModal extends React.Component {
 
 
 
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
 
     handleOnChangeSelect = event => {
         this.setState({ [event.target.name] : event.target.value });
@@ -101,7 +87,6 @@ class LinkIOTModal extends React.Component {
         }.bind(this),7000);
     }
 
-    //todo List all IOTs
 
     render(){
         const{IOTId, ContainerId} = this.state

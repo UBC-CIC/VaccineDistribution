@@ -2,11 +2,9 @@ import React from "react";
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import Amplify, { API, container, graphqlOperation, Auth } from 'aws-amplify'
-import { createLinkUser } from './../../graphql/mutations';
-
+import {Button} from "reactstrap";
+import {API, Auth, graphqlOperation} from 'aws-amplify'
+import {createLinkUser} from './../../graphql/mutations';
 
 
 let user;
@@ -14,9 +12,9 @@ let jwtToken;
 
 class CreateIndexesAndAdmin extends React.Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
+    constructor(props) {
+        super(props);
+        this.state = {
         Operation: "INSERT_INITIAL_DOCUMENTS",
         qldbAdminPersonId: '',
         cognitoUserId: ''

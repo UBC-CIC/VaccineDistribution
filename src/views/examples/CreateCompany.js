@@ -16,27 +16,11 @@
 
 */
 import React from "react";
-
-import axios from 'axios';
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
 import GeneralHeader from "components/Headers/GeneralHeader.js";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import Header from "components/Headers/Header";
 import CompanyForm from "components/Forms/CompanyForm";
-import VaccineForm from "../../components/Forms/VaccineForm";
 
 class CreateCompany extends React.Component {
 

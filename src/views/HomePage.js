@@ -16,63 +16,34 @@
 
 */
 import React from "react";
-import './home.css'
+import '../assets/css/home.css'
 // node.js library that concatenates classes (strings)
-import classnames from "classnames";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import {Line} from "react-chartjs-2";
 // reactstrap components
 import HomeStepper from '../components/Stepper/Stepper'
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 
 // core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4
-} from "variables/charts";
+import {chartOptions, parseOptions} from "variables/charts";
 
-import Header from "components/Headers/Header.js";
-
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { getSensorReading, listContainers, listSensorReadings, listGPSReadings } from '../graphql/queries';
+import Amplify, {API, graphqlOperation} from 'aws-amplify'
+import {listContainers, listGPSReadings, listSensorReadings} from '../graphql/queries';
 import Select from 'react-select'
 //import awsExports from "../aws-exports";
-import Search from 'react-search'
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import { withAuthenticator } from '@aws-amplify/ui-react'
-import Jvectormap from "components/Dashboard/JVectorMap";
 import Timeline from "components/Dashboard/Timeline";
 import Piechart from "components/Dashboard/Piechart";
-import VectorMapTest from "components/Dashboard/VectorMapTest";
-import ConnectUserModal from "components/Modal/ConnectUserModal";
 import axios from "axios";
 
 import config from '../aws-exports';
 
 import '../assets/css/map.css'
 import Map from '../components/Map/Map';
-import{manufacturer} from '../components/Map/VaccineManufacturer'
+import {manufacturer} from '../components/Map/VaccineManufacturer'
 import GeneralHeader from "../components/Headers/GeneralHeader";
-import NotificationMessage from "../components/Notification/NotificationMessage";
+
 let sensorTemp = []
 let sensorHumidity = []
 Amplify.configure(config);
@@ -195,16 +166,16 @@ var data2 = {
 let containerOptions = []
 
 
-
-class Index extends React.Component {
+class HomePage extends React.Component {
   //Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {Operation: "GET_ALL_SCENTITIES"},
         {
           headers: {
             //'Authorization': jwtToken
-          }})
+          }
+        })
         .then(res => {
           console.log(res.data);
           console.log(res.data.body);
@@ -618,4 +589,4 @@ class Index extends React.Component {
   }
 }
 
-export default (Index);
+export default (HomePage);

@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Index from "views/Index.js";
+import Index from "views/HomePage.js";
 import Profile from "views/examples/Profile.js";
 import ViewContainerStatus from "views/examples/ViewContainerStatus.js";
 import CreateCompany from "views/examples/CreateCompany";

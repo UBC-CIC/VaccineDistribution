@@ -17,72 +17,34 @@
 */
 import React from "react";
 // node.js library that concatenates classes (strings)
-import classnames from "classnames";
 // javascipt plugin for creating charts
-import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
 // reactstrap components
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  Form,
-  Input,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Container, Form, Input, Row} from "reactstrap";
 
 // core components
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2
-} from "variables/charts.js";
-
 import Header from "components/Headers/Header.js";
 
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { getSensorReading, listContainers, listSensorReadings, listGpsReadings } from '../graphql/queries';
+import {API, graphqlOperation} from 'aws-amplify'
 //import Select from 'react-select'
 //import awsExports from "../aws-exports";
 //import Search from 'react-search'
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react'
-import { createContainer } from '../graphql/mutations';
+import {AmplifySignOut, withAuthenticator} from '@aws-amplify/ui-react'
+import {createContainer} from '../graphql/mutations';
 import FormGroup from "reactstrap/lib/FormGroup";
 
 
-
-
-
 class createContainerComponent extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-     containerName: ''
-    };
-    this.handleChange = this.handleChange.bind(this);
+    constructor(props) {
+        super(props);
+        this.state = {
+            containerName: ''
+        };
+        this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
 
-  async componentDidMount(){
-   
-  }
-  
-  componentWillUnmount(){
-    
-  }
-//handle change in form
+    //handle change in form
   handleChange(event){
     this.setState({[event.target.name]: event.target.value});
   }

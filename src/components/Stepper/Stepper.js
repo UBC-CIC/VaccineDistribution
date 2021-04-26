@@ -1,11 +1,9 @@
-import React, {Component} from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import React from "react";
+import {withStyles} from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import {Button, Container, ListGroup, ListGroupItem} from 'reactstrap';
+import {Button, ListGroup, ListGroupItem} from 'reactstrap';
 import Typography from '@material-ui/core/Typography';
-import {Col, Row} from "react-bootstrap";
 import ConnectUserModal from "../Modal/ConnectUserModal";
 import JoiningRequestEntityModal from "../Modal/JoiningRequestEntityModal";
 import RequestJoinEntityModal from "../Modal/RequestJoinEntityModal";
@@ -15,7 +13,6 @@ import CreateManufacturerOrderModal from "../Modal/CreateManufacturerOrderModal"
 import InitiateShipmentManufacturerModal from "../Modal/InitiateShipmentManufacturerModal";
 import InitiateShipmentDistributorModal from "../Modal/InitiateShipmentDistributorModal";
 import PropTypes from 'prop-types';
-import { withStyles } from "@material-ui/core/styles";
 import {StepLabel} from "@material-ui/core";
 import {API, Auth, graphqlOperation} from "aws-amplify";
 import axios from "axios";

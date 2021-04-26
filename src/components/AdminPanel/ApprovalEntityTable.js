@@ -1,10 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
-import axios from 'axios'
-import FusionTablesLayer from 'react-google-maps/lib/components/FusionTablesLayer';
 
-
-const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class ApprovalEntityTable extends Component {
 
@@ -21,7 +17,7 @@ class ApprovalEntityTable extends Component {
 
      
      renderBody = () => {
-         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 && entity.isApprovedBySuperAdmin == false )
+         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode !== 1 && entity.isApprovedBySuperAdmin === false)
         return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode, PersonIds}) => {
             return (
                 <tr key={ScEntityIdentificationCode}>

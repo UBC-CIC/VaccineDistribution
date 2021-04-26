@@ -1,9 +1,8 @@
 import {Button, Divider, Grid, Icon, Image, Input} from "semantic-ui-react";
-// import {Input} from 'reactstrap'
 import {Auth} from "aws-amplify";
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import {updateLoginState} from "../../Actions/loginActions";
+import {updateLoginState} from "../../actions/loginActions";
 import "./Login.css";
 
 
