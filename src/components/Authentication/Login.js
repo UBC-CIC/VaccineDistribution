@@ -1,8 +1,8 @@
-import {Grid, Image,Button ,Divider, Icon,Input} from "semantic-ui-react";
+import {Button, Divider, Grid, Icon, Image, Input} from "semantic-ui-react";
 // import {Input} from 'reactstrap'
 import {Auth} from "aws-amplify";
-import React, {useState, useEffect} from "react";
-import { connect } from "react-redux";
+import React, {useEffect, useState} from "react";
+import {connect} from "react-redux";
 import {updateLoginState} from "../../Actions/loginActions";
 import "./Login.css";
 
@@ -241,13 +241,15 @@ function Login(props) {
                                                                 </Grid.Column>
                                                             </Grid.Row>
                                                             <Grid.Row style={(disableSignUp)? {paddingTop: "0px"} : {paddingBottom: "0px", paddingTop: "0px"}}>
-                                                                <Grid.Column verticalAlign={"middle"} textAlign={"center"}>
-                                                                    <Button onClick={signIn} animated={"vertical"} color={"blue"} loading={(loading)}>
+                                                                <Grid.Column verticalAlign={"middle"}
+                                                                             textAlign={"center"}>
+                                                                    <Button onClick={signIn} animated={"horizontal"}
+                                                                            color={"blue"} loading={(loading)}>
                                                                         <Button.Content visible>
                                                                             Sign In
                                                                         </Button.Content>
                                                                         <Button.Content hidden>
-                                                                            <Icon name={"arrow right"} />
+                                                                            <Icon name={"arrow right"}/>
                                                                         </Button.Content>
                                                                     </Button>
                                                                 </Grid.Column>
@@ -354,25 +356,36 @@ function Login(props) {
                                                         <Grid>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"}iconPosition={"left"} name={"email"} type={"email"} onChange={onChange} placeholder={"Enter your email"} style={{maxWidth: "100%"}} fluid>
-                                                                        <Icon name={"at"} />
-                                                                        <input />
+                                                                    <Input id={"inputs"} iconPosition={"left"}
+                                                                           name={"email"} type={"email"}
+                                                                           onChange={onChange}
+                                                                           placeholder={"Enter your email"}
+                                                                           style={{maxWidth: "100%"}} fluid>
+                                                                        <Icon name={"at"}/>
+                                                                        <input/>
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"}iconPosition={"left"} name={"resetCode"} onChange={onChange} placeholder={"Enter reset code"} style={{maxWidth: "100%"}} fluid>
-                                                                        <Icon name={"unlock alternate"} />
-                                                                        <input />
+                                                                    <Input id={"inputs"} iconPosition={"left"}
+                                                                           name={"resetCode"} onChange={onChange}
+                                                                           placeholder={"Enter reset code"}
+                                                                           style={{maxWidth: "100%"}} fluid>
+                                                                        <Icon name={"unlock alternate"}/>
+                                                                        <input/>
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"}iconPosition={"left"} name={"password"} type={"password"} onChange={onChange} placeholder={"Enter new password"} style={{maxWidth: "100%"}} fluid>
-                                                                        <Icon name={"key"} />
-                                                                        <input />
+                                                                    <Input id={"inputs"} iconPosition={"left"}
+                                                                           name={"password"} type={"password"}
+                                                                           onChange={onChange}
+                                                                           placeholder={"Enter new password"}
+                                                                           style={{maxWidth: "100%"}} fluid>
+                                                                        <Icon name={"key"}/>
+                                                                        <input/>
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
@@ -413,9 +426,13 @@ function Login(props) {
                                                             </Grid.Row>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"}iconPosition={"left"} name={"password"} type={"password"} onChange={onChange} placeholder={"Enter a password"} style={{maxWidth: "100%"}} fluid>
-                                                                        <Icon name={"key"} />
-                                                                        <input />
+                                                                    <Input id={"inputs"} iconPosition={"left"}
+                                                                           name={"password"} type={"password"}
+                                                                           onChange={onChange}
+                                                                           placeholder={"Enter a password"}
+                                                                           style={{maxWidth: "100%"}} fluid>
+                                                                        <Icon name={"key"}/>
+                                                                        <input/>
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
@@ -453,8 +470,11 @@ function Login(props) {
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
                                                                     {(verificationError)? <span style={{color: "red"}}><strong>Invalid verification code provided, please try again.</strong></span> : null}
                                                                     {(newVerification)? <span style={{color: "green"}}><strong>New verification code sent successfully.</strong></span> : null}
-                                                                    <Input id={"inputs"}name={"authCode"} onChange={onChange} placeholder={"Enter your confirmation code."} style={{maxWidth: "100%"}}
-                                                                          error={(verificationError)} fluid />
+                                                                    <Input id={"inputs"} name={"authCode"}
+                                                                           onChange={onChange}
+                                                                           placeholder={"Enter your confirmation code."}
+                                                                           style={{maxWidth: "100%"}}
+                                                                           error={(verificationError)} fluid/>
                                                                 </Grid.Column>
                                                             </Grid.Row>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>

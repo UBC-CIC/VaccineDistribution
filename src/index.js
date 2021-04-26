@@ -17,15 +17,13 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { applyMiddleware, createStore } from "redux";
+import {applyMiddleware, createStore} from "redux";
 import config from './aws-exports';
 import thunk from "redux-thunk";
 import Amplify from "aws-amplify";
 
 import './index.css';
 import reducers from "./Reducers";
-// import "./assets/css/generalStyling.css"
-// import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 import 'semantic-ui-css/semantic.min.css';

@@ -17,12 +17,7 @@
 */
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
-import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
-import Tables from "views/examples/ViewContainerStatus.js";
-import Icons from "views/examples/Icons.js";
-import createContainerComponent from "views/createContainerComponent";
+import ViewContainerStatus from "views/examples/ViewContainerStatus.js";
 import CreateCompany from "views/examples/CreateCompany";
 import CreateVaccine from "views/examples/CreateVaccine";
 import CreateContainer from "views/examples/CreateContainer";
@@ -36,7 +31,7 @@ import SupplyChainFlow from "views/examples/SupplyChainFlow";
 import AdminPanel from "views/examples/AdminPanel";
 import EntityAdminPanel from "views/examples/EntityAdminPanel";
 import ViewProduct from "./views/examples/ViewProduct";
-import ViewContainerStatus from "views/examples/ViewContainerStatus.js";
+
 let createRoutes = [
   {
     path: "/CreateCompany",
@@ -169,40 +164,6 @@ let routes = [
     layout: "/admin"
   },
 
-//   // {
-//   //   path: "/icons",
-//   //   name: "Containers",
-//   //   icon: "ni ni-planet text-blue",
-//   //   component: Icons,
-//   //   layout: "/admin"
-//   // },
-//
-//
-//   {/*
-//   {
-//     path: "/maps",
-//     name: "Maps",
-//     icon: "ni ni-pin-3 text-orange",
-//     component: Maps,
-//     layout: "/admin"
-//   },
-// */},
-//   {/*
-//   {
-//     path: "/login",
-//     name: "Login",
-//     icon: "ni ni-key-25 text-info",
-//     component: Login,
-//     layout: "/auth"
-//   },
-//   {
-//     path: "/register",
-//     name: "Register",
-//     icon: "ni ni-circle-08 text-pink",
-//     component: Register,
-//     layout: "/auth"
-//   }
-//   */}
 ];
 
 export {
