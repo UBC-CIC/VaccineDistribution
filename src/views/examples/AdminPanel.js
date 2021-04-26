@@ -28,6 +28,7 @@ import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
 import axios from 'axios';
+import NotificationMessage from "../../components/Notification/NotificationMessage";
 
 
 //Amplify.configure(awsExports)
@@ -41,16 +42,20 @@ class AdminPanel extends Component {
   constructor(props) {
     super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
     this.state = { //state is by default an object
-       employees: [{ id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
-       { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
-       { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
-       { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }],
-       entity: [],
-       products: [],
-       cognitoUserId: '',
-       qldbPersonId: '',
-       allMcgRequest:[],
-       currentScEntity:{}
+        employees: [{id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com'},
+            {id: 2, name: 'Ali', age: 19, email: 'ali@email.com'},
+            {id: 3, name: 'Saad', age: 16, email: 'saad@email.com'},
+            {id: 4, name: 'Asad', age: 25, email: 'asad@email.com'}],
+        entity: [],
+        products: [],
+        cognitoUserId: '',
+        qldbPersonId: '',
+        allMcgRequest: [],
+        currentScEntity: {},
+        notificationOpen: false,
+        notificationType: "success",
+        message: "",
+
     }
  }
   async componentDidMount(){
@@ -238,15 +243,16 @@ RequestId: mcgRequest[0].RequestId
   .then(res => {
       console.log(res);
       console.log(res.data);
-      if(res.data.statusCode === 200){
-      console.log(res.data.body);
-     alert("Entity is approved")
+      if(res.data.statusCode === 200) {
+          console.log(res.data.body);
+          this.showNotification("Entity is approved", "success")
 
-      const del = this.state.entity.filter(entity => ScEntityIdentificationCode !== entity.ScEntityIdentificationCode)
-      this.setState({entity:del})
-    }
+
+          const del = this.state.entity.filter(entity => ScEntityIdentificationCode !== entity.ScEntityIdentificationCode)
+          this.setState({entity: del})
+      }
     else{
-      alert("Entity approval failed")
+          this.showNotification("Approval failed", "error")
     }
 
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
@@ -276,40 +282,51 @@ RequestId: mcgRequest[0].RequestId
   .then(res => {
       console.log(res);
       console.log(res.data);
-      if(res.data.statusCode === 200){
-      console.log(res.data.body);
-     alert("Product is approved")
+      if (res.data.statusCode === 200) {
+          console.log(res.data.body);
+          const del = this.state.products.filter(product => productId !== product.ProductId)
+          this.setState({products: del})
+          this.showNotification("Product is approved", "success")
 
-      const del = this.state.products.filter(product => productId !== product.ProductId)
-      this.setState({products:del})
-    }
-    else{
-      alert("Product approval failed")
-    }
-
-    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+      }
   })
-
-
+      .catch(err => {
+          this.showNotification(err.message, "error")
+          console.log(err)
+      });
 
 }
 
+    showNotification(message, type) {
+        this.setState({
+            message: message,
+            notificationType: type,
+            notificationOpen: true,
+        })
+        setTimeout(function () {
+            this.setState({
+                notificationOpen: false,
+            })
+        }.bind(this), 7000);
+    }
 
 
-  render() {
-    return (
-      <>
-        <GeneralHeader title={"Admin Panel"} />
+    render() {
+        return (
+            <>
+                <GeneralHeader title={"Admin Panel"}/>
+                <NotificationMessage notificationOpen={this.state.notificationOpen}
+                                     message={this.state.message} type={this.state.notificationType}/>
 
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-        <Row>
+                {/* Page content */}
+                <Container className="mt--7" fluid>
+                    <Row>
 
-            <Col className="order-xl-1" xl="12">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
+                        <Col className="order-xl-1" xl="12">
+                            <Card className="bg-secondary shadow">
+                                <CardHeader className="bg-white border-0">
+                                    <Row className="align-items-center">
+                                        <Col xs="8">
                       <h1 className="mb-0">Approve MCG-Request</h1>
                     </Col>
                     <Col className="text-right" xs="4">

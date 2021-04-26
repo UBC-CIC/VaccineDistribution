@@ -28,6 +28,7 @@ import ApprovalPurchaseOrderTable from "components/EntityAdminPanel/ApprovalPurc
 
 import axios from 'axios';
 import GeneralHeader from "../../components/Headers/GeneralHeader";
+import NotificationMessage from "../../components/Notification/NotificationMessage";
 
 
 //Amplify.configure(awsExports)
@@ -41,29 +42,33 @@ class EntityAdminPanel extends Component {
   constructor(props) {
     super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
     this.state = { //state is by default an object
-       employees: [{ id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com' },
-       { id: 2, name: 'Ali', age: 19, email: 'ali@email.com' },
-       { id: 3, name: 'Saad', age: 16, email: 'saad@email.com' },
-       { id: 4, name: 'Asad', age: 25, email: 'asad@email.com' }],
-       entity: [],
-       cognitoUserId: '',
-       qldbPersonId: '',
-       allJoiningRequest:[],
-       currentScEntity:{},
-       purchaseOrderIds:[]
+        employees: [{id: 1, name: 'Wasif', age: 21, email: 'wasif@email.com'},
+            {id: 2, name: 'Ali', age: 19, email: 'ali@email.com'},
+            {id: 3, name: 'Saad', age: 16, email: 'saad@email.com'},
+            {id: 4, name: 'Asad', age: 25, email: 'asad@email.com'}],
+        entity: [],
+        cognitoUserId: '',
+        qldbPersonId: '',
+        allJoiningRequest: [],
+        currentScEntity: {},
+        purchaseOrderIds: [],
+        notificationOpen: false,
+        notificationType: "success",
+        message: "",
+
     }
  }
-  async componentDidMount(){
-    console.log('componentDidMount runs')
-    this.getEmployeeData();
-    this.getEntityData();
-    this.getCognitoUserId()
-    this.getQldbPersonId()
-    this.getAllJoiningRequest()
-    this.getYourScEntityId()
+  async componentDidMount() {
+      console.log('componentDidMount runs')
+      await this.getEmployeeData();
+      await this.getEntityData();
+      await this.getCognitoUserId()
+      await this.getQldbPersonId()
+      await this.getAllJoiningRequest()
+      await this.getYourScEntityId()
 
-    this.getPurchaseOrder()
-}
+      await this.getPurchaseOrder()
+  }
 
   async getEmployeeData() {
     const response = await axios.get(URL)
@@ -221,7 +226,7 @@ approveEntityData = (joiningRequestId, personId) => {
   console.log("personId", personId)
 
 
-const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId == personId)
+    const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId === personId)
 console.log("McgRequest filter", joiningRequest)
 console.log("McgRequestId filter", joiningRequest[0].JoiningRequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_JOINING_REQUEST",
@@ -232,23 +237,22 @@ JoiningRequestId: joiningRequest[0].JoiningRequestId
   {
     headers: {
       //'Authorization': jwtToken
-    }})
-  .then(res => {
-      console.log(res);
-      console.log(res.data);
-      if(res.data.statusCode == 200){
-      console.log(res.data.body);
-     alert("Joining Request is approved")
-
-      const del = this.state.allJoiningRequest.filter(request => personId !== request.SenderPersonId)
-      this.setState({allJoiningRequest:del})
     }
-    else{
-      alert("Entity approval failed")
-    }
-
-    //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
   })
+      .then(res => {
+          console.log(res);
+          console.log(res.data);
+          if (res.data.statusCode === 200) {
+              console.log(res.data.body);
+              this.showNotification("Joining Request is approved", "success")
+              const del = this.state.allJoiningRequest.filter(request => personId !== request.SenderPersonId)
+              this.setState({allJoiningRequest: del})
+          }
+      }).catch(err => {
+      this.showNotification(err.message, "error")
+      console.log(err)
+  });
+
 
 
 
@@ -269,13 +273,14 @@ PurchaseOrderId: purchaseOrderId
   .then(res => {
       console.log(res);
       console.log(res.data);
-      if(res.data.statusCode == 200){
-      console.log(res.data.body);
-     alert("PurchaseOrder is approved")
-    }
-    else{
-      alert("PurchaseOrder approval failed")
-    }
+      if (res.data.statusCode === 200) {
+          console.log(res.data.body);
+          this.showNotification("PurchaseOrder is approved", "success")
+
+      } else {
+          this.showNotification("PurchaseOrder approval failed", "error")
+
+      }
 
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
   })
@@ -284,31 +289,46 @@ PurchaseOrderId: purchaseOrderId
 
 }
 
-denyEntityData = (joiningRequestId, personId) => {
+    denyEntityData = (joiningRequestId, personId) => {
+        this.showNotification("Denied Joining Request", "error")
 
-  alert("Denied Joining Request")
-}
+    }
 
-denyPurchaseOrder = ( purchaseOrderId) => {
+    denyPurchaseOrder = (purchaseOrderId) => {
+        this.showNotification("Denied Purchase Order", "error")
 
-  alert("Denied Purchase Order")
-}
+    }
+
+    showNotification(message, type) {
+        this.setState({
+            message: message,
+            notificationType: type,
+            notificationOpen: true,
+        })
+        setTimeout(function () {
+            this.setState({
+                notificationOpen: false,
+            })
+        }.bind(this), 7000);
+    }
 
 
-  render() {
-    return (
-      <>
-        <GeneralHeader title={"Entity Admin Panel"} />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
-        <Row>
-            
-            
+    render() {
+        return (
+            <>
+                <NotificationMessage notificationOpen={this.state.notificationOpen}
+                                     message={this.state.message} type={this.state.notificationType}/>
 
-            <Col className="order-xl-1" xl="12">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
+                <GeneralHeader title={"Entity Admin Panel"}/>
+                {/* Page content */}
+                <Container className="mt--7" fluid>
+                    <Row>
+
+
+                        <Col className="order-xl-1" xl="12">
+                            <Card className="bg-secondary shadow">
+                                <CardHeader className="bg-white border-0">
+                                    <Row className="align-items-center">
                     <Col xs="8">
                       <h1 className="mb-0">Approve Join Request of Entity</h1>
                     </Col>

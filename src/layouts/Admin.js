@@ -85,7 +85,7 @@ class Admin extends React.Component {
     try {
       console.log("Loading Auth token")
       let user = await Auth.currentAuthenticatedUser();
-     let  jwtToken = user.signInUserSession.idToken.jwtToken;
+      let jwtToken = user.signInUserSession.idToken.jwtToken;
       this.setState({cognitoUserId: user.attributes.sub})
 
       const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
@@ -102,6 +102,7 @@ class Admin extends React.Component {
               //'Authorization': jwtToken
             }})
           .then(res => {
+            console.log(res)
             this.setState({
               isSuperAdmin: res.data.body[0].isSuperAdmin,
               isAdmin: res.data.body[0].isAdmin

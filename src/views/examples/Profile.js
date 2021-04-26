@@ -71,15 +71,15 @@ class Profile extends React.Component {
 
   showNotification(message, type){
     this.setState({
-      message:message,
-      notificationType:type
+        message: message,
+        notificationType: type,
+        notificationOpen: true,
     })
-    setTimeout(function(){
-      this.setState({
-        notificationOpen:true,
-      })
-    }.bind(this),3000);
-
+      setTimeout(function () {
+          this.setState({
+              notificationOpen: false,
+          })
+      }.bind(this), 7000);
   }
   handleSubmit = event => {
     console.log("hello")
@@ -129,7 +129,6 @@ class Profile extends React.Component {
           });
     }else{
       this.showNotification("Passwords do not match","error")
-      return
     }
 
 
