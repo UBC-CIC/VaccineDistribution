@@ -23,7 +23,7 @@ import thunk from "redux-thunk";
 import Amplify from "aws-amplify";
 
 import './index.css';
-import reducers from "./Reducers";
+import reducers from "./reducers";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 import 'semantic-ui-css/semantic.min.css';

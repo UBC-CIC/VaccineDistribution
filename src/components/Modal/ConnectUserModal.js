@@ -385,7 +385,7 @@ class ConnectUserModal extends React.Component {
               name="ScEntityTypeCode"
               onChange={this.handleScEntityTypeCodeChange}              
             >
-              <option value="1">MCG</option>
+              <option value="1">Supply Chain Owner</option>
               <option value="2">Manufacturer</option>
               <option value="3">Airports</option>
               <option value="4">Seaports</option>

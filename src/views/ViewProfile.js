@@ -25,17 +25,17 @@ import {Auth} from 'aws-amplify';
 import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
-class Profile extends React.Component {
+class ViewProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       userEmail: "",
-      userName:"",
-      emailVerified : false,
+      userName: "",
+      emailVerified: false,
       oldPassword: "",
-      newPassword:"",
-      newEmailAddress:" ",
-      newPasswordTwo:"",
+      newPassword: "",
+      newEmailAddress: " ",
+      newPasswordTwo: "",
       notificationOpen: false,
       notificationType: "success",
       message: "",
@@ -162,7 +162,7 @@ class Profile extends React.Component {
 
     return (
       <>
-        <Header title={"User Profile"}/>
+        <Header title={"User ViewProfile"}/>
         <NotificationMessage notificationOpen={this.state.notificationOpen}
                              message={this.state.message} type={this.state.notificationType}/>
 
@@ -297,4 +297,4 @@ class Profile extends React.Component {
   }
 }
 
-export default Profile;
+export default ViewProfile;

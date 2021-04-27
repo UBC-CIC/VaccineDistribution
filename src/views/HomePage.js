@@ -24,17 +24,17 @@ import Chart from "chart.js";
 import {Line} from "react-chartjs-2";
 // reactstrap components
 import HomeStepper from '../components/Stepper/Stepper'
-import {Button, Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 
 // core components
-import {chartOptions, parseOptions} from "components/Charts/Chart";
+import {chartOptions, parseOptions} from "components/Graphs/Chart";
 
 import Amplify, {API, graphqlOperation} from 'aws-amplify'
 import {listContainers, listGPSReadings, listSensorReadings} from '../graphql/queries';
 import Select from 'react-select'
 //import awsExports from "../aws-exports";
-import Timeline from "components/Charts/Timeline";
-import Piechart from "components/Charts/Piechart";
+import Timeline from "components/Graphs/Timeline";
+import Piechart from "components/Graphs/Piechart";
 import axios from "axios";
 
 import config from '../aws-exports';
@@ -446,7 +446,7 @@ class HomePage extends React.Component {
                 </CardHeader>
 
                 <CardBody>
-                  {/* Charts */}
+                  {/* Graphs */}
                   <Row  lg={"12"}>
                     <Col lg="2" className={"mt-8"}>
                       <h5 id={"axis-labels"}>
@@ -510,17 +510,17 @@ class HomePage extends React.Component {
           <Container className="mt--12">
             <Row className="mt-5">
               <Col className="mb-5 mb-xl-0" lg="12">
-                <Card className="table-container scroll-bar"id = 'stepperContainer'>
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Supply Chain steps</h3>
-                    </div>
-                  </Row>
-                  <CardBody>
-                    <HomeStepper/>
-                  </CardBody>
-                </CardHeader>
+                <Card className="table-container scroll-bar shadow" id='stepperContainer'>
+                  <CardHeader className="border-0">
+                    <Row className="align-items-center">
+                      <div className="col">
+                        <h3 className="mb-0">Supply Chain steps</h3>
+                      </div>
+                    </Row>
+                    <CardBody>
+                      <HomeStepper/>
+                    </CardBody>
+                  </CardHeader>
               </Card>
             </Col>
           </Row>
@@ -528,59 +528,11 @@ class HomePage extends React.Component {
 
           <Row className="mt-5">
             <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Vaccine Container Timeline</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={this.showNotification}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-
-                  <Timeline/>
-
-                </CardBody>
-
-              </Card>
+              <Timeline/>
 
             </Col>
             <Col xl="4">
-            <Card className="shadow">
-                <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Container Piechart</h3>
-                    </div>
-                    <div className="col text-right">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        See all
-                      </Button>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-
-                  <Piechart/>
-
-                </CardBody>
-
-              </Card>
+              <Piechart/>
             </Col>
           </Row>
         </Container>

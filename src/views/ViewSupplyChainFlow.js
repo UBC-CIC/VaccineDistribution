@@ -14,23 +14,22 @@ import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentD
 import axios from 'axios';
 import {createLinkUser} from '../graphql/mutations';
 import Header from "../components/Headers/Header";
-import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
 let user;
 let jwtToken;
 
-class SupplyChainFlow extends Component {
+class ViewSupplyChainFlow extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-          showRegisterEntity: false,
-          showRequestJoinEntity: false,
-          showConnectUser: false,
-          showRegisterProduct: false,
-          showCreateBatch: false,
-          showCreateManufacturerOrder: false,
+            showRegisterEntity: false,
+            showRequestJoinEntity: false,
+            showConnectUser: false,
+            showRegisterProduct: false,
+            showCreateBatch: false,
+            showCreateManufacturerOrder: false,
           showInitiateShipmentManufacturer: false,
           showInitiateShipmentDistributor: false,
             showRegisterIOT:false,
@@ -51,10 +50,6 @@ class SupplyChainFlow extends Component {
        currentScEntity:{},
        products:[],
        filterProductData: [],
-            notificationOpen: false,
-            notificationType: "success",
-            message: ""
-
 
         };
         
@@ -342,16 +337,10 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
   try {
      API.graphql(graphqlOperation(createLinkUser, {input: linkUser}));
     console.log('Created Link User!')
-      this.showNotification("Created Link User", "success")
   }
   catch(err){
-      this.showNotification("Error creating Link User", "error")
       console.log(err)
-
   }
-
-  this.hideConnectUserModal();
-
 }
     showNotification(message, type){
         this.setState({
@@ -390,9 +379,6 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
   render() {
     return (
       <>
-          <NotificationMessage notificationOpen={this.state.notificationOpen}
-                               message={this.state.message} type={this.state.notificationType}/>
-
           <Header title={"Supply Chain Flow"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
@@ -434,23 +420,6 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
               </div>
             </div>
           </ListGroupItem>
-
-          {/*
-          <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
-            <div className="checklist-item checklist-item-warning">
-              <div className="checklist-info">
-              
-                <h5 className="checklist-title mb-0">Step 3. Request to join the entity</h5>
-                <Button className="float-right"
-                        color="primary"
-                       onClick={this.showRequestJoinModal}> Request join </Button>
-                <RequestJoinEntityModal show={this.state.showRequestJoinEntity} handleClose={this.hideRequestJoinModal}/>
-              </div>
-            </div>
-          </ListGroupItem>
-          */}
-
-
 
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
@@ -636,4 +605,4 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
   }
 }
 
-export default (SupplyChainFlow) ;
+export default (ViewSupplyChainFlow);

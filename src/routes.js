@@ -16,7 +16,7 @@
 
 */
 import Index from "views/HomePage.js";
-import Profile from "views/Profile.js";
+import ViewProfile from "views/ViewProfile.js";
 import ViewContainerStatus from "views/ViewContainerStatus.js";
 import CreateCompany from "views/CreateCompany";
 import CreateVaccine from "views/CreateVaccine";
@@ -27,7 +27,7 @@ import ViewCompany from "views/ViewCompany";
 import ViewContainer from "views/ViewContainer";
 import ViewVaccine from "views/ViewVaccine";
 import ViewIOT from "views/ViewIOT";
-import SupplyChainFlow from "views/SupplyChainFlow";
+import SupplyChainFlow from "views/ViewSupplyChainFlow";
 import AdminPanel from "views/AdminPanel";
 import EntityAdminPanel from "views/EntityAdminPanel";
 import ViewProduct from "./views/ViewProduct";
@@ -105,7 +105,7 @@ let createRoutes = [
     layout: "/admin"
   },
       {
-        path: "/SupplyChainFlow",
+        path: "/ViewSupplyChainFlow",
         name: "Supply Chain Flow",
         icon: "fas fa-parachute-box text-blue",
         component: SupplyChainFlow,
@@ -150,7 +150,7 @@ let authRoutes = [
     path: "/user-profile",
     name: "User Profile",
     icon: "fas fa-home text-yellow",
-    component: Profile,
+    component: ViewProfile,
     layout: "/admin"
   },
 

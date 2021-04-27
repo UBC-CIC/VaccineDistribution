@@ -25,16 +25,16 @@ import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
 //Amplify.configure(awsExports)
 // core components
-import {chartExample3, chartOptions, parseOptions} from "components/Charts/Chart";
+import {chartExample3, chartOptions, parseOptions} from "components/Graphs/Chart";
 
 // node.js library that concatenates classes (strings)
 // javascipt plugin for creating charts
 import Chart from "chart.js";
-import Timeline from 'components/Charts/Timeline';
+import Timeline from 'components/Graphs/Timeline';
 import Header from "../components/Headers/Header";
 import IoTTable from "../components/Tables/IoTTable";
 
-//import Charts from "./../../components/Charts/Charts";
+//import Graphs from "./../../components/Graphs/Graphs";
 
 class ViewIOT extends Component {
 
@@ -88,9 +88,9 @@ class ViewIOT extends Component {
             </Col>
             </Row>
            {/*}
-    <Charts sensorId="1" />
-    <Charts sensorId="2" x-ticks="20" />
-    <Charts sensorId="3" x-ticks="20"/>
+    <Graphs sensorId="1" />
+    <Graphs sensorId="2" x-ticks="20" />
+    <Graphs sensorId="3" x-ticks="20"/>
     */}
           </Container>
        
