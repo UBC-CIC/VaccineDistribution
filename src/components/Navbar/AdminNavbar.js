@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 import {Auth} from 'aws-amplify';
 // reactstrap components
 import {
@@ -30,6 +30,7 @@ import {
   UncontrolledDropdown
 } from "reactstrap";
 
+
 let user;
 class AdminNavbar extends React.Component {
   constructor(props) {
@@ -37,6 +38,7 @@ class AdminNavbar extends React.Component {
     this.state = {
         email:''
   };
+
 }
 
   async componentWillMount(){
@@ -85,10 +87,10 @@ class AdminNavbar extends React.Component {
                   <DropdownItem className="noti-title" header tag="div">
                     <h6 className="text-overflow m-0">Welcome!</h6>
                   </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem href="user-profile">
-                    <i className="fas fa-user text-blue" />
-                      View Profile
+                  <DropdownItem divider/>
+                  <DropdownItem onClick={() => this.props.history.push('user-profile')}>
+                    <i className="fas fa-user text-blue"/>
+                    View Profile
                   </DropdownItem>
 
                   <DropdownItem onClick={this.signOut}>
@@ -106,4 +108,4 @@ class AdminNavbar extends React.Component {
   }
 }
 
-export default AdminNavbar;
+export default withRouter(AdminNavbar);
