@@ -67,8 +67,6 @@ class HomeStepper extends React.Component {
             cognitoUserId: '',
             products:[],
             filterProductData: [],
-
-            allMcgRequest:[],
             currentScEntity:{}
 
         };
@@ -113,11 +111,8 @@ class HomeStepper extends React.Component {
         console.log('user attributes: ', user.attributes);
         localStorage.setItem('cognitoUserId', this.state.userSub);
         this.getEntityData()
-
-
         await this.getCognitoUserId()
         await this.getQldbPersonId()
-        // this.getAllMCGRequest()
         await this.getYourScEntityId()
         await this.getAllProducts();
 

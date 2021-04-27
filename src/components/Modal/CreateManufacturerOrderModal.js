@@ -76,10 +76,7 @@ class CreateManufacturerOrderModal extends React.Component {
 }
      )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
           if(res.data.statusCode===200){
               this.showNotification("Created manufacturer order", "success")
           }else{

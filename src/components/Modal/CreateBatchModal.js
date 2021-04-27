@@ -79,9 +79,6 @@ class CreateBatchModal extends React.Component {
 
               console.log(res);
               console.log(res.data);
-              console.log("MCGRequestId", res.data.body.McgRequestId);
-              //this.setState({ qldbPersonId: res.data.body.PersonId });
-              //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
               if(res.data.statusCode===200){
                   this.showNotification("Created product batch in Ledger", "success")
               }else{

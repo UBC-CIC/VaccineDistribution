@@ -84,12 +84,7 @@ class RegisterProductModal extends React.Component {
   }
      )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
-        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
           if(res.data.statusCode===200){
               this.showNotification("Product registered in Ledger", "success")
           }else{

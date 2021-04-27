@@ -227,8 +227,6 @@ approveEntityData = (joiningRequestId, personId) => {
 
 
     const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId === personId)
-console.log("McgRequest filter", joiningRequest)
-console.log("McgRequestId filter", joiningRequest[0].JoiningRequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_JOINING_REQUEST",
 
 PersonId: localStorage.getItem("qldbPersonId"),

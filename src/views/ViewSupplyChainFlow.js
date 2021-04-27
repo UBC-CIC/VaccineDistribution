@@ -35,21 +35,19 @@ class ViewSupplyChainFlow extends Component {
             showRegisterIOT:false,
             showLinkIOT:false,
 
-          userEmail: '',
-          userPhone: '',
-          userSub: '',
-          ScEntityId:'',
-          entity: [],
-          filterEntityData: [],
-          cognitoUserId: '',
-          qldbPersonId: '',
-            containers:[],
-            containerOptions : [],
-
-       allMcgRequest:[],
-       currentScEntity:{},
-       products:[],
-       filterProductData: [],
+            userEmail: '',
+            userPhone: '',
+            userSub: '',
+            ScEntityId: '',
+            entity: [],
+            filterEntityData: [],
+            cognitoUserId: '',
+            qldbPersonId: '',
+            containers: [],
+            containerOptions: [],
+            currentScEntity: {},
+            products: [],
+            filterProductData: [],
 
         };
         
@@ -98,7 +96,6 @@ class ViewSupplyChainFlow extends Component {
 
          this.getCognitoUserId()
          this.getQldbPersonId()
-        // this.getAllMCGRequest()
          this.getYourScEntityId()
 
          this.getAllProducts();
@@ -196,29 +193,16 @@ class ViewSupplyChainFlow extends Component {
         console.log(res.data);
         console.log(res.data.body);
         this.setState({entity:res.data.body});
-/*
-        const entityData = this.state.entity.map( function(entity) {
-          if( entity.isApprovedBySuperAdmin === true ){
-              var info = { "text": entity.ScEntityName,
-                           "id": entity.ScEntityIdentificationCode
-                          }
-              return info;
-                        }
-
-         })
-         */
-         const entityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true).map(entity =>
-         {
-              var info = { "text": entity.ScEntityName,
-                           "id": entity.ScEntityIdentificationCode
-                          }
-              return info;
-                        }
-
-         )
+        const entityData = this.state.entity.filter(entity => entity.isApprovedBySuperAdmin === true).map(entity => {
+                var info = {
+                    "text": entity.ScEntityName,
+                    "id": entity.ScEntityIdentificationCode
+                }
+                return info;
+            }
+        )
          console.log("EntityData", entityData)
          this.setState({filterEntityData: entityData})
-      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
   }
 
@@ -234,17 +218,6 @@ class ViewSupplyChainFlow extends Component {
         console.log(res.data);
         console.log(res.data.body);
         this.setState({products:res.data.body});
-/*
-        const entityData = this.state.entity.map( function(entity) {
-          if( entity.isApprovedBySuperAdmin === true ){
-              var info = { "text": entity.ScEntityName,
-                           "id": entity.ScEntityIdentificationCode
-                          }
-              return info;
-                        }
-
-         })
-         */
          const productsData = this.state.products.filter( product => product.isApprovedBySuperAdmin === true).map(product =>
          {
               var info = { "text": product.ProductName,
@@ -256,7 +229,6 @@ class ViewSupplyChainFlow extends Component {
          )
          console.log("Products Data", productsData)
          this.setState({filterProductData: productsData})
-      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
   }
 
@@ -264,8 +236,6 @@ class ViewSupplyChainFlow extends Component {
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
      jwtToken = user.signInUserSession.idToken.jwtToken;
-     //this.setState({Email: user.attributes.email});
-     //console.log(user.attributes.email);
      this.setState({cognitoUserId: user.attributes.sub})
 
      console.log(this.state.cognitoUserId)
@@ -278,8 +248,6 @@ class ViewSupplyChainFlow extends Component {
         console.log("Loading Auth token")
         user = await Auth.currentAuthenticatedUser();
          jwtToken = user.signInUserSession.idToken.jwtToken;
-         //this.setState({Email: user.attributes.email});
-         //console.log(user.attributes.email);
          this.setState({cognitoUserId: user.attributes.sub})
 
         const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
@@ -316,11 +284,7 @@ class ViewSupplyChainFlow extends Component {
             this.setState({ScEntityId:this.state.currentScEntity[0].id});
             localStorage.setItem('ScEntityId', this.state.currentScEntity[0].id);
         }
-        //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
-
-
-    //this.setState({entity: response.data})
   }
 
   

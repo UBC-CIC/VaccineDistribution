@@ -50,7 +50,6 @@ class AdminPanel extends Component {
         products: [],
         cognitoUserId: '',
         qldbPersonId: '',
-        allMcgRequest: [],
         currentScEntity: {},
         notificationOpen: false,
         notificationType: "success",
@@ -59,17 +58,14 @@ class AdminPanel extends Component {
     }
  }
   async componentDidMount(){
-    console.log('componentDidMount runs')
       await this.getEmployeeData();
       await this.getEntityData();
       await this.getCognitoUserId()
       await this.getQldbPersonId()
-      await this.getAllMCGRequest()
-    await this.getYourScEntityId()
-
-
-    this.getProductData();
-}
+      await this.getAllRequests()
+      await this.getYourScEntityId()
+      await this.getProductData();
+  }
 
   async getEmployeeData() {
     const response = await axios.get(URL)
@@ -146,24 +142,25 @@ async getQldbPersonId() {
     }
 }
 
-async getAllMCGRequest(){
+    async getAllRequests() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_MCG_REQUESTS",
+        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {
+                Operation: "GET_ALL_MCG_REQUESTS",
 
-  PersonId: localStorage.getItem("qldbPersonId")
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
-    .then(res => {
+                PersonId: localStorage.getItem("qldbPersonId")
+            },
+            {
+                headers: {
+                    //'Authorization': jwtToken
+                }
+            })
+            .then(res => {
         console.log(res);
         console.log(res.data);
-        console.log(res.data.body);
-        this.setState({allMcgRequest:res.data.body});
+                console.log(res.data.body);
+                this.setState({allRequests: res.data.body});
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
     })
-  console.log("AllMCGRequest", this.state.allMcgRequest)
 
 
 }
@@ -225,23 +222,23 @@ removeProductData = (productId) => {
 
 approveEntityData = (ScEntityIdentificationCode, personId) => {
 
-  console.log("personId", personId)
+    console.log("personId", personId)
 
 
-const mcgRequest = this.state.allMcgRequest.filter(requests => requests.SenderPersonId === personId)
-console.log("McgRequest filter", mcgRequest)
-console.log("McgRequestId filter", mcgRequest[0].RequestId)
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
+    const requests = this.state.allRequests.filter(requests => requests.SenderPersonId === personId)
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {
+            Operation: "ACCEPT_MCG_REQUEST",
 
-PersonId: localStorage.getItem("qldbPersonId"),
-RequestId: mcgRequest[0].RequestId
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
-  .then(res => {
-      console.log(res);
+            PersonId: localStorage.getItem("qldbPersonId"),
+            RequestId: requests[0].RequestId
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
+        .then(res => {
+            console.log(res);
       console.log(res.data);
       if(res.data.statusCode === 200) {
           console.log(res.data.body);
@@ -266,14 +263,12 @@ approveProductData = (productId) => {
 
   console.log("productId", productId)
 
-  
-const mcgRequest = this.state.allMcgRequest.filter(requests => requests.DocumentId === productId)
-console.log("McgRequest filter", mcgRequest)
-console.log("McgRequestId filter", mcgRequest[0].RequestId)
+
+    const request = this.state.allRequests.filter(requests => requests.DocumentId === productId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
 
 PersonId: localStorage.getItem("qldbPersonId"),
-RequestId: mcgRequest[0].RequestId
+          RequestId: request[0].RequestId
 } ,
   {
     headers: {
@@ -327,7 +322,7 @@ RequestId: mcgRequest[0].RequestId
                                 <CardHeader className="bg-white border-0">
                                     <Row className="align-items-center">
                                         <Col xs="8">
-                      <h1 className="mb-0">Approve MCG-Request</h1>
+                                            <h1 className="mb-0">Approve Requests</h1>
                     </Col>
                   </Row>
                 </CardHeader>
@@ -362,7 +357,7 @@ RequestId: mcgRequest[0].RequestId
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="8">
-                      <h1 className="mb-0">Create Table Indexes and MCG Admin</h1>
+                        <h1 className="mb-0">Create Table Indexes and Admin</h1>
                     </Col>
                     <Col className="text-right" xs="4">
                       
