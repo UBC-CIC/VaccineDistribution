@@ -17,44 +17,30 @@
 */
 /*eslint-disable*/
 import React from "react";
-import {NavLink as NavLinkRRD, Link, Switch} from "react-router-dom";
+import {Link, NavLink as NavLinkRRD} from "react-router-dom";
 // nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+import {PropTypes} from "prop-types";
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
+  Col,
   Collapse,
-  DropdownMenu,
+  Container,
   DropdownItem,
-  UncontrolledDropdown,
+  DropdownMenu,
   DropdownToggle,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
   Media,
-  NavbarBrand,
+  Nav,
   Navbar,
+  NavbarBrand,
   NavItem,
   NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
   Row,
-  Col
+  UncontrolledDropdown
 } from "reactstrap";
-import {createRoutes, routes, viewRoutes, adminRoutes, superAdminRoutes} from "../../routes"
-import {DropdownButton, Dropdown} from "react-bootstrap";
-import {AmplifySignOut} from "@aws-amplify/ui-react";
+import {adminRoutes, createRoutes, routes, superAdminRoutes, viewRoutes} from "../../routes"
 import {Auth} from "aws-amplify";
+
 var ps;
 
 class Sidebar extends React.Component {
@@ -143,7 +129,7 @@ class Sidebar extends React.Component {
                {/*
                {
                <img
-                alt={logo.imgAlt}
+                alt={logo.imgAlt} Insert your own logo here
                 className="navbar-brand-img"
                 src={logo.imgSrc}
               /> }
@@ -151,7 +137,6 @@ class Sidebar extends React.Component {
                <div>Vaccine Distribution</div>
             </NavbarBrand>
           ) : null}
-          {/* User */}
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
@@ -256,8 +241,6 @@ class Sidebar extends React.Component {
                 }
               })()}
             </div>
-
-
           </Collapse>
         </Container>
       </Navbar>

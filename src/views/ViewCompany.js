@@ -18,27 +18,30 @@
 import React, {Component} from 'react'
 //import awsExports from "../../aws-exports";
 // reactstrap components
+import {Container} from "reactstrap";
 // core components
-import GeneralHeader from "../../components/Headers/GeneralHeader";
-import ContainerStatusTable from "../../components/Tables/ContainerStatusTable";
+import CompanyTable from "components/Tables/CompanyTable.js";
+import Header from "../components/Headers/Header";
 
 //Amplify.configure(awsExports)
 
 
 
-class ViewContainerStatus extends Component {
 
+class Tables extends Component {
 
   render() {
     return (
       <>
-        <GeneralHeader title={"View Container Status"} />
+          <Header title={"View Companies"}/>
         {/* Page content */}
-        <ContainerStatusTable/>
+        <Container className="mt--7" fluid>
+          <CompanyTable/>
 
+        </Container>
       </>
     );
   }
 }
 
-export default (ViewContainerStatus) ;
+export default (Tables) ;

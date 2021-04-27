@@ -1,18 +1,19 @@
 // Link to refer - https://reactjsexample.com/modern-timeline-component-for-react/
 
 import React from "react"
-import { Chrono } from "react-chrono";
-  let items = [{
+import {Chrono} from "react-chrono";
+
+let items = [{
     title: "1 Jan 2021",
     cardTitle: "Pfizer",
-    cardSubtitle:"Vaccine Manufacturer",
+    cardSubtitle: "Vaccine Manufacturer",
     media: {
-      type: "IMAGE",
-      source: {
-        url: require("assets/img/Dashboard/CovidVaccine.jpg")
-      }
+        type: "IMAGE",
+        source: {
+            url: require("assets/img/Dashboard/CovidVaccine.jpg")
+        }
     }
-  },{
+}, {
       title: "3 Jan 2021",
       cardTitle: "Fedex",
       cardSubtitle:"Supplychain Logistics",

@@ -10,17 +10,6 @@ let user;
 let jwtToken;
 
 class CompanyForm extends React.Component {
-    /*
-      state = {
-        Operation: "POST",
-        Vac_ID: '',
-        vaccineType: '',
-        vaccineName: '',
-        isVaccineSafe: true
-
-      }
-      */
-
   constructor(props){
     super(props);
     this.state = {
@@ -54,13 +43,9 @@ class CompanyForm extends React.Component {
     this.setState({ companyIC: event.target.value });
   }
 
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
-    console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
-     jwtToken = user.signInUserSession.idToken.jwtToken;
+      jwtToken = user.signInUserSession.idToken.jwtToken;
   }
 
   handleSubmit = event => {
@@ -71,21 +56,6 @@ class CompanyForm extends React.Component {
           return
       }
 
-      // const company = {
-      // Operation: "POST",
-      // Comp_ID: this.state.Comp_ID,
-      // companyType: this.state.companyType,
-      // companyName: this.state.companyName,
-      // companyIC: this .state.companyIC,
-      // isCompanyRegistered: false
-      // };
-      /*
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Credentials", "true");
-      res.setHeader("Access-Control-Max-Age", "1800");
-      res.setHeader("Access-Control-Allow-Headers", "content-type");
-      res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-      */
       axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
           {
               Operation: "POST",
@@ -98,9 +68,7 @@ class CompanyForm extends React.Component {
         'Authorization': jwtToken
       }} )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
       })
   }
 

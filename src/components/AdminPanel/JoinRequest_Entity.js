@@ -10,13 +10,6 @@ import axios from 'axios';
 //Amplify.configure(awsExports)
 
 
-// let Comp_ID = [];
-// let companyType = [];
-// let companyName = [];
-// let companyIC = [];
-// let isCompanyRegistered = [];
-// let items = [];
-// let temp = [];
 let companyData = [];
 let session;
 let user;

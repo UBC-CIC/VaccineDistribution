@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
@@ -168,10 +168,7 @@ class ConnectUserModal extends React.Component {
   }
      )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
-        console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
         if(res.data.statusCode===200){

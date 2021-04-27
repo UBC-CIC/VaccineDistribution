@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
@@ -60,25 +60,6 @@ class CreateBatchModal extends React.Component {
 
   handleSubmit = event => {
       event.preventDefault();
-
-      /*
-      const company = {
-      Operation: "POST",
-      Comp_ID: this.state.Comp_ID,
-      companyType: this.state.companyType,
-      companyName: this.state.companyName,
-      companyIC: this .state.companyIC,
-      isCompanyRegistered: false
-      };
-      */
-
-      /*
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Credentials", "true");
-      res.setHeader("Access-Control-Max-Age", "1800");
-      res.setHeader("Access-Control-Allow-Headers", "content-type");
-      res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-      */
       axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {
               Operation: "CREATE_BATCH",
               PersonId: this.props.qldbPersonId,
@@ -149,24 +130,6 @@ class CreateBatchModal extends React.Component {
           <Container>
             <Row>
               <Col>
-              {/*
-              <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="PersonId_id"
-            >
-              Person Id
-            </label>
-            <Input
-              id="PersonId_id"
-              type="text"
-              name="PersonId"
-              value={this.props.qldbPersonId}
-              onChange={this.handleOnChange}
-            />
-          </FormGroup>
-              */}
-
           <FormGroup>
             <label
               className="form-control-label"
@@ -182,9 +145,6 @@ class CreateBatchModal extends React.Component {
             >
               <option value={''}>-select-</option>
                 {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}
-              {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
-
-
               </Input>
           </FormGroup>
           <FormGroup>
@@ -251,21 +211,14 @@ class CreateBatchModal extends React.Component {
             />
           </FormGroup>
               </Col>
-
-
-
-
-
             </Row>
           </Container>
             <div className={"modal-footer"}>
                 <Row>
                     <Col className={"align-items-center"}>
-
                     <Button
                       className="float-right"
                       color="default"
-
                       onClick={this.props.handleClose}
                       size="xl"
                     >
@@ -273,18 +226,15 @@ class CreateBatchModal extends React.Component {
                     </Button>
                     </Col>
                     <Col>
-
-
-                    <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Create Batch
-                  </Button>
+                        <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
+                            Create Batch
+                        </Button>
                     </Col>
                 </Row>
             </div>
-
         </Form>
               </div>
-        </div>
+          </div>
       </div>
     );
   }

@@ -27,14 +27,14 @@ import HomeStepper from '../components/Stepper/Stepper'
 import {Button, Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 
 // core components
-import {chartOptions, parseOptions} from "variables/charts";
+import {chartOptions, parseOptions} from "components/Charts/Chart";
 
 import Amplify, {API, graphqlOperation} from 'aws-amplify'
 import {listContainers, listGPSReadings, listSensorReadings} from '../graphql/queries';
 import Select from 'react-select'
 //import awsExports from "../aws-exports";
-import Timeline from "components/Dashboard/Timeline";
-import Piechart from "components/Dashboard/Piechart";
+import Timeline from "components/Charts/Timeline";
+import Piechart from "components/Charts/Piechart";
 import axios from "axios";
 
 import config from '../aws-exports';
@@ -42,7 +42,7 @@ import config from '../aws-exports';
 import '../assets/css/map.css'
 import Map from '../components/Map/Map';
 import {manufacturer} from '../components/Map/VaccineManufacturer'
-import GeneralHeader from "../components/Headers/GeneralHeader";
+import Header from "../components/Headers/Header";
 
 let sensorTemp = []
 let sensorHumidity = []
@@ -414,8 +414,8 @@ class HomePage extends React.Component {
 
     return (
       <>
-        <GeneralHeader title={"Home"} />
-        <div ref = {this.mapContainer} className = "map"/>
+        <Header title={"Home"}/>
+        <div ref={this.mapContainer} className="map"/>
 
 
         {/* Page content */}
@@ -446,7 +446,7 @@ class HomePage extends React.Component {
                 </CardHeader>
 
                 <CardBody>
-                  {/* Chart */}
+                  {/* Charts */}
                   <Row  lg={"12"}>
                     <Col lg="2" className={"mt-8"}>
                       <h5 id={"axis-labels"}>

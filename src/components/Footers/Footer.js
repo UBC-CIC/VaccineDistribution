@@ -19,11 +19,10 @@
 import React from "react";
 
 // reactstrap components
-import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
+import {Col, Nav, NavItem, NavLink, Row} from "reactstrap";
 
 
 var fullDate = new Date();
-var year = fullDate.getFullYear();
 class Footer extends React.Component {
   render() {
     return (

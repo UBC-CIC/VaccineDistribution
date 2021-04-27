@@ -17,14 +17,9 @@
 */
 import React, {Component} from 'react'
 import {Auth} from 'aws-amplify'
-//import awsExports from "../../aws-exports";
-// reactstrap components
 import {Card, CardHeader, Container, Media, Row, Table} from "reactstrap";
-// core components
 import {withAuthenticator} from '@aws-amplify/ui-react';
 import axios from 'axios';
-
-//Amplify.configure(awsExports)
 
 
 let Vac_ID = [];
@@ -81,20 +76,6 @@ class VaccineTable extends Component {
 catch (err) {
     console.log('error fetching vaccine...', err)
   }
-/*
-    try {
-      const containers = await API.graphql(graphqlOperation(listContainers))
-      containerData = containers.data.listContainers.items
-      console.log('containers:', containers)
-      this.setState({
-         containers: containers.data.listContainers.items
-      }, () => this.createContainerList())
-    } catch (err) {
-      console.log('error fetching containers...', err)
-    }
-
-    */
-    
   }
 
   //create table and fill in container data
@@ -106,8 +87,6 @@ catch (err) {
       vaccineName.push(element.vaccineName);
       
       isVaccineSafe.push(element.isVaccineSafe);
-      //let date = new Date(element.updatedAt).toLocaleTimeString()
-      //containerDate.push(date)
     });
     temp = vaccineData
     var i;
@@ -125,12 +104,8 @@ catch (err) {
                   </th>
                   <td>{vaccineData[i].vaccineType}</td>
                   <td>
-                    
-                     
                       {vaccineData[i].vaccineName}
-                   
                   </td>
-                 
                   <td>
                       {vaccineData[i].isVaccineSafe?"true":"false"}
                   </td>
@@ -148,10 +123,7 @@ catch (err) {
   render() {
     return (
       <>
-        
-        {/* Page content */}
         <Container className="mt--7">
-          {/* Table */}
           <Row>
             <div className="col">
               <Card className="shadow">
@@ -175,8 +147,6 @@ catch (err) {
               </Card>
             </div>
           </Row>
-          {/* Dark table */}
-
         </Container>
       </>
     );

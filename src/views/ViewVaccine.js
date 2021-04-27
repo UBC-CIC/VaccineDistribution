@@ -18,26 +18,29 @@
 import React, {Component} from 'react'
 //import awsExports from "../../aws-exports";
 // reactstrap components
+import {Container} from "reactstrap";
 // core components
-import GeneralHeader from "../../components/Headers/GeneralHeader";
-import ProductTable from "../../components/Tables/ProductTable";
+import VaccineTable from "components/Tables/VaccineTable.js";
+import Header from "../components/Headers/Header";
 
 //Amplify.configure(awsExports)
 
 
 
 
-class ViewProduct extends Component {
+class ViewVaccine extends Component {
 
-    render() {
-        return (
-            <>
-                <GeneralHeader title={"Products"} />
-                {/* Page content */}
-                    <ProductTable/>
-            </>
-        );
-    }
+  render() {
+    return (
+      <>
+          <Header title={"View Vaccines"}/>
+        {/* Page content */}
+        <Container className="mt--7" fluid>
+          <VaccineTable/>
+        </Container>
+      </>
+    );
+  }
 }
 
-export default (ViewProduct) ;
+export default (ViewVaccine) ;

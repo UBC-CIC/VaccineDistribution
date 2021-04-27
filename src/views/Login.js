@@ -21,16 +21,16 @@ import React from "react";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
-  FormGroup,
+  CardHeader,
+  Col,
   Form,
+  FormGroup,
   Input,
+  InputGroup,
   InputGroupAddon,
   InputGroupText,
-  InputGroup,
-  Row,
-  Col
+  Row
 } from "reactstrap";
 
 class Login extends React.Component {

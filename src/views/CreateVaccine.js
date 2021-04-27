@@ -15,19 +15,25 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {Component} from 'react'
+//import awsExports from "../../aws-exports";
 // reactstrap components
 import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
-import GeneralHeader from "components/Headers/GeneralHeader.js";
-import CompanyForm from "components/Forms/CompanyForm";
+import Header from "components/Headers/Header.js";
+import VaccineForm from "components/Forms/VaccineForm.js";
 
-class CreateCompany extends React.Component {
+//Amplify.configure(awsExports)
+
+
+
+
+class CreateVaccine extends Component {
 
   render() {
     return (
         <>
-          <GeneralHeader title={"Add a New Company"}/>
+          <Header title={"Add a New Vaccine"}/>
           {/* Page content */}
           <Container className="mt--7" fluid>
             <Row>
@@ -36,24 +42,22 @@ class CreateCompany extends React.Component {
                   <CardHeader className="bg-white border-0">
                     <Row className="align-items-center">
                       <Col xs="8">
-                        <h3 className="mb-0">Company Information</h3>
+                        <h3 className="mb-0">Container Information</h3>
                       </Col>
                     </Row>
                   </CardHeader>
                   <CardBody>
                     <div className="pl-lg-1">
-                    <CompanyForm/>
+                      <VaccineForm/>
                     </div>
                   </CardBody>
                 </Card>
               </Col>
             </Row>
-
           </Container>
-        </>
-
+      </>
     );
   }
 }
 
-export default (CreateCompany)
+export default  (CreateVaccine) ;

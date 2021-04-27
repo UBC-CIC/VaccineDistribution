@@ -155,9 +155,7 @@ class ProductTable extends Component {
     render() {
         return (
             <>
-                {/* Page content */}
                 <Container className="mt--7">
-                    {/* Table */}
                     <Row>
                         <Col className="mb-5">
                             <Card className="table-container scroll-bar">
@@ -189,23 +187,18 @@ class ProductTable extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {/* Dark table */}
-
                 </Container>
-
-            {/* Page content */}
-            <Container className="mt--12">
-                {/* Table */}
-                <Row>
-                    <Col className="mb-5">
-                        <Card className="table-container scroll-bar">
-                            <CardHeader className="border-0">
-                                <h3 className="mb-0">Unapproved Products</h3>
-                            </CardHeader>
-                            <Table className="align-items-center table-flush" responsive hover>
-                                <thead className="thead-light">
-                                <tr>
-                                    <th scope="col">ID</th>
+                <Container className="mt--12">
+                    <Row>
+                        <Col className="mb-5">
+                            <Card className="table-container scroll-bar">
+                                <CardHeader className="border-0">
+                                    <h3 className="mb-0">Unapproved Products</h3>
+                                </CardHeader>
+                                <Table className="align-items-center table-flush" responsive hover>
+                                    <thead className="thead-light">
+                                    <tr>
+                                        <th scope="col">ID</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Price</th>
                                     <th scope="col">Units/Container</th>
@@ -227,8 +220,6 @@ class ProductTable extends Component {
                         </Card>
                     </Col>
                 </Row>
-                {/* Dark table */}
-
             </Container>
         </>
 

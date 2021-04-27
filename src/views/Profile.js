@@ -20,9 +20,9 @@ import React from "react";
 // reactstrap components
 import {Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
 // core components
-import GeneralHeader from "components/Headers/GeneralHeader.js";
+import Header from "components/Headers/Header.js";
 import {Auth} from 'aws-amplify';
-import NotificationMessage from "../../components/Notification/NotificationMessage";
+import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
 class Profile extends React.Component {
@@ -162,7 +162,7 @@ class Profile extends React.Component {
 
     return (
       <>
-        <GeneralHeader title={"User Profile"} />
+        <Header title={"User Profile"}/>
         <NotificationMessage notificationOpen={this.state.notificationOpen}
                              message={this.state.message} type={this.state.notificationType}/>
 

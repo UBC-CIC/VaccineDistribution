@@ -25,23 +25,23 @@ import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
 //Amplify.configure(awsExports)
 // core components
-import {chartExample3, chartOptions, parseOptions} from "variables/charts";
+import {chartExample3, chartOptions, parseOptions} from "components/Charts/Chart";
 
 // node.js library that concatenates classes (strings)
 // javascipt plugin for creating charts
 import Chart from "chart.js";
-import Timeline from 'components/Dashboard/Timeline';
-import GeneralHeader from "../../components/Headers/GeneralHeader";
-import IoTTable from "../../components/Tables/IoTTable";
+import Timeline from 'components/Charts/Timeline';
+import Header from "../components/Headers/Header";
+import IoTTable from "../components/Tables/IoTTable";
 
-//import Chart from "./../../components/Chart/Chart";
+//import Charts from "./../../components/Charts/Charts";
 
 class ViewIOT extends Component {
 
-    async componentWillMount(){
-       
+    async componentWillMount() {
+
         console.log(this.chartReference)
-        
+
         if (window.Chart) {
           parseOptions(Chart, chartOptions());
         }
@@ -51,7 +51,7 @@ class ViewIOT extends Component {
   render() {
     return (
       <>
-        <GeneralHeader title={"View IOT"} />
+          <Header title={"View IOT"}/>
         {/* Page content */}
        <IoTTable/>
           <Container className="mt-8">
@@ -88,9 +88,9 @@ class ViewIOT extends Component {
             </Col>
             </Row>
            {/*}
-    <Chart sensorId="1" />
-    <Chart sensorId="2" x-ticks="20" />
-    <Chart sensorId="3" x-ticks="20"/>
+    <Charts sensorId="1" />
+    <Charts sensorId="2" x-ticks="20" />
+    <Charts sensorId="3" x-ticks="20"/>
     */}
           </Container>
        

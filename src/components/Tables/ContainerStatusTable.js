@@ -1,4 +1,3 @@
-
 /*!
 
 =========================================================
@@ -16,23 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component } from 'react'
-import { API, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
-
-// reactstrap components
-import {
-    Card,
-    CardHeader,
-    Media,
-    Table,
-    Container,
-    Row,
-} from "reactstrap";
-// core components
-import { withAuthenticator } from '@aws-amplify/ui-react';
-
-
+import React, {Component} from 'react'
+import {API, graphqlOperation} from 'aws-amplify'
+import {listContainers} from '../../graphql/queries';
+import {Card, CardHeader, Container, Media, Row, Table,} from "reactstrap";
+import {withAuthenticator} from '@aws-amplify/ui-react';
 
 let containerID = [];
 let containerTemp = [];
@@ -124,7 +111,6 @@ class ContainerStatusTable extends Component {
     render() {
         return (
             <Container className="mt--7">
-                {/* Table */}
                 <Row>
                     <div className="col">
                         <Card className="shadow">

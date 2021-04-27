@@ -17,14 +17,14 @@
 */
 const Chart = require("chart.js");
 //
-// Chart extension for making the bars rounded
+// Charts extension for making the bars rounded
 // Code from: https://codepen.io/jedtrow/full/ygRYgo
 //
 
 Chart.elements.Rectangle.prototype.draw = function() {
   var ctx = this._chart.ctx;
   var vm = this._view;
-  var left, right, top, bottom, signX, signY, borderSkipped, radius;
+  var left, right, top, bottom, signX, signY, borderSkipped;
   var borderWidth = vm.borderWidth;
   // Set Radius Here
   // If radius is large enough to cause drawing errors a max radius is imposed
@@ -176,7 +176,7 @@ var colors = {
 
 // Methods
 
-// Chart.js global options
+// Charts.js global options
 function chartOptions() {
   // Options
   var options = {
@@ -301,7 +301,7 @@ function parseOptions(parent, options) {
   }
 }
 
-// Example 1 of Chart inside src/views/HomePage.js (Sales value - Card)
+// Example 1 of Charts inside src/views/HomePage.js (Sales value - Card)
 let chartExample1 = {
   options: {
     scales: {
@@ -362,7 +362,7 @@ let chartExample1 = {
   }
 };
 
-// Example 2 of Chart inside src/views/HomePage.js (Total orders - Card)
+// Example 2 of Charts inside src/views/HomePage.js (Total orders - Card)
 let chartExample2 = {
   options: {
     scales: {
@@ -406,7 +406,7 @@ let chartExample2 = {
   }
 };
 
-// Example 3 of Chart inside src/views/HomePage.js (IOT data Sensor1 - Temp)
+// Example 3 of Charts inside src/views/HomePage.js (IOT data Sensor1 - Temp)
 let chartExample3 = {
   options: {
     scales: {
@@ -450,7 +450,7 @@ let chartExample3 = {
   }
 };
 
-// Example 4 of Chart inside src/views/HomePage.js (IOT data Sensor2 - Temp)
+// Example 4 of Charts inside src/views/HomePage.js (IOT data Sensor2 - Temp)
 let chartExample4 = {
   options: {
     scales: {
@@ -494,7 +494,7 @@ let chartExample4 = {
   }
 };
 
-// Example 2 of Chart inside src/views/HomePage.js (Total orders - Card)
+// Example 2 of Charts inside src/views/HomePage.js (Total orders - Card)
 let chartExample6 = {
   options: {
     scales: {

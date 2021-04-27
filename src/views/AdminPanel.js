@@ -17,18 +17,18 @@
 */
 import React, {Component} from 'react'
 import {API, Auth, graphqlOperation} from 'aws-amplify'
-import {listLinkUsers} from '../../graphql/queries';
+import {listLinkUsers} from '../graphql/queries';
 //import awsExports from "../../aws-exports";
 // reactstrap components
-import {Button, Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
+import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
-import GeneralHeader from "components/Headers/GeneralHeader.js";
+import Header from "components/Headers/Header.js";
 import CreateIndexesAndAdmin from "components/AdminPanel/CreateIndexesAndAdmin.js";
 import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalEntityTable from "components/AdminPanel/ApprovalEntityTable.js";
 import axios from 'axios';
-import NotificationMessage from "../../components/Notification/NotificationMessage";
+import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
 //Amplify.configure(awsExports)
@@ -314,7 +314,7 @@ RequestId: mcgRequest[0].RequestId
     render() {
         return (
             <>
-                <GeneralHeader title={"Admin Panel"}/>
+                <Header title={"Admin Panel"}/>
                 <NotificationMessage notificationOpen={this.state.notificationOpen}
                                      message={this.state.message} type={this.state.notificationType}/>
 
@@ -328,16 +328,6 @@ RequestId: mcgRequest[0].RequestId
                                     <Row className="align-items-center">
                                         <Col xs="8">
                       <h1 className="mb-0">Approve MCG-Request</h1>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.hello()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
                     </Col>
                   </Row>
                 </CardHeader>
@@ -356,16 +346,6 @@ RequestId: mcgRequest[0].RequestId
                   <Row className="align-items-center">
                     <Col xs="8">
                       <h1 className="mb-0">Approve Product Request</h1>
-                    </Col>
-                    <Col className="text-right" xs="4">
-                      <Button
-                        color="primary"
-                        href="#pablo"
-                        onClick={e => e.preventDefault()}
-                        size="sm"
-                      >
-                        Reset
-                      </Button>
                     </Col>
                   </Row>
                 </CardHeader>

@@ -17,7 +17,7 @@
 */
 import React, {Component} from 'react'
 import {API, Auth, graphqlOperation} from 'aws-amplify'
-import {listLinkUsers} from '../../graphql/queries';
+import {listLinkUsers} from '../graphql/queries';
 //import awsExports from "../../aws-exports";
 // reactstrap components
 import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
@@ -27,8 +27,8 @@ import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/Approval
 import ApprovalPurchaseOrderTable from "components/EntityAdminPanel/ApprovalPurchaseOrderTable.js";
 
 import axios from 'axios';
-import GeneralHeader from "../../components/Headers/GeneralHeader";
-import NotificationMessage from "../../components/Notification/NotificationMessage";
+import Header from "../components/Headers/Header";
+import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
 //Amplify.configure(awsExports)
@@ -319,7 +319,7 @@ PurchaseOrderId: purchaseOrderId
                 <NotificationMessage notificationOpen={this.state.notificationOpen}
                                      message={this.state.message} type={this.state.notificationType}/>
 
-                <GeneralHeader title={"Entity Admin Panel"}/>
+                <Header title={"Entity Admin Panel"}/>
                 {/* Page content */}
                 <Container className="mt--7" fluid>
                     <Row>

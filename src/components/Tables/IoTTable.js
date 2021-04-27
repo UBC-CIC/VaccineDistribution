@@ -17,14 +17,9 @@
 */
 import React, {Component} from 'react'
 import {Auth} from 'aws-amplify'
-//import awsExports from "../../aws-exports";
-// reactstrap components
 import {Card, CardHeader, Col, Container, Media, Row, Table} from "reactstrap";
-// core components
 import {withAuthenticator} from '@aws-amplify/ui-react';
 import axios from 'axios';
-
-//Amplify.configure(awsExports)
 
 
 let user;

@@ -31,15 +31,7 @@ import {
 } from "reactstrap";
 
 let user;
-
-//let user ="usama101";//Auth.currentAuthenticatedUser();
-/*
-Auth.currentAuthenticatedUser()
-    .then(user => alert(user.username))
-    .catch(err => console.log(err));
-*/
 class AdminNavbar extends React.Component {
-  //let user = await Auth.currentAuthenticatedUser(); 
   constructor(props) {
     super(props);
     this.state = {

@@ -6,7 +6,7 @@ import {Pie} from "react-chartjs-2";
 // reactstrap components
 import {Card, CardBody, CardHeader} from "reactstrap";
 // core components
-import {chartExample6, chartOptions, parseOptions} from "variables/charts.js";
+import {chartExample6, chartOptions, parseOptions} from "components/Charts/Chart.js";
 
 class Charts extends React.Component {
     componentWillMount() {

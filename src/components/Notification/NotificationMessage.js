@@ -1,5 +1,4 @@
-
-import React, {Component } from 'react'
+import React, {Component} from 'react'
 import {Snackbar} from "@material-ui/core";
 import MuiAlert from '@material-ui/lab/Alert';
 
@@ -12,7 +11,6 @@ class NotificationMessage extends Component{
     constructor(props) {
         super(props);
     }
-
     render(){
         const {notificationOpen,message, type, close} = this.props;
         return(

@@ -16,21 +16,21 @@
 
 */
 import Index from "views/HomePage.js";
-import Profile from "views/examples/Profile.js";
-import ViewContainerStatus from "views/examples/ViewContainerStatus.js";
-import CreateCompany from "views/examples/CreateCompany";
-import CreateVaccine from "views/examples/CreateVaccine";
-import CreateContainer from "views/examples/CreateContainer";
+import Profile from "views/Profile.js";
+import ViewContainerStatus from "views/ViewContainerStatus.js";
+import CreateCompany from "views/CreateCompany";
+import CreateVaccine from "views/CreateVaccine";
+import CreateContainer from "views/CreateContainer";
 
 
-import ViewCompany from "views/examples/ViewCompany";
-import ViewContainer from "views/examples/ViewContainer";
-import ViewVaccine from "views/examples/ViewVaccine";
-import ViewIOT from "views/examples/ViewIOT";
-import SupplyChainFlow from "views/examples/SupplyChainFlow";
-import AdminPanel from "views/examples/AdminPanel";
-import EntityAdminPanel from "views/examples/EntityAdminPanel";
-import ViewProduct from "./views/examples/ViewProduct";
+import ViewCompany from "views/ViewCompany";
+import ViewContainer from "views/ViewContainer";
+import ViewVaccine from "views/ViewVaccine";
+import ViewIOT from "views/ViewIOT";
+import SupplyChainFlow from "views/SupplyChainFlow";
+import AdminPanel from "views/AdminPanel";
+import EntityAdminPanel from "views/EntityAdminPanel";
+import ViewProduct from "./views/ViewProduct";
 
 let createRoutes = [
   {

@@ -20,8 +20,8 @@ import {Redirect, Route, Switch} from "react-router-dom";
 // reactstrap components
 import {Container} from "reactstrap";
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
+import AdminNavbar from "components/Navbar/AdminNavbar.js";
+import AdminFooter from "components/Footers/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import {adminRoutes, authRoutes, createRoutes, routes, superAdminRoutes, viewRoutes} from "routes.js";

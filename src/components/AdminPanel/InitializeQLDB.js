@@ -15,17 +15,9 @@ class InitializeQLDB extends React.Component {
         super(props);
         this.state = {
         Operation: "CREATE_LEDGER_AND_TABLES"
-        
     };
-    
-    
   }
 
-
-
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -33,24 +25,13 @@ class InitializeQLDB extends React.Component {
   }
 
   handleTable = () => {
-       
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_LEDGER_AND_TABLES"},
     {
       headers: {
         'Authorization': jwtToken
       }} )
       .then(res => {
-
-        console.log(res);
-        console.log(res.data);
-        alert("Ledger and Tables created suuccessfully", res.data)
+          alert("Ledger and Tables created suuccessfully", res.data)
       })
   }
 

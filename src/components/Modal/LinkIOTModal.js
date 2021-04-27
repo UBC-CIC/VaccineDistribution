@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
@@ -37,13 +37,6 @@ class LinkIOTModal extends React.Component {
         this.setState({ [event.target.name] : event.target.value });
         console.log(event.target.name, event.target.value)
     }
-
-
-
-
-    //handleIsCompanyRegisteredChange = event => {
-    //  this.setState({ isCompanyRegistered: event.target.value });
-    //}
     async componentDidMount(){
         console.log("Loading Auth token")
         user = await Auth.currentAuthenticatedUser();

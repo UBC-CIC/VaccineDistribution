@@ -20,7 +20,7 @@ import React, {Component} from 'react'
 // reactstrap components
 import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
 // core components
-import GeneralHeader from "components/Headers/GeneralHeader.js";
+import Header from "components/Headers/Header.js";
 import ContainerForm from "components/Forms/ContainerForm.js";
 
 //Amplify.configure(awsExports)
@@ -33,7 +33,7 @@ class CreateContainer extends Component {
   render() {
     return (
       <>
-       <GeneralHeader title={"Add a New Container"} />
+          <Header title={"Add a New Container"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
         <Row>

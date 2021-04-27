@@ -20,23 +20,23 @@ import React, {Component} from 'react'
 // reactstrap components
 import {Container} from "reactstrap";
 // core components
-import CompanyTable from "components/Tables/CompanyTable.js";
-import GeneralHeader from "../../components/Headers/GeneralHeader";
+import ContainerTable from "components/Tables/ContainerTable.js";
+import Header from "../components/Headers/Header";
 
 //Amplify.configure(awsExports)
 
 
 
 
-class Tables extends Component {
+class ViewContainer extends Component {
 
   render() {
     return (
       <>
-        <GeneralHeader title={"View Companies"}/>
+          <Header title={"View Containers"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
-          <CompanyTable/>
+          <ContainerTable/>
 
         </Container>
       </>
@@ -44,4 +44,4 @@ class Tables extends Component {
   }
 }
 
-export default (Tables) ;
+export default (ViewContainer) ;

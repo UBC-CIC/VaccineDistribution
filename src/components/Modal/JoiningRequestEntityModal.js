@@ -1,5 +1,5 @@
 import React from "react";
-import "./modal.css";
+import "../../assets/css/modal.css";
 // react plugin used to create DropdownMenu for selecting items
 import axios from 'axios';
 
@@ -91,26 +91,11 @@ class JoiningRequestEntityModal extends React.Component {
 
   }
 
-
-
-
-
-  
-
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
      jwtToken = user.signInUserSession.idToken.jwtToken;
-
-
   }
-
-
-
-
 
   handleSubmit = event => {
     event.preventDefault();

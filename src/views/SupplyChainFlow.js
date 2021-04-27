@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
-import {listContainers, listLinkUsers} from '../../graphql/queries';
-//import awsExports from "../../aws-exports";
+import {listContainers, listLinkUsers} from '../graphql/queries';
 // reactstrap components
 import {Button, Container, ListGroup, ListGroupItem} from "reactstrap";
 // core components
@@ -12,22 +11,18 @@ import CreateBatchModal from "components/Modal/CreateBatchModal";
 import CreateManufacturerOrderModal from "components/Modal/CreateManufacturerOrderModal";
 import InitiateShipmentManufacturerModal from "components/Modal/InitiateShipmentManufacturerModal";
 import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentDistributorModal";
-
 import axios from 'axios';
-
-import {createLinkUser} from './../../graphql/mutations';
-import GeneralHeader from "../../components/Headers/GeneralHeader";
-import NotificationMessage from "../../components/Notification/NotificationMessage";
-//Amplify.configure(awsExports)
+import {createLinkUser} from '../graphql/mutations';
+import Header from "../components/Headers/Header";
+import NotificationMessage from "../components/Notification/NotificationMessage";
 
 
 let user;
 let jwtToken;
-let sub;
 
 class SupplyChainFlow extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
           showRegisterEntity: false,
@@ -398,7 +393,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
           <NotificationMessage notificationOpen={this.state.notificationOpen}
                                message={this.state.message} type={this.state.notificationType}/>
 
-          <GeneralHeader title={"Supply Chain Flow"} />
+          <Header title={"Supply Chain Flow"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
         <ListGroup data-toggle="checklist" flush>
