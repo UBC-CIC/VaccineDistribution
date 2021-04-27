@@ -17,18 +17,11 @@
 */
 import React, {Component} from 'react'
 //import awsExports from "../../aws-exports";
-import {Line} from "react-chartjs-2";
-
-
 // reactstrap components
-import {Card, CardBody, CardHeader, Col, Container, Row} from "reactstrap";
+import {Col, Container, Row} from "reactstrap";
 // core components
-//Amplify.configure(awsExports)
-// core components
-import {chartExample3, chartOptions, parseOptions} from "components/Graphs/Chart";
+import {chartOptions, parseOptions} from "components/Graphs/Chart";
 
-// node.js library that concatenates classes (strings)
-// javascipt plugin for creating charts
 import Chart from "chart.js";
 import Timeline from 'components/Graphs/Timeline';
 import Header from "../components/Headers/Header";
@@ -53,45 +46,14 @@ class ViewIOT extends Component {
       <>
           <Header title={"View IOT"}/>
         {/* Page content */}
-       <IoTTable/>
-          <Container className="mt-8">
+          <IoTTable/>
+          <Container className="mt-4">
 
-          <Row className="mt-5">
-            <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-default">
-            <CardHeader className="border-0">
-                  <Row className="align-items-center">
-                    <div className="col">
-                      <h3 className="mb-0">Temperature chart</h3>
-                    </div>
-                  </Row>
-                </CardHeader>
-                <CardBody>
-             <div className="chart">
-
-                    
-               <Line ref="chart"
-                 data={chartExample3.data}
-                 id="chart-sales"
-                 className="chart-canvas"
-                 options={chartExample3.options}
-                 
-               />
-               </div>
-            </CardBody>
-            </Card>
-            </Col>
-            <Col className="mb-5 mb-xl-0" xl="8">
-       
-            <Timeline/>
-            
-            </Col>
-            </Row>
-           {/*}
-    <Graphs sensorId="1" />
-    <Graphs sensorId="2" x-ticks="20" />
-    <Graphs sensorId="3" x-ticks="20"/>
-    */}
+              <Row className="mt-5">
+                  <Col className="mb-5 ml-6" xl="5">
+                      <Timeline/>
+                  </Col>
+              </Row>
           </Container>
        
       </>
