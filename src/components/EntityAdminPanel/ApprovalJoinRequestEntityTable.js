@@ -21,7 +21,7 @@ class ApprovalJoinRequestEntityTable extends Component {
      
      renderBody = () => {
          const filterEntity = this.props.allJoiningRequest.filter(request => request.isAccepted == false)//.filter(entity => entity.ScEntityTypeCode != 1 )
-        return  filterEntity.map(({ JoiningRequestNumber, SenderEmployeeId, SenderPersonId, ScEntityId, isAccepted, JoiningRequestId }) => {
+        return filterEntity && filterEntity.map(({ JoiningRequestNumber, SenderEmployeeId, SenderPersonId, ScEntityId, isAccepted, JoiningRequestId }) => {
             return (
                 <tr key={SenderEmployeeId}>
                     <td>{JoiningRequestNumber}</td>

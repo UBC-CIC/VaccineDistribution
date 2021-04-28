@@ -23,7 +23,7 @@ class InitiateShipmentDistributorModal extends React.Component {
         Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
         PersonId: this.props.qldbPersonId,
         PurchaseOrderId: '',
-        TransportType: 3,
+        TransportType: '',
         CarrierCompanyId: '',
 
         notificationOpen: false,
@@ -90,10 +90,9 @@ class InitiateShipmentDistributorModal extends React.Component {
     */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
     PersonId: this.props.qldbPersonId,
-        
     PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: this. state.TransportType,
-    CarrierCompanyId: this.props.manufacturerId
+    TransportType: parseInt(this. state.TransportType),
+    CarrierCompanyId: this.state.CarrierCompanyId
     
 }
      )
@@ -115,8 +114,7 @@ class InitiateShipmentDistributorModal extends React.Component {
     
   render(){
       const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
-      const formNotCompleted = PersonId.length===0||PurchaseOrderId.length===0||
-          TransportType.length===0||CarrierCompanyId.length===0
+      const formNotCompleted = PurchaseOrderId.length===0||TransportType.length===0||CarrierCompanyId.length===0
 
       const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -134,22 +132,7 @@ class InitiateShipmentDistributorModal extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Container>
             <Row>
-              <Col>
-              <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="PersonId_id"
-            >
-              Person Id
-            </label>
-            <Input
-              id="PersonId_id"
-              type="text"
-              name="PersonId"
-              value={this.state.PersonId}
-              onChange={this.handleOnChange}              
-            />
-          </FormGroup>
+            <Col>
           <FormGroup>
             <label
               className="form-control-label"
@@ -159,13 +142,18 @@ class InitiateShipmentDistributorModal extends React.Component {
             </label>
             <Input
               id="PurchaseOrderId_id"
-              type="text"
+              type="select"
               name="PurchaseOrderId"
-              value={this.state.PurchaseOrderId}
+              
               onChange={this.handleOnChange}              
-            />
+            >
+               <option value="0">-Select-</option>
+              {this.props.purchaseOrderIds.map((result) => (<option value={result}>{result}</option>))}
+
+              </Input>
           </FormGroup>
-        
+
+
           <FormGroup>
             <label
               className="form-control-label"
@@ -179,27 +167,34 @@ class InitiateShipmentDistributorModal extends React.Component {
               name="TransportType"
               onChange={this.handleOnChange}              
             >
+              <option value="0">-Select-</option>
               <option value="1">Air</option>
               <option value="2">Ocean</option>
-              <option value="3">ByRoad</option>
+              <option value="3">Road</option>
              
               </Input>
           </FormGroup>
+
 
           <FormGroup>
             <label
               className="form-control-label"
               htmlFor="CarrierCompanyId_id"
             >
-              Carrier CompanyId
+             Carrier CompanyId
             </label>
             <Input
               id="CarrierCompanyId_id"
-              type="text"
+              type="select"
               name="CarrierCompanyId"
-              value={this.state.CarrierCompanyId}
-              onChange={this.handleOnChange}               
-            />
+              onChange={this.handleOnChange}
+            >
+
+              <option value="0">-Select-</option>
+              {this.props.filterCarrierEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
+
+
+              </Input>
           </FormGroup>
 
               </Col>          

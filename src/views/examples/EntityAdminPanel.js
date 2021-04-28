@@ -54,6 +54,8 @@ import JoinRequest_Entity from "components/AdminPanel/JoinRequest_Entity";
 import ApprovalProductTable from "components/AdminPanel/ApprovalProductTable.js";
 import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/ApprovalJoinRequestEntityTable.js";
 import ApprovalPurchaseOrderTable from "components/EntityAdminPanel/ApprovalPurchaseOrderTable.js";
+import InventoryTable from "components/EntityAdminPanel/InventoryTable.js";
+import ApproveExport from "components/EntityAdminPanel/ApproveExport.js";
 
 import axios from 'axios';
 import { Auth } from "aws-amplify";
@@ -65,7 +67,7 @@ import GeneralHeader from "../../components/Headers/GeneralHeader";
 
 let user;
 let jwtToken;
-const URL = 'https://jsonplaceholder.typicode.com/users'
+//const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class EntityAdminPanel extends Component {
 
@@ -81,12 +83,13 @@ class EntityAdminPanel extends Component {
        qldbPersonId: '',
        allJoiningRequest:[],
        currentScEntity:{},
-       purchaseOrderIds:[]
+       purchaseOrderIds:[], 
+       inventoryTable: []
     }
  }
   async componentDidMount(){
     console.log('componentDidMount runs')
-    this.getEmployeeData();
+    //this.getEmployeeData();
     this.getEntityData();
     this.getCognitoUserId()
     this.getQldbPersonId()
@@ -94,15 +97,18 @@ class EntityAdminPanel extends Component {
     this.getYourScEntityId()
 
     this.getPurchaseOrder()
+    this.getInventoryTable()
 }
 
+/*
   async getEmployeeData() {
     const response = await axios.get(URL)
     this.setState({employees: response.data})
 }
+*/
 
 async getEntityData() {
-  const response = await axios.get(URL)
+  
   /*
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_JOINING_REQUESTS",
 PersonId: localStorage.getItem("qldbPersonId"),
@@ -171,8 +177,14 @@ async getAllJoiningRequest(){
         console.log(res);
         console.log(res.data);
         console.log(res.data.body);
+        if(res.data.statusCode == 200)
+        {
         this.setState({allJoiningRequest:res.data.body});
       //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+        }
+        else{
+          console.log("No Joining request found")
+        }
     })
   console.log("AllJoiningRequest", this.state.allJoiningRequest)
 
@@ -222,13 +234,41 @@ async getPurchaseOrder() {
       console.log(res);
       console.log(res.data);
       console.log(res.data.body);
+      if(res.data.statusCode == 200){
       this.setState({purchaseOrderIds: res.data.body.PurchaseOrderIds});
       //console.log("EntityId", this.state.currentScEntity[0].id)
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+      }
   })
 
 
   //this.setState({entity: response.data})
+}
+
+async getInventoryTable(){
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_INVENTORY_TABLE",
+
+  PersonId: localStorage.getItem("qldbPersonId")
+  } ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.body);
+        if(res.data.statusCode == 200)
+        {
+        this.setState({inventoryTable: res.data.body});
+      //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
+        }
+        else{
+          console.log("No Joining request found")
+        }
+    })
+
 }
 
 removeData = (id) => {
@@ -311,9 +351,34 @@ PurchaseOrderId: purchaseOrderId
     //this.setState({ companies: res.data.body }, ()=> this.createCompanyList());
   })
 
-
-
 }
+
+approveExport = (containerId) => {
+
+  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+  
+  PersonId: localStorage.getItem("qldbPersonId"),
+  ContainerId: containerId
+  } ,
+    {
+      headers: {
+        //'Authorization': jwtToken
+      }})
+    .then(res => {
+        console.log(res);
+        console.log(res.data);
+        if(res.data.statusCode == 200){
+        console.log(res.data.body);
+       alert("Export is approved")
+      }
+      else{
+        alert("Export approval failed")
+      }
+    })
+  
+  
+  
+  }
 
 denyEntityData = (joiningRequestId, personId) => {
 
@@ -323,6 +388,10 @@ denyEntityData = (joiningRequestId, personId) => {
 denyPurchaseOrder = ( purchaseOrderId) => {
 
   alert("Denied Purchase Order")
+}
+denyExport = ( purchaseOrderId) => {
+
+  alert("Denied Export")
 }
 
 
@@ -363,13 +432,58 @@ denyPurchaseOrder = ( purchaseOrderId) => {
                 <CardHeader className="bg-white border-0">
                   <Row className="align-items-center">
                     <Col xs="8">
-                      <h1 className="mb-0">Approve Join Request of Entity</h1>
+                      <h1 className="mb-0">Approve Purchase Order Table</h1>
                     </Col>
                   </Row>
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
                 <ApprovalPurchaseOrderTable purchaseOrderIds={this.state.purchaseOrderIds} approvePurchaseOrder={this.approvePurchaseOrder} denyPurchaseOrder={this.denyPurchaseOrder}/>
+
+          </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            
+            
+
+            <Col className="order-xl-1" xl="12">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h1 className="mb-0">View Inventory Table</h1>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <JoinRequest_Entity/>
+                <InventoryTable inventoryTable={this.state.inventoryTable} />
+
+          </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          
+          <Row>
+            
+            
+
+            <Col className="order-xl-1" xl="12">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h1 className="mb-0">Approve Export</h1>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <JoinRequest_Entity/>
+                <ApproveExport purchaseOrderIds={this.state.purchaseOrderIds} approveExport={this.approveExport} denyExport={this.denyExport} />
 
           </CardBody>
               </Card>

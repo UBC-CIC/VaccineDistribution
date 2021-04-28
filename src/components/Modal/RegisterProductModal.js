@@ -129,13 +129,18 @@ class RegisterProductModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
+        if(res.data.statusCode == 200){
         this.showNotification("Product registered in Ledger", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
+        }
+        else{
+      this.showNotification("Error! Cannot register product in Ledger", "error")
+
+
+        }
 
       })
-      this.showNotification("Error! Cannot register product in Ledger", "error")
   }
     
   render(){
@@ -264,7 +269,7 @@ class RegisterProductModal extends React.Component {
               className="form-control-label"
               htmlFor="ProductExpiry_id"
             >
-              Product Expiry
+              Product Expiry (Days)
             </label>
             <Input
               id="ProductExpiry_id"

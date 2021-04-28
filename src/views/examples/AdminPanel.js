@@ -63,7 +63,7 @@ import { Auth } from "aws-amplify";
 
 let user;
 let jwtToken;
-const URL = 'https://jsonplaceholder.typicode.com/users'
+//const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class AdminPanel extends Component {
 
@@ -84,7 +84,7 @@ class AdminPanel extends Component {
  }
   async componentDidMount(){
     console.log('componentDidMount runs')
-      await this.getEmployeeData();
+      //await this.getEmployeeData();
       await this.getEntityData();
       await this.getCognitoUserId()
       await this.getQldbPersonId()
@@ -95,13 +95,15 @@ class AdminPanel extends Component {
     this.getProductData();
 }
 
+/*
   async getEmployeeData() {
     const response = await axios.get(URL)
     this.setState({employees: response.data})
 }
+*/
 
 async getEntityData() {
-  const response = await axios.get(URL)
+  
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
   {
     headers: {
@@ -120,7 +122,7 @@ async getEntityData() {
 }
 
 async getProductData() {
-  const response = await axios.get(URL)
+  
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
   {
     headers: {
@@ -217,6 +219,7 @@ async getYourScEntityId() {
   //this.setState({entity: response.data})
 }
 
+/*
 removeData = (id) => {
 
   axios.delete(`${URL}/${id}`).then(res => {
@@ -224,6 +227,7 @@ removeData = (id) => {
       this.setState({employees:del})
   })
 }
+*/
 
 removeEntityData = (ScEntityIdentificationCode, personId) => {
 console.log(personId)

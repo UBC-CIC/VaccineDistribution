@@ -105,7 +105,7 @@ class CreateBatchModal extends React.Component {
                   BatchNo: this.state.BatchNo,
                   UnitsProduced: this.state.UnitsProduced,
                   UnitsRemaining: this.state.UnitsRemaining,
-                  MfgDate: this.state.MfgDate,
+                  MfgDate: this.state.MfgDate,//((new Date(this.state.MfgDate).getTime())/1000.0).toString(),
                   ProductInstances: this.state.ProductInstances,
                   CaseIds: this.state.CaseIds
               }
@@ -115,12 +115,15 @@ class CreateBatchModal extends React.Component {
 
               console.log(res);
               console.log(res.data);
-              console.log("MCGRequestId", res.data.body.McgRequestId);
+              if (res.data.statusCode == 200){
               //this.setState({ qldbPersonId: res.data.body.PersonId });
               //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
               this.showNotification("Created product batch in Ledger", "success")
-          })
+              }
+              else{
       this.showNotification("Error! Cannot create batch in Ledger", "error")
+              }
+          })
   }
 
       render(){
@@ -240,8 +243,9 @@ class CreateBatchModal extends React.Component {
             </label>
             <Input
               id="MfgDate_id"
-              type="datetime-local"
+              type="text"
               name="MfgDate"
+              placeholder="yyyy-mm-dd"
               value={this.state.MfgDate}
               onChange={this.handleOnChange}
             />

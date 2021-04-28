@@ -15,20 +15,21 @@ import NotificationMessage from "../Notification/NotificationMessage";
 let user;
 let jwtToken;
 
-class CreateManufacturerOrderModal extends React.Component {
+class CreateDistributorPurchaseOrderModal extends React.Component {
   
   constructor(props){
     super(props);
     this.state = {
-        Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
+        Operation: "CREATE_DISTRIBUTOR_PURCHASE_ORDER",
         PersonId: this.props.qldbPersonId,
         PurchaseOrderNumber: '',
         ProductId: '',
-        OrderQuantity: 2,
+        OrderQuantity: 1,
         OrdererScEntityId: '',
         OrdererPersonId: '',
         isOrderShipped: false,
         OrderType: '',
+        DistributorId: '',
         notificationOpen: false,
         notificationType: "success",
         message: ""
@@ -100,9 +101,9 @@ class CreateManufacturerOrderModal extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_DISTRIBUTOR_PURCHASE_ORDER",
     PersonId: this.props.qldbPersonId,
-
+    DistributorId: this.state.DistributorId,
     PurchaseOrder:{
     PurchaseOrderNumber: this.state.PurchaseOrderNumber,
     ProductId: this. state.ProductId,
@@ -120,22 +121,21 @@ class CreateManufacturerOrderModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        if(res.data.statusCode == 200){
+        console.log("MCGRequestId",res.data.body.McgRequestId);
         this.showNotification("Created manufacturer order", "success")
-        }
-        else{
-      this.showNotification("Error! Cannot create manufacturer order", "error")
 
-        }
+          //this.setState({ qldbPersonId: res.data.body.PersonId });
+        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
       })
+      this.showNotification("Error! Cannot create manufacturer order", "error")
   }
     
   render(){
       const{PersonId,PurchaseOrderNumber,ProductId,OrderQuantity,OrdererScEntityId,OrdererPersonId,isOrderShipped,
               OrderType} = this.state
 
-      const formNotCompleted = ProductId.length===0||OrderQuantity.length===0||isOrderShipped.length===0
+      const formNotCompleted = ProductId.length===0||OrderQuantity.length===0
 
           const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -146,7 +146,7 @@ class CreateManufacturerOrderModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">Create Manufacturer Order</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Create Distributor Purchase Order</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -214,7 +214,7 @@ class CreateManufacturerOrderModal extends React.Component {
                     </Col>
                     <Col>
                     <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Create Manufacturer Order
+                    Create Distributor Order
                   </Button>
                     </Col>
 
@@ -228,4 +228,4 @@ class CreateManufacturerOrderModal extends React.Component {
   }
 }
 
-export default CreateManufacturerOrderModal;
+export default CreateDistributorPurchaseOrderModal;

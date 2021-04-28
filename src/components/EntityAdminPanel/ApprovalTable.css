@@ -52,6 +52,20 @@ body {
   background-color: transparent;
 }
 
+.buttonInvoice {
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-family: "Quicksand", sans-serif;
+  color: brown;
+  padding: 3px 10px;
+  margin-right: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid brown;
+  background-color: transparent;
+}
+
 .buttonDeny {
     border: none;
     outline: none;

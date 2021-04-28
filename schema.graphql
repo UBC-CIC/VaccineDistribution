@@ -1,6 +1,7 @@
 type Container @model {
   id: ID!
   name: String
+  qldbContainerId: String
   currentTemperature: String
   currentHumidity: String
   createdAt:AWSDateTime

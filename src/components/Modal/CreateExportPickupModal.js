@@ -15,16 +15,18 @@ import NotificationMessage from "../Notification/NotificationMessage";
 let user;
 let jwtToken;
 
-class InitiateShipmentManufacturerModal extends React.Component {
+class CreateExportPickupModal extends React.Component {
   
   constructor(props){
     super(props);
     this.state = {
-        Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
+        Operation: "EXPORT_PICKUP",
         PersonId: this.props.qldbPersonId,
-        PurchaseOrderId: '',
-        TransportType: '',
-        CarrierCompanyId: '',
+        PickUpRequestId: '',
+        PickUpRequestIdFinal: '',
+        FreightCarrierId: '',
+        ExportAirportId: '',
+        ImportAirportId: '',
         notificationOpen: false,
         notificationType: "success",
         message: ""
@@ -35,6 +37,18 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
+  }
+
+  handleOnChangeSelect = event => {
+    this.setState({ [event.target.name] : event.target.value });
+
+    const selectedEntity = this.props.entity.filter(entity => entity.id === event.target.value)
+
+    this.setState({ PickUpRequestId : selectedEntity[0].PickUpRequests });
+  }
+
+  handleOnChangePickup = event => {
+    this.setState({ PickUpRequestIdFinal : event.target.value });
   }
 
 
@@ -69,31 +83,12 @@ class InitiateShipmentManufacturerModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "EXPORT_PICKUP",
     PersonId: this.props.qldbPersonId,
-
-    
-    PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: parseInt(this. state.TransportType),
-    CarrierCompanyId: this.state.CarrierCompanyId
+    PickUpRequestId: this.state.PickUpRequestIdFinal,
+    FreightCarrierId: this.state.FreightCarrierId,
+    ExportAirportId: this.state.ExportAirportId,
+    ImportAirportId: this.state.ImportAirportId
     
 }
      )
@@ -101,29 +96,20 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
+        console.log("Export Pickup",res.data.body);
         if(res.data.statusCode == 200){
-        this.showNotification("Initiated shipment for manufacturer", "success")
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
-        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-
-        this.props.LinkQLDBContainerToDynamo(res.data.body.ContainerIds);
-
-
-
-
+        this.showNotification("Initiated Export Pickup", "success")
         }
         else{
-          this.showNotification("Error! Cannot initiate shipment for manufacturer", "error")
-
+            this.showNotification("Error! Cannot Export Pickup", "error")
         }
 
       })
-     
+      
   }
     render(){
-        const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
-        const formNotCompleted = PurchaseOrderId.length===0||TransportType.length===0||CarrierCompanyId.length===0
+        const{PersonId,PickUpRequestId, FreightCarrierId, ExportAirportId, ImportAirportId} = this.state
+        const formNotCompleted = FreightCarrierId.length===0||ExportAirportId.length===0||ImportAirportId.length===0
 
         const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -133,7 +119,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">INITIATE SHIPMENT FOR MANUFACTURER</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Export PickUp</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -145,63 +131,87 @@ class InitiateShipmentManufacturerModal extends React.Component {
           <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="PurchaseOrderId_id"
+              htmlFor="PickUpRequestId_id"
             >
-              Purchase Order Id
+              PickUp Request Id
             </label>
             <Input
-              id="PurchaseOrderId_id"
+              id="PickUpRequestId_id"
               type="select"
-              name="PurchaseOrderId"
+              name="PickUpRequestId"
+              
+              onChange={this.handleOnChangePickup}              
+            >
+                {/*
+               <option value="0">-Select-</option>
+              {this.state.PickUpRequestId.map((result) => (<option value={result}>{result}</option>))}
+                */}
+                
+
+              <option value="0">-Select-</option>
+                {this.state.PickUpRequestId ? this.state.PickUpRequestId.map((result) => (<option value={result}>{result}</option>)) : null}
+            
+
+
+              </Input>
+          </FormGroup>
+
+          <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="FreightCarrierId_id"
+            >
+              Freight Carrier
+            </label>
+            <Input
+              id="FreightCarrierId_id"
+              type="select"
+              name="FreightCarrierId"
+              
+              onChange={this.handleOnChangeSelect}              
+            >
+               <option value="0">-Select-</option>
+              {this.props.filterCarrierEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
+
+              </Input>
+          </FormGroup>
+
+          <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="ExportAirportId_id"
+            >
+              Export Airport
+            </label>
+            <Input
+              id="ExportAirportId_id"
+              type="select"
+              name="ExportAirportId"
               
               onChange={this.handleOnChange}              
             >
                <option value="0">-Select-</option>
-              {this.props.purchaseOrderIds.map((result) => (<option value={result}>{result}</option>))}
-
-              </Input>
-          </FormGroup>
-
-
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="TransportType_id"
-            >
-              Transport Type
-            </label>
-            <Input
-              id="TransportType_id"
-              type="select"
-              name="TransportType"
-              onChange={this.handleOnChange}              
-            >
-              <option value="0">-Select-</option>
-              <option value="1">Air</option>
-              <option value="2">Ocean</option>
-              <option value="3">Road</option>
-             
-              </Input>
-          </FormGroup>
-
-
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="CarrierCompanyId_id"
-            >
-             Carrier CompanyId
-            </label>
-            <Input
-              id="CarrierCompanyId_id"
-              type="select"
-              name="CarrierCompanyId"
-              onChange={this.handleOnChange}
-            >
-
-              <option value="0">-Select-</option>
               {this.props.filterCarrierEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
 
+              </Input>
+          </FormGroup>
+
+          <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="ImportAirportId_id"
+            >
+              Import Airport
+            </label>
+            <Input
+              id="ImportAirportId_id"
+              type="select"
+              name="ImportAirportId"
+              
+              onChange={this.handleOnChange}              
+            >
+               <option value="0">-Select-</option>
+              {this.props.filterCarrierEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
 
               </Input>
           </FormGroup>
@@ -226,7 +236,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
                     <Col>
 
                     <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Initiate Shipment Manufacturer
+                    Export Pickup
                   </Button>
                     </Col>
 
@@ -242,4 +252,4 @@ class InitiateShipmentManufacturerModal extends React.Component {
   }
 }
 
-export default InitiateShipmentManufacturerModal;
+export default CreateExportPickupModal;

@@ -15,20 +15,15 @@ import NotificationMessage from "../Notification/NotificationMessage";
 let user;
 let jwtToken;
 
-class CreateManufacturerOrderModal extends React.Component {
+class CreateApproveDeliveryModal extends React.Component {
   
   constructor(props){
     super(props);
     this.state = {
-        Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
+        Operation: "APPROVE_DELIVERY",
         PersonId: this.props.qldbPersonId,
-        PurchaseOrderNumber: '',
-        ProductId: '',
-        OrderQuantity: 2,
-        OrdererScEntityId: '',
-        OrdererPersonId: '',
-        isOrderShipped: false,
-        OrderType: '',
+        PurchaseOrderId: '',
+        
         notificationOpen: false,
         notificationType: "success",
         message: ""
@@ -42,14 +37,6 @@ class CreateManufacturerOrderModal extends React.Component {
   }
 
 
-
-  handleOnChangeSelect = event => {
-    this.setState({ [event.target.name] : event.target.value });
-
-    const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
-
-    //this.setState({ ProductName : selectedProduct[0].ProductName});
-  }
     showNotification(message, type){
         this.setState({
             message:message,
@@ -82,49 +69,18 @@ class CreateManufacturerOrderModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_DELIVERY",
     PersonId: this.props.qldbPersonId,
-
-    PurchaseOrder:{
-    PurchaseOrderNumber: this.state.PurchaseOrderNumber,
-    ProductId: this. state.ProductId,
-    OrderQuantity: parseInt(this.state.OrderQuantity),
-    Orderer:{
-            OrdererScEntityId: this.state.OrdererScEntityId,
-            OrdererPersonId: this.state.OrdererPersonId
-    },
-    isOrderShipped: this.state.isOrderShipped,
-    OrderType: this.state.OrderType
-    }
-}
-     )
-      .then(res => {
+    PurchaseOrderNumber: this.state.PurchaseOrderId
+  }).then(res => {
 
         console.log(res);
         console.log(res.data);
         if(res.data.statusCode == 200){
-        this.showNotification("Created manufacturer order", "success")
+        this.showNotification("Approved Delivery", "success")
         }
         else{
-      this.showNotification("Error! Cannot create manufacturer order", "error")
+            this.showNotification("Error! Cannot create manufacturer order", "error")
 
         }
 
@@ -132,10 +88,9 @@ class CreateManufacturerOrderModal extends React.Component {
   }
     
   render(){
-      const{PersonId,PurchaseOrderNumber,ProductId,OrderQuantity,OrdererScEntityId,OrdererPersonId,isOrderShipped,
-              OrderType} = this.state
+      const{PersonId,PurchaseOrderId} = this.state
 
-      const formNotCompleted = ProductId.length===0||OrderQuantity.length===0||isOrderShipped.length===0
+      const formNotCompleted = PurchaseOrderId.length===0
 
           const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -146,7 +101,7 @@ class CreateManufacturerOrderModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">Create Manufacturer Order</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Create Approve Delivery</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -159,43 +114,28 @@ class CreateManufacturerOrderModal extends React.Component {
               <FormGroup>
             <label
               className="form-control-label"
-              htmlFor="ProductIdSelect_id"
+              htmlFor="PurchaseOrderId_id"
             >
-              Select Product
+              Select Purchase Order
             </label>
             <Input
-              id="ProductIdSelect_id"
+              id="PurchaseOrderId_id"
               type="select"
-              name="ProductId"
-              onChange={this.handleOnChangeSelect}
+              name="PurchaseOrderId"
+              onChange={this.handleOnChange}
             >
-              <option value={1}>-select-</option>
+              <option value="0">-Select-</option>
 
-              {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
+              {this.props.purchaseOrderIds.map((result) => (<option value={result}>{result}</option>))}
+
+              {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}
                 {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}
-
+                    */}
 
               </Input>
           </FormGroup>
 
-          <FormGroup>
-            <label
-              className="form-control-label"
-              htmlFor="OrderQuantity_id"
-            >
-              Order Quantity
-            </label>
-            <Input
-              id="OrderQuantity_id"
-              type="text"
-              name="OrderQuantity"
-              value={this.state.OrderQuantity}
-              onChange={this.handleOnChange}               
-            />
-          </FormGroup>
-
-
-              </Col>
+                       </Col>
             </Row>
           </Container>
             <div className={"modal-footer"}>
@@ -214,7 +154,7 @@ class CreateManufacturerOrderModal extends React.Component {
                     </Col>
                     <Col>
                     <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Create Manufacturer Order
+                    Approve Delivery
                   </Button>
                     </Col>
 
@@ -228,4 +168,4 @@ class CreateManufacturerOrderModal extends React.Component {
   }
 }
 
-export default CreateManufacturerOrderModal;
+export default CreateApproveDeliveryModal;
