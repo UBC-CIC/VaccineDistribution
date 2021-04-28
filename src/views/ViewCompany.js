@@ -33,7 +33,7 @@ class Tables extends Component {
   render() {
     return (
       <>
-          <Header title={"View Companies"}/>
+          <Header title={"Companies"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <CompanyTable/>

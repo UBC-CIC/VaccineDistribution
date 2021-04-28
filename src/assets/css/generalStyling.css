@@ -21,13 +21,13 @@
     margin: 25px 0;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
-/* Firefox */
+/* firefox */
 * {
     scrollbar-width: thin;
     scrollbar-color: grey;
 }
 
-/* Chrome, Edge, and Safari */
+/* chrome, edge, and safari */
 *::-webkit-scrollbar {
     width: 12px;
 }

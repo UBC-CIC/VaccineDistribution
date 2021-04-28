@@ -33,7 +33,7 @@ class ViewVaccine extends Component {
   render() {
     return (
       <>
-          <Header title={"View Vaccines"}/>
+          <Header title={"Vaccines"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <VaccineTable/>

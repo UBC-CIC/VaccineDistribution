@@ -162,7 +162,7 @@ class ViewProfile extends React.Component {
 
     return (
       <>
-        <Header title={"User ViewProfile"}/>
+        <Header title={"User Profile"}/>
         <NotificationMessage notificationOpen={this.state.notificationOpen}
                              message={this.state.message} type={this.state.notificationType}/>
 

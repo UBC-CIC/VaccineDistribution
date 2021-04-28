@@ -31,7 +31,7 @@ class ViewContainerStatus extends Component {
     render() {
         return (
       <>
-          <Header title={"View Container Status"}/>
+          <Header title={"Container Status"}/>
         {/* Page content */}
         <ContainerStatusTable/>
 

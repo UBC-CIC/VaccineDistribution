@@ -33,7 +33,7 @@ class ViewContainer extends Component {
   render() {
     return (
       <>
-          <Header title={"View Containers"}/>
+          <Header title={"Containers"}/>
         {/* Page content */}
         <Container className="mt--7" fluid>
           <ContainerTable/>

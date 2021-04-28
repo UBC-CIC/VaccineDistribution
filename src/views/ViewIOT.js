@@ -44,7 +44,7 @@ class ViewIOT extends Component {
   render() {
     return (
       <>
-          <Header title={"View IOT"}/>
+          <Header title={"IoTs"}/>
         {/* Page content */}
           <IoTTable/>
           <Container className="mt-4">
