@@ -50,7 +50,7 @@ class AdminNavbar extends React.Component {
   async signOut() {
     try {
       await Auth.signOut();
-      window.location.reload()
+      this.props.history.push('/')
     } catch (error) {
       console.log('error signing out: ', error);
     }
