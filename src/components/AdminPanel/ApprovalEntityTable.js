@@ -1,14 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
-import axios from 'axios'
-import FusionTablesLayer from 'react-google-maps/lib/components/FusionTablesLayer';
 
-
-const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class ApprovalEntityTable extends Component {
-
-
 
      renderHeader = () => {
         let headerElement = ['Identification Code', 'Entity Name', 'Email', 'Code Type', 'code', 'operation']
@@ -18,10 +12,8 @@ class ApprovalEntityTable extends Component {
         })
     }
 
-
-     
      renderBody = () => {
-         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode != 1 && entity.isApprovedBySuperAdmin == false )
+         const filterEntity = this.props.entity.filter(entity => entity.ScEntityTypeCode !== 1 && entity.isApprovedBySuperAdmin === false)
         return filterEntity && filterEntity.map(({ ScEntityIdentificationCode, ScEntityName, ScEntityContact, ScEntityIdentificationCodeType, ScEntityTypeCode, PersonIds}) => {
             return (
                 <tr key={ScEntityIdentificationCode}>
@@ -39,18 +31,16 @@ class ApprovalEntityTable extends Component {
         })
     }
 
-
-
      render(){
         return (
             <div className='align-items-center'>
-                <h1 id='title'>Approval MCG-Request Entity Table</h1>
+                <h1 id='title'>Approval Request Entity Table</h1>
                 <table id='employee'>
                     <thead className={"bg-gradient-primary"}>
-                        <tr>{this.renderHeader()}</tr>
+                    <tr>{this.renderHeader()}</tr>
                     </thead>
                     <tbody>
-                        {this.renderBody()}
+                    {this.renderBody()}
                     </tbody>
                 </table>
             </div>

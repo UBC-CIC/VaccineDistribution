@@ -1,28 +1,21 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
- // react plugin used to create DropdownMenu for selecting items
-
+import "../../assets/css/modal.css";
+// react plugin used to create DropdownMenu for selecting items
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
-
-
-
-import Select from 'react-select';
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
 
 let user;
 let jwtToken;
 
 class JoiningRequestEntityModal extends React.Component {
-  
-  constructor(props){
-    super(props);
-    this.state = {
+
+    constructor(props) {
+        super(props);
+        this.state = {
       Operation: "REGISTER_NEW_USER_AND_SCENTITY",
       EmployeeId: '',
       FirstName: '',
@@ -73,49 +66,36 @@ class JoiningRequestEntityModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
 
     const selectedEntity = this.props.entity.filter(entity => entity.ScEntityIdentificationCode === event.target.value)
+      console.log(selectedEntity)
+      if(selectedEntity.length!==0){
+          this.setState({ ScEntityName : selectedEntity[0].ScEntityName });
+          this.setState({ ScEntityContact_Email : selectedEntity[0].ScEntityContact.Email });
+          this.setState({ ScEntityContact_Address : selectedEntity[0].ScEntityContact.Address });
+          this.setState({ ScEntityContact_Phone : selectedEntity[0].ScEntityContact.Phone });
+          this.setState({ ScEntityTypeCode : selectedEntity[0].ScEntityTypeCode });
+          this.setState({ ScEntityIdentificationCode : selectedEntity[0].ScEntityIdentificationCode });
+          this.setState({ ScEntityIdentificationCodeType : selectedEntity[0].ScEntityIdentificationCodeType });
+      }else{
+          this.setState({
+              ScEntityName: '',
+              ScEntityContact_Email: '',
+              ScEntityContact_Address:'',
+              ScEntityContact_Phone: '',
+              ScEntityIdentificationCode: '',
+              ScEntityIdentificationCodeType: '',
+              ScEntityTypeCode:""
 
-    this.setState({ ScEntityName : selectedEntity[0].ScEntityName });
-    this.setState({ ScEntityContact_Email : selectedEntity[0].ScEntityContact.Email });
-    this.setState({ ScEntityContact_Address : selectedEntity[0].ScEntityContact.Address });
-    this.setState({ ScEntityContact_Phone : selectedEntity[0].ScEntityContact.Phone });
-    this.setState({ ScEntityTypeCode : selectedEntity[0].ScEntityTypeCode });
-    this.setState({ ScEntityIdentificationCode : selectedEntity[0].ScEntityIdentificationCode });
-    this.setState({ ScEntityIdentificationCodeType : selectedEntity[0].ScEntityIdentificationCodeType });
+          })
+          console.log(this.state)
+      }
 
   }
 
-
-
-
-
-  
-
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
      jwtToken = user.signInUserSession.idToken.jwtToken;
-
-
   }
-
-  showNotification(message, type){
-      this.setState({
-          message:message,
-          notificationType:type
-      })
-      setTimeout(function(){
-          this.setState({
-              notificationOpen:true,
-          })
-      }.bind(this),5000);
-  }
-
-
-
-
 
   handleSubmit = event => {
     event.preventDefault();
@@ -154,22 +134,38 @@ class JoiningRequestEntityModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        alert("User Created in ledger")
         console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-        this.showNotification("User created in Ledger", "success")
-
+          if(res.data.statusCode===200){
+              this.showNotification("User created in Ledger", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
       })
-      this.showNotification("Error! cannot create user in Ledger", "error")
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
 
   }
-    
-  render(){
+  showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     const {ScEntityName,EmployeeId, FirstName,LastName,Email,Phone,Address} = this.state;
       const formNotCompleted = EmployeeId.length===0||FirstName.length===0||LastName.length===0||Address.length===0||ScEntityName.length===0
-      console.log(this.props)
     return (
       <div className={showHideClassName}>
           <NotificationMessage notificationOpen={this.state.notificationOpen}
@@ -198,9 +194,11 @@ class JoiningRequestEntityModal extends React.Component {
               type="select"
               name="ScEntityIdentificationCode"
               onChange={this.handleOnChangeSelect}
-            >
 
-              {this.props.filterEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
+            >
+                <option value={''}>-select-</option>
+
+                {this.props.filterEntityData.map((result) => (<option value={result.id}>{result.text}</option>))}
 
 
               </Input>

@@ -1,15 +1,12 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
@@ -54,13 +51,14 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
     showNotification(message, type){
         this.setState({
             message:message,
-            notificationType:type
+            notificationType:type,
+            notificationOpen:true,
         })
         setTimeout(function(){
             this.setState({
-                notificationOpen:true,
+                notificationOpen:false,
             })
-        }.bind(this),5000);
+        }.bind(this),7000);
     }
 
 
@@ -122,13 +120,18 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
         console.log(res);
         console.log(res.data);
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        this.showNotification("Created manufacturer order", "success")
+        if(res.data.body.statusCode===200){
+            this.showNotification("Created manufacturer order", "success")
+
+        }else{
+            this.showNotification("Error: "+res.data.body, "error")
+
+        }
 
           //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
       })
-      this.showNotification("Error! Cannot create manufacturer order", "error")
   }
     
   render(){

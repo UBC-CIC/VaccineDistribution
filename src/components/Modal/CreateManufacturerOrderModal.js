@@ -1,15 +1,12 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
@@ -46,30 +43,11 @@ class CreateManufacturerOrderModal extends React.Component {
   handleOnChangeSelect = event => {
     this.setState({ [event.target.name] : event.target.value });
 
-    const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
 
-    //this.setState({ ProductName : selectedProduct[0].ProductName});
+
+
   }
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
 
-
-
-
-
-
-    //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -81,25 +59,6 @@ class CreateManufacturerOrderModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
     PersonId: this.props.qldbPersonId,
 
@@ -117,25 +76,38 @@ class CreateManufacturerOrderModal extends React.Component {
 }
      )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
-        if(res.data.statusCode == 200){
-        this.showNotification("Created manufacturer order", "success")
-        }
-        else{
-      this.showNotification("Error! Cannot create manufacturer order", "error")
-
-        }
-
+          if(res.data.statusCode===200){
+              this.showNotification("Created manufacturer order", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
       })
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
       const{PersonId,PurchaseOrderNumber,ProductId,OrderQuantity,OrdererScEntityId,OrdererPersonId,isOrderShipped,
               OrderType} = this.state
 
       const formNotCompleted = ProductId.length===0||OrderQuantity.length===0||isOrderShipped.length===0
+        || ProductId==='0'
 
           const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
     return (
@@ -169,7 +141,7 @@ class CreateManufacturerOrderModal extends React.Component {
               name="ProductId"
               onChange={this.handleOnChangeSelect}
             >
-              <option value={1}>-select-</option>
+              <option value="0">-select-</option>
 
               {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
                 {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}

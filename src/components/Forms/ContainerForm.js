@@ -2,25 +2,14 @@ import React from "react";
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid";
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
+import {Button, Col, Form, FormGroup, Input, Row} from "reactstrap";
 import QrReader from 'react-qr-scanner'
-import { Auth } from "aws-amplify"; 
+import {Auth} from "aws-amplify";
 
 let user;
 let jwtToken;
 
 class ContainerForm extends React.Component {
-/*
-  state = {
-    Operation: "POST",
-    Vac_ID: '',
-    vaccineType: '',
-    vaccineName: '',
-    isVaccineSafe: true
-
-  }
-  */
 
   constructor(props){
     super(props);
@@ -41,11 +30,6 @@ class ContainerForm extends React.Component {
     this.handleContainerTypeChange = this.handleContainerTypeChange.bind(this);
     this.handleContainerNameChange = this.handleContainerNameChange.bind(this);
   }
-/*
-  handleVaccineIDChange = event => {
-    this.setState({ Vac_ID: event.target.value });
-  }
-  */
   handleContainerTypeChange = event => {
     this.setState({ containerType: event.target.value });
   }
@@ -54,9 +38,6 @@ class ContainerForm extends React.Component {
     this.setState({ containerName: event.target.value });
   }
 
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -65,22 +46,18 @@ class ContainerForm extends React.Component {
 
   handleSubmit = event => {
 
-    const vaccine = {
-    Operation: "POST",
-    Cont_ID: this.state.Cont_ID,
-    containerType: this.state.containerType,
-    containerName: this.state.containerName,
-    isContainerSafe: true
-    };
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, { Operation: "POST",
-    Cont_ID: this.state.Cont_ID,
-    containerType: this.state.containerType,
-    containerName: this.state.containerName,
-    isContainerSafe: true },{
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, {
+      Operation: "POST",
+      Cont_ID: this.state.Cont_ID,
+      containerType: this.state.containerType,
+      containerName: this.state.containerName,
+      isContainerSafe: true
+    }, {
       headers: {
         'Authorization': jwtToken
-      }} )
-      .then(res => {
+      }
+    })
+        .then(res => {
 
         console.log(res);
         console.log(res.data);

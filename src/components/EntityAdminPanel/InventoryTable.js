@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
-import axios from 'axios'
 
 
 const URL = 'https://jsonplaceholder.typicode.com/users'

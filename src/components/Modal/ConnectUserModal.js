@@ -1,23 +1,20 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class ConnectUserModal extends React.Component {
-  
-  constructor(props){
+
+  constructor(props) {
     super(props);
     this.state = {
         Operation: "REGISTER_NEW_USER_AND_SCENTITY",
@@ -171,28 +168,30 @@ class ConnectUserModal extends React.Component {
   }
      )
       .then(res => {
-
         console.log(res);
-        console.log(res.data);
-        console.log("QLDBUser ID",res.data.body.PersonId);
         this.setState({ qldbPersonId: res.data.body.PersonId });
         this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-        this.showNotification("User connected in Ledger", "success")
-
+        if(res.data.statusCode===200){
+          this.showNotification("User connected in Ledger", "success")
+        }else{
+          this.showNotification("Error: "+ res.data.body,"error")
+        }
       })
-    this.showNotification("Error! Cannot connect user in Ledger", "error")
-
+        .catch((error) => {
+          this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
   }
   showNotification(message, type){
     this.setState({
       message:message,
-      notificationType:type
+      notificationType:type,
+      notificationOpen:true,
     })
     setTimeout(function(){
       this.setState({
-        notificationOpen:true,
+        notificationOpen:false,
       })
-    }.bind(this),5000);
+    }.bind(this),7000);
   }
 
   render(){
@@ -386,7 +385,7 @@ class ConnectUserModal extends React.Component {
               name="ScEntityTypeCode"
               onChange={this.handleScEntityTypeCodeChange}              
             >
-              <option value="1">MCG</option>
+              <option value="1">Supply Chain Owner</option>
               <option value="2">Manufacturer</option>
               <option value="3">Airports</option>
               <option value="4">Seaports</option>

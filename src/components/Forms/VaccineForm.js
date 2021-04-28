@@ -2,26 +2,14 @@ import React from "react";
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid";
 // reactstrap components
-import { FormGroup, Form, Input, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import QRCodeScanner from "components/Features/QRCodeScanner";
+import {Button, Col, Form, FormGroup, Input, Row} from "reactstrap";
 import QrReader from 'react-qr-scanner'
-import { Auth } from "aws-amplify"; 
+import {Auth} from "aws-amplify";
 
 let user;
 let jwtToken;
 
 class VaccineForm extends React.Component {
-/*
-  state = {
-    Operation: "POST",
-    Vac_ID: '',
-    vaccineType: '',
-    vaccineName: '',
-    isVaccineSafe: true
-
-  }
-  */
 
   constructor(props){
     super(props);
@@ -38,15 +26,9 @@ class VaccineForm extends React.Component {
     };
     
     this.handleSubmit = this.handleSubmit.bind(this);
-    //this.handleVaccineIDChange = this.handleVaccineIDChange.bind(this);
     this.handleVaccineTypeChange = this.handleVaccineTypeChange.bind(this);
     this.handleVaccineNameChange = this.handleVaccineNameChange.bind(this);
   }
-/*
-  handleVaccineIDChange = event => {
-    this.setState({ Vac_ID: event.target.value });
-  }
-  */
   handleVaccineTypeChange = event => {
     this.setState({ vaccineType: event.target.value });
   }
@@ -55,9 +37,6 @@ class VaccineForm extends React.Component {
     this.setState({ vaccineName: event.target.value });
   }
 
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -65,25 +44,10 @@ class VaccineForm extends React.Component {
   }
 
   handleSubmit = event => {
-    //event.preventDefault();
-
-    const vaccine = {
-    Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true
-    };
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-res.setHeader("Access-Control-Allow-Credentials", "true");
-res.setHeader("Access-Control-Max-Age", "1800");
-res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, { Operation: "POST",
-    Vac_ID: this.state.Vac_ID,
-    vaccineType: this.state.vaccineType,
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, {
+      Operation: "POST",
+      Vac_ID: this.state.Vac_ID,
+      vaccineType: this.state.vaccineType,
     vaccineName: this.state.vaccineName,
     isVaccineSafe: true },{
       headers: {

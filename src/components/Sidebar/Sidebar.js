@@ -17,43 +17,30 @@
 */
 /*eslint-disable*/
 import React from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import {Link, NavLink as NavLinkRRD} from "react-router-dom";
 // nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+import {PropTypes} from "prop-types";
 
 // reactstrap components
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  CardTitle,
-  Collapse,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Media,
-  NavbarBrand,
-  Navbar,
-  NavItem,
-  NavLink,
-  Nav,
-  Progress,
-  Table,
-  Container,
-  Row,
-  Col
+    Col,
+    Collapse,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Media,
+    Nav,
+    Navbar,
+    NavbarBrand,
+    NavItem,
+    NavLink,
+    Row,
+    UncontrolledDropdown
 } from "reactstrap";
-import {createRoutes, routes, viewRoutes, adminRoutes} from "../../routes"
-import {DropdownButton, Dropdown} from "react-bootstrap";
-import {AmplifySignOut} from "@aws-amplify/ui-react";
+import {adminRoutes, createRoutes, routes, superAdminRoutes, viewRoutes} from "../../routes"
+import {Auth} from "aws-amplify";
+
 var ps;
 
 class Sidebar extends React.Component {
@@ -80,6 +67,15 @@ class Sidebar extends React.Component {
       collapseOpen: false
     });
   };
+  async signOut() {
+    try {
+      await Auth.signOut();
+      window.location.reload()
+    } catch (error) {
+      console.log('error signing out: ', error);
+    }
+  }
+
   // creates the links that appear in the left menu / Sidebar
   createLinks = routes => {
     return routes.map((prop, key) => {
@@ -133,7 +129,7 @@ class Sidebar extends React.Component {
                {/*
                {
                <img
-                alt={logo.imgAlt}
+                alt={logo.imgAlt} Insert your own logo here
                 className="navbar-brand-img"
                 src={logo.imgSrc}
               /> }
@@ -141,7 +137,6 @@ class Sidebar extends React.Component {
                <div>Vaccine Distribution</div>
             </NavbarBrand>
           ) : null}
-          {/* User */}
           <Nav className="align-items-center d-md-none">
             <UncontrolledDropdown nav>
               <DropdownToggle nav>
@@ -159,8 +154,14 @@ class Sidebar extends React.Component {
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem>
-                  <span><AmplifySignOut slot="sign-out"/></span>
+                <DropdownItem href="user-profile">
+                  <i className="fas fa-user text-blue" />
+                  View Profile
+                </DropdownItem>
+
+                <DropdownItem onClick={this.signOut}>
+                  <i className="fas fa-sign-out-alt text-red"/>
+                  Sign Out
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
@@ -212,49 +213,34 @@ class Sidebar extends React.Component {
             <Nav navbar>
               {this.createLinks(viewRoutes)}
             </Nav>
-            <hr className="my-3" />
-            <h6 className="navbar-heading text-muted text-green">Admin</h6>
-
-            <Nav navbar>
-              {this.createLinks(adminRoutes)}
-            </Nav>
-
-            {/*<Nav navbar>*/}
-            {/*  {this.createLinks(routes)}*/}
-            {/*</Nav>*/}
-
-            {/* Divider */}
-            {/* Heading */}
-            {/* <h6 className="navbar-heading text-muted">Documentation</h6>*/}
-            {/* Navigation */}
-            {/* <Nav className="mb-md-3" navbar>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Getting started
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
-                  <i className="ni ni-palette" />
-                  Foundation
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
-                  <i className="ni ni-ui-04" />
-                  Components
-                </NavLink>
-              </NavItem>
-            </Nav>
-            <Nav className="mb-md-3" navbar>
-              <NavItem className="active-pro active">
-                <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
-                  <i className="ni ni-spaceship" />
-                  Upgrade to PRO
-                </NavLink>
-              </NavItem>
-                    </Nav> */}
+            <hr className="my-3"/>
+            <div>
+              {(() => {
+                if (this.props.isSuperAdmin) {
+                  return (
+                      <div>
+                      <h6 className="navbar-heading text-green">Admin</h6>
+                        <Nav navbar>
+                          {this.createLinks(superAdminRoutes)}
+                        </Nav>
+                      </div>
+                  )
+                }else if(this.props.isAdmin){
+                  return (
+                      <div>
+                        <h6 className="navbar-heading text-green">Admin</h6>
+                        <Nav navbar>
+                          {this.createLinks(adminRoutes)}
+                        </Nav>
+                      </div>
+                  )
+                } else {
+                  return (
+                      <div/>
+                  )
+                }
+              })()}
+            </div>
           </Collapse>
         </Container>
       </Navbar>

@@ -1,24 +1,21 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class InitiateShipmentManufacturerModal extends React.Component {
-  
-  constructor(props){
-    super(props);
+
+    constructor(props) {
+        super(props);
     this.state = {
         Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
         PersonId: this.props.qldbPersonId,
@@ -37,26 +34,6 @@ class InitiateShipmentManufacturerModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
   }
 
-
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
-
-
-
-
-    //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -68,25 +45,6 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
     PersonId: this.props.qldbPersonId,
 
@@ -102,15 +60,12 @@ class InitiateShipmentManufacturerModal extends React.Component {
         console.log(res);
         console.log(res.data);
         console.log("MCGRequestId",res.data.body.McgRequestId);
-        if(res.data.statusCode == 200){
+        if(res.data.statusCode === 200){
         this.showNotification("Initiated shipment for manufacturer", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });
         //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
 
         this.props.LinkQLDBContainerToDynamo(res.data.body.ContainerIds);
-
-
-
 
         }
         else{
@@ -119,8 +74,23 @@ class InitiateShipmentManufacturerModal extends React.Component {
         }
 
       })
-     
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
   }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
     render(){
         const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
         const formNotCompleted = PurchaseOrderId.length===0||TransportType.length===0||CarrierCompanyId.length===0
@@ -133,7 +103,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">INITIATE SHIPMENT FOR MANUFACTURER</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Initiate Shipment for Manufacturer</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -153,7 +123,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
               id="PurchaseOrderId_id"
               type="select"
               name="PurchaseOrderId"
-              
+
               onChange={this.handleOnChange}              
             >
                <option value="0">-Select-</option>
@@ -226,7 +196,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
                     <Col>
 
                     <Button className="btn-fill" color="primary" type="submit" disabled={formNotCompleted}>
-                    Initiate Shipment Manufacturer
+                    Initiate Shipment to Manufacturer
                   </Button>
                     </Col>
 

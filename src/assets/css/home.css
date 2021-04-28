@@ -1,0 +1,15 @@
+#stepperContainer{
+    min-height: 610px ;
+    width:100%
+}
+
+#chartAndMapCard{
+    min-height: 500px;
+    max-height: 700px;
+
+}
+
+#axis-labels{
+    color:white;
+
+}

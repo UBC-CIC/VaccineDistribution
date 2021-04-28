@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
 import axios from 'axios';
 import ViewContainerModal from './ViewContainerModal';
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 class ApproveExport extends Component {
@@ -66,7 +65,7 @@ class ApproveExport extends Component {
             console.log(res);
             console.log(res.data);
             console.log(res.data.body);
-            if(res.data.statusCode == 200){
+            if(res.data.statusCode === 200){
                 console.log(res.data.body);
                 this.setState({container: res.data.body.HighestPackagingLevelIds})
             this.showContainerModal()

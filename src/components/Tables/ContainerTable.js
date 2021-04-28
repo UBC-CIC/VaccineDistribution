@@ -15,38 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
-//import awsExports from "../../aws-exports";
-
-// reactstrap components
-import {
-  Badge,
-  Card,
-  CardHeader,
-  CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
-  Table,
-  Container,
-  Row,
-  UncontrolledTooltip
-} from "reactstrap";
-// core components
-import Header from "components/Headers/Header.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify"; 
+import React, {Component} from 'react'
+import {Auth} from 'aws-amplify'
+import {Card, CardHeader, Container, Media, Row, Table} from "reactstrap";
+import {withAuthenticator} from '@aws-amplify/ui-react';
 import axios from 'axios';
-
-//Amplify.configure(awsExports)
 
 
 let Cont_ID = [];
@@ -103,20 +76,6 @@ class ContainerTable extends Component {
 catch (err) {
     console.log('error fetching containers...', err)
   }
-/*
-    try {
-      const containers = await API.graphql(graphqlOperation(listContainers))
-      containerData = containers.data.listContainers.items
-      console.log('containers:', containers)
-      this.setState({
-         containers: containers.data.listContainers.items
-      }, () => this.createContainerList())
-    } catch (err) {
-      console.log('error fetching containers...', err)
-    }
-
-    */
-    
   }
 
   //create table and fill in container data
@@ -127,8 +86,6 @@ catch (err) {
       containerType.push(element.containerType);
       containerName.push(element.containerName);
       isContainerSafe.push(element.isContainerSafe);
-      //let date = new Date(element.updatedAt).toLocaleTimeString()
-      //containerDate.push(date)
     });
     temp = containerData
     var i;
@@ -146,15 +103,11 @@ catch (err) {
                   </th>
                   <td>{containerData[i].containerType}</td>
                   <td>
-                    
-                     
                       {containerData[i].containerName}
-                   
                   </td>
                   <td>
                       {containerData[i].isContainerSafe?"true":"false"}
                   </td>
-                  
               </tr>
         )
       
@@ -169,10 +122,7 @@ catch (err) {
   render() {
     return (
       <>
-        
-        {/* Page content */}
         <Container className="mt--7">
-          {/* Table */}
           <Row>
             <div className="col">
               <Card className="shadow">
@@ -190,17 +140,12 @@ catch (err) {
                     </tr>
                   </thead>
                   <tbody>
-                   
                      {this.state.itemsList}
-                   
-                  
                   </tbody>
                 </Table>
               </Card>
             </div>
           </Row>
-          {/* Dark table */}
-
         </Container>
       </>
     );

@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import "./ApprovalTable.css";
 import axios from 'axios';
 import ViewInvoiceModal from './ViewInvoiceModal';
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 class ApprovalPurchaseOrderTable extends Component {

@@ -15,42 +15,18 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, {Component, useEffect, useState } from 'react'
-import Amplify, { API, container, graphqlOperation } from 'aws-amplify'
-import { listContainers } from '../../graphql/queries';
+import React, {Component} from 'react'
+import {Auth} from 'aws-amplify'
 //import awsExports from "../../aws-exports";
-
 // reactstrap components
-import {
-    Badge,
-    Card,
-    CardHeader,
-    CardFooter,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
-    Media,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Progress,
-    Table,
-    Container,
-    Row,
-    UncontrolledTooltip, Col
-} from "reactstrap";
+import {Card, CardHeader, Col, Container, Media, Row, Table} from "reactstrap";
 // core components
-import Header from "components/Headers/Header.js";
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {withAuthenticator} from '@aws-amplify/ui-react';
 import axios from 'axios';
-
-//Amplify.configure(awsExports)
 
 
 let approvedItems = [];
-let unapprovedItems=[];
+let unapprovedItems = [];
 let user;
 let jwtToken;
 let approvedTmp = []
@@ -120,8 +96,6 @@ class EntityTable extends Component {
     //create table and fill in container data
 
     async createProductList(products, tmp){
-        //todo unit for humidity?
-
         for(var i=0; i < products.length; i++){
             tmp.push(
                 <tr key={i}>
@@ -169,9 +143,7 @@ class EntityTable extends Component {
         }
         console.log(tmp)
 
-
     }
-
 
     render() {
         return (
@@ -210,13 +182,8 @@ class EntityTable extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {/* Dark table */}
-
                 </Container>
-
-                {/* Page content */}
                 <Container className="mt--12">
-                    {/* Table */}
                     <Row>
                         <Col className="mb-5">
                             <Card className="table-container scroll-bar">
@@ -248,8 +215,6 @@ class EntityTable extends Component {
                             </Card>
                         </Col>
                     </Row>
-                    {/* Dark table */}
-
                 </Container>
             </>
 

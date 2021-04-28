@@ -1,17 +1,9 @@
 import React from "react";
 import "./modal.css";
-import PropTypes from "prop-types";
-
-import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Row} from "reactstrap";
 import NotificationMessage from "../Notification/NotificationMessage";
-
-
-
 
 
 class ViewInvoiceModal extends React.Component {

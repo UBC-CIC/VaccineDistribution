@@ -1,31 +1,27 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class InitiateShipmentDistributorModal extends React.Component {
-  
-  constructor(props){
-    super(props);
+
+    constructor(props) {
+        super(props);
     this.state = {
         Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
         PersonId: this.props.qldbPersonId,
         PurchaseOrderId: '',
         TransportType: '',
         CarrierCompanyId: '',
-
         notificationOpen: false,
         notificationType: "success",
         message: ""
@@ -37,20 +33,6 @@ class InitiateShipmentDistributorModal extends React.Component {
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
   }
-
-
-
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
 
 
   
@@ -69,25 +51,6 @@ class InitiateShipmentDistributorModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
     PersonId: this.props.qldbPersonId,
     PurchaseOrderId: this.state.PurchaseOrderId,
@@ -97,22 +60,35 @@ class InitiateShipmentDistributorModal extends React.Component {
 }
      )
       .then(res => {
+          if(res.data.statusCode===200){
+              this.showNotification("Initiated shipment for distributor", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
 
-        console.log(res);
-        console.log(res.data);
-        alert("INITIATE SHIPMENT FOR DISTRIBUTOR sucessfull")
-        console.log("MCGRequestId",res.data.body);
-        
-        //this.setState({ qldbPersonId: res.data.body.PersonId });
-        //this.props.LinkCognito_QLDBUser(this.state.qldbPersonId);
-          this.showNotification("Initiated shipment for distributor", "success")
 
       })
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
 
-      this.showNotification("Error! Cannot initiate shipment for distributor", "error")
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
       const{PersonId,PurchaseOrderId,TransportType,CarrierCompanyId} = this.state
       const formNotCompleted = PurchaseOrderId.length===0||TransportType.length===0||CarrierCompanyId.length===0
 
@@ -124,7 +100,7 @@ class InitiateShipmentDistributorModal extends React.Component {
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">INITIATE SHIPMENT FOR DISTRIBUTOR</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">Initiate Shipment for Distributor</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>

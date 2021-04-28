@@ -17,25 +17,29 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import "./assets/css/generalStyling.css"
-import "assets/plugins/nucleo/css/nucleo.css";
+import {applyMiddleware, createStore} from "redux";
+import config from './aws-exports';
+import thunk from "redux-thunk";
+import Amplify from "aws-amplify";
+
+import './index.css';
+import reducers from "./reducers";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
+import 'semantic-ui-css/semantic.min.css';
+import 'assets/css/generalStyling.css'
+import {Provider} from "react-redux";
+import App from "./App";
 
-import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
-
-import Amplify from 'aws-amplify';
-import config from './aws-exports';
 Amplify.configure(config);
+
+const store = createStore(
+    reducers, applyMiddleware(thunk)
+);
+
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={props => <AdminLayout {...props} />} />
-      <Route path="/auth" render={props => <AuthLayout {...props} />} />
-      <Redirect from="/" to="/admin/index" />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById("root")
+    <Provider store={store}>
+        <App/>
+    </Provider>,
+    document.getElementById("root")
 );

@@ -1,15 +1,12 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
@@ -55,13 +52,14 @@ class CreateExportPickupModal extends React.Component {
     showNotification(message, type){
         this.setState({
             message:message,
-            notificationType:type
+            notificationType:type,
+            notificationOpen:true,
         })
         setTimeout(function(){
             this.setState({
-                notificationOpen:true,
+                notificationOpen:false,
             })
-        }.bind(this),5000);
+        }.bind(this),7000);
     }
 
 
@@ -97,11 +95,11 @@ class CreateExportPickupModal extends React.Component {
         console.log(res);
         console.log(res.data);
         console.log("Export Pickup",res.data.body);
-        if(res.data.statusCode == 200){
+        if(res.data.statusCode === 200){
         this.showNotification("Initiated Export Pickup", "success")
         }
         else{
-            this.showNotification("Error! Cannot Export Pickup", "error")
+            this.showNotification("Error: "+res.data.body, "error")
         }
 
       })

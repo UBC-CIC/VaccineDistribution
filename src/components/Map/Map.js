@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import MapConstructor from "./MapConstructor";
 import '../../assets/css/map.css'
 import mapboxgl from 'mapbox-gl'
+
 let mapConstructor = new MapConstructor()
 let map;
 
@@ -31,7 +32,7 @@ class Map extends Component{
     }
     render() {
         return(
-            <div ref = {this.mapContainer} className = "mapContainer"/>
+            <div ref = {this.mapContainer} className = "mapContainer" style={{width:"100%",height:this.props.height}}/>
         )
     }
 }

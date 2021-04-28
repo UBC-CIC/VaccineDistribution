@@ -1,18 +1,11 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
- // react plugin used to create DropdownMenu for selecting items
-
+import "../../assets/css/modal.css";
+// react plugin used to create DropdownMenu for selecting items
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
-
-
-
-import Select from 'react-select';
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
 
 let user;
@@ -79,17 +72,18 @@ class CreateSetPriceAndAmountModal extends React.Component {
 
   }
 
-  showNotification(message, type){
-      this.setState({
-          message:message,
-          notificationType:type
-      })
-      setTimeout(function(){
-          this.setState({
-              notificationOpen:true,
-          })
-      }.bind(this),5000);
-  }
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
 
 
 
@@ -115,7 +109,7 @@ class CreateSetPriceAndAmountModal extends React.Component {
         this.showNotification("Successfully Set the Price and Amount", "success")
         }
         else{
-        this.showNotification("Error! Cannot Set Price and Amount", "error")
+            this.showNotification("Error: "+res.data.body, "error")
         }
 
       })

@@ -1,24 +1,21 @@
 import React from "react";
-import "./modal.css";
-import PropTypes from "prop-types";
+import "../../assets/css/modal.css";
 
 import axios from 'axios';
 
 // reactstrap components
-import { FormGroup, Form, Input,Container, Row, Col,Button } from "reactstrap";
-import { withAuthenticator, AmplifySignOut} from '@aws-amplify/ui-react';
-import { Auth } from "aws-amplify";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
-
 
 
 let user;
 let jwtToken;
 
 class RegisterEntityModal extends React.Component {
-  
-  constructor(props){
-    super(props);
+
+    constructor(props) {
+        super(props);
     this.state = {
         Operation: "REGISTER_NEW_USER_AND_SCENTITY",
         
@@ -54,18 +51,6 @@ class RegisterEntityModal extends React.Component {
   }
 
 
-    showNotification(message, type){
-        this.setState({
-            message:message,
-            notificationType:type
-        })
-        setTimeout(function(){
-            this.setState({
-                notificationOpen:true,
-            })
-        }.bind(this),5000);
-    }
-
 
   handleScEntityNameChange = event => {
     this.setState({ ScEntityName: event.target.value });
@@ -88,16 +73,7 @@ class RegisterEntityModal extends React.Component {
   handleScEntityIdentificationCodeTypeChange = event => {
     this.setState({ ScEntityIdentificationCodeType: event.target.value });
   }
- 
 
-
-
-
-  
-
-  //handleIsCompanyRegisteredChange = event => {
-  //  this.setState({ isCompanyRegistered: event.target.value });
-  //}
   async componentDidMount(){
     console.log("Loading Auth token")
     user = await Auth.currentAuthenticatedUser();
@@ -106,25 +82,6 @@ class RegisterEntityModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-
-    /*
-    const company = {
-    Operation: "POST",
-    Comp_ID: this.state.Comp_ID,
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this .state.companyIC,
-    isCompanyRegistered: false
-    };
-    */
-
-    /*
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
-    */
     axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
     ScEntity:{
       ScEntityName: this.state.ScEntityName,
@@ -143,15 +100,35 @@ class RegisterEntityModal extends React.Component {
   }
      )
       .then(res => {
-
         console.log(res);
         console.log(res.data);
-        this.showNotification("User created in Ledger", "success")
+          if(res.data.statusCode===200){
+              this.showNotification("User created in Ledger", "success")
+          }else{
+              this.showNotification("Error: "+ res.data.body,"error")
+          }
+
       })
-      this.showNotification("Error! Cannot create user in Ledger", "error")
+        .catch((error) => {
+            this.showNotification("Error: "+JSON.stringify(error.message),"error")
+        })
+
   }
-    
-  render(){
+    showNotification(message, type){
+        this.setState({
+            message:message,
+            notificationType:type,
+            notificationOpen:true,
+        })
+        setTimeout(function(){
+            this.setState({
+                notificationOpen:false,
+            })
+        }.bind(this),7000);
+    }
+
+
+    render(){
       const {ScEntityContact_Email,ScEntityContact_Address} = this.state
       const formNotCompleted = ScEntityContact_Email.length===0||ScEntityContact_Address.length===0
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
