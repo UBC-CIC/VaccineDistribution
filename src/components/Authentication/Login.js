@@ -4,10 +4,13 @@ import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {updateLoginState} from "../../actions/loginActions";
 import "./Login.css";
-
+// import 'react-phone-number-input/style.css'
+// import PhoneInput from 'react-phone-number-input'
+import 'react-phone-input-2/lib/style.css'
+import PhoneInput from 'react-phone-input-2'
 
 const initialFormState = {
-    email: "", password: "", authCode: "", resetCode: "", phone_number:"",username:""
+    email: "", password: "", authCode: "", resetCode: "",username:""
 }
 
 function Login(props) {
@@ -22,6 +25,7 @@ function Login(props) {
     const [currentUser, setCurrentUser] =  useState(null);
     const [signUpError, setSignUpError] = useState('');
 
+    const [phone_number, setPhone_number] = useState()
 
 
 
@@ -53,7 +57,7 @@ function Login(props) {
 
     async function signUp() {
         try {
-            const {email, password,username,phone_number} = formState;
+            const {email, password,username} = formState;
             console.log(phone_number)
 
             setLoading(true);
@@ -466,17 +470,15 @@ function Login(props) {
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
-                                                            <Grid.Row style={{paddingBottom: "0px"}}>
-                                                                <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"} name={"phone_number"} type={"text"}
-                                                                           onChange={onChange}
-                                                                           placeholder={"Phone number (Country Code)-123-4567"}
-                                                                           style={{maxWidth: "100%"}}
-                                                                           fluid>
-                                                                        <input/>
-                                                                    </Input>
-                                                                </Grid.Column>
-                                                            </Grid.Row>
+                                                            <PhoneInput
+                                                                        placeholder="Enter phone number"
+                                                                        country={'ca'}
+                                                                        value={phone_number}
+                                                                        onChange={setPhone_number}
+                                                                        enableSearch = {true}
+                                                                        inputStyle={{width:"93%",maxWidth:"600px"}}
+                                                                        containerStyle={{marginTop:"15px",width:"100%",maxWidth:"600px"}}
+                                                                    />
 
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"}>

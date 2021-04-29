@@ -90,7 +90,7 @@ video {
 
 #inputs{
     max-width: 600px;
-    min-width: 27vw;
+    min-width: 100%;
 
 }
 #phone_number{
