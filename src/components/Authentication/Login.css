@@ -90,6 +90,11 @@ video {
 
 #inputs{
     max-width: 600px;
-    min-width: 28vw;
+    min-width: 27vw;
 
+}
+#phone_number{
+    /*margin-top: 15px;*/
+    /*margin-bottom: 15px;*/
+    margin: 20px;
 }
