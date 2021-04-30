@@ -378,10 +378,32 @@ approveExport = (containerId) => {
           alert("Export approval failed")
         }
       })
-  
-  
-  
     }
+
+    approveLadingBill = (containerId) => {
+
+      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+    
+      PersonId: localStorage.getItem("qldbPersonId"),
+      ContainerId: containerId
+      } ,
+        {
+          headers: {
+            //'Authorization': jwtToken
+          }})
+        .then(res => {
+            console.log(res);
+            console.log(res.data);
+            if(res.data.statusCode === 200){
+            console.log(res.data.body);
+           alert("Export is approved")
+          }
+          else{
+            alert("Export approval failed")
+          }
+        })
+    
+      }
 
     denyEntityData = (joiningRequestId, personId) => {
         this.showNotification("Denied Joining Request", "error")
@@ -396,6 +418,10 @@ approveExport = (containerId) => {
 
         alert("Denied Export")
     }
+    denyLadingBill = (purchaseOrderId) => {
+
+      alert("Denied LadingBill")
+  }
 
     denyImport = (purchaseOrderId) => {
 
@@ -531,7 +557,7 @@ approveExport = (containerId) => {
                 </CardHeader>
                 <CardBody>
                   <JoinRequest_Entity/>
-                <ApproveLadingBill purchaseOrderIds={this.state.purchaseOrderIds} approveExport={this.approveExport} denyExport={this.denyExport} />
+                <ApproveLadingBill purchaseOrderIds={this.state.purchaseOrderIds} approveLadingBill={this.approveLadingBill} denyLadingBill={this.denyLadingBill} />
 
           </CardBody>
               </Card>

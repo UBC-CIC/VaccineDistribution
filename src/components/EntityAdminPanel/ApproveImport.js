@@ -93,8 +93,8 @@ class ApproveImport extends Component {
           <p>View Invoice Modal</p>
         </ ViewApproveImportModal>
                     <td className='operation'>
-                        <button className='buttonApproval' onClick={this.props.approveExport.bind(this, filterEntity[0])}>Approve</button>
-                        <button className='buttonDeny' onClick={this.props.denyExport.bind(this, filterEntity[0])}>Deny</button>
+                        <button className='buttonApproval' onClick={this.props.approveImport.bind(this, filterEntity[0])}>Approve</button>
+                        <button className='buttonDeny' onClick={this.props.denyImport.bind(this, filterEntity[0])}>Deny</button>
                     </td>
                 </tr>
             )
