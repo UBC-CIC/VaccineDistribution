@@ -314,7 +314,7 @@ class HomeStepper extends React.Component {
                 this.setState({filterEntityData: entityData})
 
                 // Filter Carrier Entity Data
-                const carrierEntityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true && entity.ScEntityTypeCode == '3').map(entity =>
+                const carrierEntityData = this.state.entity.filter( entity => entity.isApprovedBySuperAdmin === true && entity.ScEntityTypeCode === '3').map(entity =>
                     {
                         var infoCarrier = { "text": entity.ScEntityName,
                             "id": entity.id
@@ -362,7 +362,7 @@ class HomeStepper extends React.Component {
         this.setState({cognitoUserId: user.attributes.sub})
 
         console.log(this.state.cognitoUserId)
-        localStorage.setItem('cognitoUserId', this. state.cognitoUserId);
+        localStorage.setItem('cognitoUserId', this.state.cognitoUserId);
     }
 
     async getQldbPersonId() {
@@ -379,7 +379,7 @@ class HomeStepper extends React.Component {
             this.setState({
                 qldbPersonId: currentReadings.data.listLinkUsers.items[0].qldbPersonId
             })
-            localStorage.setItem('qldbPersonId', this. state.qldbPersonId);
+            localStorage.setItem('qldbPersonId', this.state.qldbPersonId);
         } catch (err) {
             console.log('error fetching LinkUser...', err)
         }
@@ -428,7 +428,7 @@ class HomeStepper extends React.Component {
                 console.log(res);
                 console.log(res.data);
                 console.log(res.data.body);
-                if(res.data.statusCode == 200){
+                if(res.data.statusCode === 200){
                     this.setState({purchaseOrderIds: res.data.body.PurchaseOrderIds});
                 }
                 else{

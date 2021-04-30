@@ -102,7 +102,7 @@ class CreateSetPriceAndAmountModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        if(res.data.statusCode == 200){
+        if(res.data.statusCode === 200){
         alert("Successfully Set the Price and Amount")
        
         

@@ -8,7 +8,7 @@ import {Button, Col, Container, Row} from "reactstrap";
 import NotificationMessage from "../Notification/NotificationMessage";
 
 
-class ViewContainerModal extends React.Component {
+class ViewLadingBillModal extends React.Component {
   
   constructor(props){
     super(props);
@@ -38,14 +38,14 @@ class ViewContainerModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
   }
 
-  ApproveExport(){
+  ApproveBillOfLading(){
 
-    for (var i = 0; i< this.props.container.length; i++)
+    for (var i = 0; i< this.props.BillOfLadings.length; i++)
     {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_LADING_BILL",
   
     PersonId: localStorage.getItem("qldbPersonId"),
-    ContainerId: this.props.container[i]
+    LadingBillId: this.props.BillOfLadings[i]
   
   } ,
     {
@@ -61,12 +61,12 @@ class ViewContainerModal extends React.Component {
         
         }
         else{
-          console.log("Not Approved Export")
+          console.log("Not Approved Lading Bill")
         }
     })
 }
 
-this.showNotification("Success! Approved Export", "success")
+this.showNotification("Success! Lading Bill", "success")
   }
 
 
@@ -91,7 +91,7 @@ this.showNotification("Success! Approved Export", "success")
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">View Container Modal</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">View BillOfLadingIds Modal</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
@@ -100,14 +100,14 @@ this.showNotification("Success! Approved Export", "success")
           <Container>
             <Row>
               <Col>
-             {this.props.container.map((result)=> (
+             {this.props.BillOfLadingIds.map((result)=> (
              <>
              <label   
               className="form-control-label"
-              htmlFor="Containers_id">Container Ids:  </label>
+              htmlFor="BillOfLading_id">BillOfLadingIds:  </label>
             <label 
-              id="Containers_id"
-              name="ContainerIds">{result}</label>
+              id="BillOfLading_id"
+              name="BillOfLadingIds">{result}</label>
               <br></br>
               
               </>))}
@@ -122,10 +122,10 @@ this.showNotification("Success! Approved Export", "success")
                       className="float-left"
                       color="default"
                       
-                      onClick={this.ApproveExport}
+                      onClick={this.ApproveBillOfLading}
                       size="xl"
                     >
-                      Approve Export
+                      Approve BillOfLading
                     </Button>
                     <Button
                       className="float-right"
@@ -148,4 +148,4 @@ this.showNotification("Success! Approved Export", "success")
   }
 }
 
-export default ViewContainerModal;
+export default ViewLadingBillModal;

@@ -27,6 +27,9 @@ import ApprovalJoinRequestEntityTable from "components/EntityAdminPanel/Approval
 import ApprovalPurchaseOrderTable from "components/EntityAdminPanel/ApprovalPurchaseOrderTable.js";
 import InventoryTable from "components/EntityAdminPanel/InventoryTable.js";
 import ApproveExport from "components/EntityAdminPanel/ApproveExport.js";
+import ApproveLadingBill from "components/EntityAdminPanel/ApproveLadingBill.js";
+import ApproveImport from "components/EntityAdminPanel/ApproveImport.js";
+
 
 import axios from 'axios';
 import Header from "../components/Headers/Header";
@@ -266,7 +269,7 @@ approveEntityData = (joiningRequestId, personId) => {
   console.log("personId", personId)
 
 
-const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId == personId)
+const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId === personId)
 console.log("McgRequest filter", joiningRequest)
 console.log("McgRequestId filter", joiningRequest[0].JoiningRequestId)
   axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_JOINING_REQUEST",
@@ -341,7 +344,7 @@ approveExport = (containerId) => {
     .then(res => {
         console.log(res);
         console.log(res.data);
-        if(res.data.statusCode == 200){
+        if(res.data.statusCode === 200){
         console.log(res.data.body);
        alert("Export is approved")
       }
@@ -353,6 +356,32 @@ approveExport = (containerId) => {
 
 
   }
+  approveImport = (containerId) => {
+
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+  
+    PersonId: localStorage.getItem("qldbPersonId"),
+    ContainerId: containerId
+    } ,
+      {
+        headers: {
+          //'Authorization': jwtToken
+        }})
+      .then(res => {
+          console.log(res);
+          console.log(res.data);
+          if(res.data.statusCode === 200){
+          console.log(res.data.body);
+         alert("Export is approved")
+        }
+        else{
+          alert("Export approval failed")
+        }
+      })
+  
+  
+  
+    }
 
     denyEntityData = (joiningRequestId, personId) => {
         this.showNotification("Denied Joining Request", "error")
@@ -367,6 +396,12 @@ approveExport = (containerId) => {
 
         alert("Denied Export")
     }
+
+    denyImport = (purchaseOrderId) => {
+
+      alert("Denied Import")
+  }
+
 
 
     showNotification(message, type) {
@@ -479,6 +514,49 @@ approveExport = (containerId) => {
               </Card>
             </Col>
           </Row>
+
+          
+          <Row>
+
+
+
+            <Col className="order-xl-1" xl="12">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h1 className="mb-0">Approve LadingBill</h1>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <JoinRequest_Entity/>
+                <ApproveLadingBill purchaseOrderIds={this.state.purchaseOrderIds} approveExport={this.approveExport} denyExport={this.denyExport} />
+
+          </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col className="order-xl-1" xl="12">
+              <Card className="bg-secondary shadow">
+                <CardHeader className="bg-white border-0">
+                  <Row className="align-items-center">
+                    <Col xs="8">
+                      <h1 className="mb-0">Approve Import</h1>
+                    </Col>
+                  </Row>
+                </CardHeader>
+                <CardBody>
+                  <JoinRequest_Entity/>
+                <ApproveImport purchaseOrderIds={this.state.purchaseOrderIds} approveImport={this.approveImport} denyImport={this.denyImport} />
+
+          </CardBody>
+              </Card>
+            </Col>
+          </Row>
+
 
         </Container>
        

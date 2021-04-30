@@ -4,16 +4,19 @@ import "./modal.css";
 import axios from 'axios';
 
 // reactstrap components
-import {Button, Col, Container, Row} from "reactstrap";
+import {Button, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
+
 import NotificationMessage from "../Notification/NotificationMessage";
 
 
-class ViewContainerModal extends React.Component {
+class ViewApproveImportModal extends React.Component {
   
   constructor(props){
     super(props);
     this.state = {
-      
+        PersonId:'',
+        ContainerId: '',
+        WarehouseId: '',      
         notificationOpen: false,
         notificationType: "success",
         message: ""
@@ -38,14 +41,14 @@ class ViewContainerModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
   }
 
-  ApproveExport(){
+  ApproveImport(){
 
-    for (var i = 0; i< this.props.container.length; i++)
-    {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+   
+    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_IMPORT",
   
     PersonId: localStorage.getItem("qldbPersonId"),
-    ContainerId: this.props.container[i]
+    ContainerId: this.state.ContainerId,
+    WarehouseId: this.state.WarehouseId
   
   } ,
     {
@@ -64,20 +67,12 @@ class ViewContainerModal extends React.Component {
           console.log("Not Approved Export")
         }
     })
-}
+
 
 this.showNotification("Success! Approved Export", "success")
   }
 
 
-  
-
-
-  
-
- 
-
-  
     
   render(){
     const showHideClassName = this.props.show ? "modal display-block" : "modal display-none";
@@ -91,29 +86,67 @@ this.showNotification("Success! Approved Export", "success")
           <div className="modal-dialog modal-dialog-scrollable modal-lg" >
               <div className="modal-content">
                   <div className="modal-header">
-                      <h2 className="modal-title" id="exampleModalLabel">View Container Modal</h2>
+                      <h2 className="modal-title" id="exampleModalLabel">View Approve Import Modal</h2>
                       <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.props.handleClose}>
                           <span aria-hidden="true">&times;</span>
                       </button>
                   </div>
         
+         
+            
+
+            <Form onSubmit={this.handleSubmit}>
           <Container>
             <Row>
               <Col>
-             {this.props.container.map((result)=> (
-             <>
-             <label   
+          <FormGroup>
+            <label
               className="form-control-label"
-              htmlFor="Containers_id">Container Ids:  </label>
-            <label 
-              id="Containers_id"
-              name="ContainerIds">{result}</label>
-              <br></br>
+              htmlFor="ContainerId_id"
+            >
+              ContainerId
+            </label>
+            <Input
+              id="ContainerId_id"
+              type="select"
+              name="ContainerId"
               
-              </>))}
-         
-              </Col>
-            </Row>
+              onChange={this.handleOnChange}              
+            >
+                {/*
+               <option value="0">-Select-</option>
+              {this.state.PickUpRequestId.map((result) => (<option value={result}>{result}</option>))}
+                */}
+                
+
+              <option value="0">-Select-</option>
+                {this.props.container ? this.props.container.map((result) => (<option value={result}>{result}</option>)) : null}
+            
+
+
+              </Input>
+          </FormGroup>
+
+          <FormGroup>
+            <label
+              className="form-control-label"
+              htmlFor="Warehouse_id"
+            >
+              Warehouse Id
+            </label>
+            <Input
+              id="Warehouse_id"
+              type="text"
+              name="WarehouseId"
+              
+              onChange={this.handleOnChange}              
+            >
+              </Input>
+          </FormGroup>
+
+          </Col>
+        </Row>
+
           </Container>
             <div className={"modal-footer"}>
                 <Row>
@@ -122,7 +155,7 @@ this.showNotification("Success! Approved Export", "success")
                       className="float-left"
                       color="default"
                       
-                      onClick={this.ApproveExport}
+                      type="submit"
                       size="xl"
                     >
                       Approve Export
@@ -139,6 +172,7 @@ this.showNotification("Success! Approved Export", "success")
                     </Col>
                 </Row>
             </div>
+            </Form>
         
           
         </div>
@@ -148,4 +182,4 @@ this.showNotification("Success! Approved Export", "success")
   }
 }
 
-export default ViewContainerModal;
+export default ViewApproveImportModal;

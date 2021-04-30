@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import "./ApprovalTable.css";
 
 
-const URL = 'https://jsonplaceholder.typicode.com/users'
 
 class InventoryTable extends Component {
 
