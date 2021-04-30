@@ -3,6 +3,7 @@ type Container @model {
   name: String
   currentTemperature: String
   currentHumidity: String
+  qldbContainerId: String
   createdAt:AWSDateTime
   updatedAt:AWSDateTime
   sensorReadings: [SensorReading] @connection(keyName:"ContainerReading")

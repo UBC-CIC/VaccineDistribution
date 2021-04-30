@@ -13,6 +13,7 @@ import InitiateShipmentManufacturerModal from "components/Modal/InitiateShipment
 import InitiateShipmentDistributorModal from "components/Modal/InitiateShipmentDistributorModal";
 import CreateApproveDeliveryModal from "components/Modal/CreateApproveDeliveryModal.js";
 import CreateExportPickupModal from "components/Modal/CreateExportPickupModal.js";
+import CreateImportPickupModal from "components/Modal/CreateImportPickupModal.js";
 import CreateLocalTransportModal from "components/Modal/CreateLocalTransportModal.js";
 import CreateSetPriceAndAmountModal from "components/Modal/CreateSetPriceAndAmountModal.js";
 
@@ -45,6 +46,7 @@ class ViewSupplyChainFlow extends Component {
           showInitiateShipmentDistributor: false,
           showApproveDelivery: false,
           showExportPickup: false,
+          showImportPickup: false,
           showLocalTransport: false,
           showSetPriceAndAmount: false,
 
@@ -89,6 +91,7 @@ class ViewSupplyChainFlow extends Component {
         this.showInitiateShipmentDistributorModal = this.showInitiateShipmentDistributorModal.bind(this);
         this.showApproveDeliveryModal = this.showApproveDeliveryModal.bind(this);
         this.showExportPickupModal = this.showExportPickupModal.bind(this);
+        this.showImportPickupModal = this.showImportPickupModal.bind(this);
         this.showLocalTransportModal = this.showLocalTransportModal.bind(this);
         this.showSetPriceAndAmountModal = this.showSetPriceAndAmountModal.bind(this);
 
@@ -107,6 +110,9 @@ class ViewSupplyChainFlow extends Component {
         this.hideInitiateShipmentDistributorModal = this.hideInitiateShipmentDistributorModal.bind(this);
         this.hideLocalTransportModal = this.hideLocalTransportModal.bind(this);
         this.hideSetPriceAndAmountModal = this.hideSetPriceAndAmountModal.bind(this);
+        this.hideExportPickupModal = this.hideExportPickupModal.bind(this);
+        this.hideImportPickupModal = this.hideImportPickupModal.bind(this);
+
 
 
         this.showRegisterIOTModal = this.showRegisterIOTModal.bind(this)
@@ -184,6 +190,10 @@ class ViewSupplyChainFlow extends Component {
     this.setState({ showExportPickup: true });
   };
 
+  showImportPickupModal = () => {
+    this.setState({ showImportPickup: true });
+  };
+
   showLocalTransportModal = () => {
     this.setState({ showLocalTransport: true });
   };
@@ -232,6 +242,10 @@ class ViewSupplyChainFlow extends Component {
 
   hideExportPickupModal = () => {
     this.setState({ showExportPickup: false });
+  };
+
+  hideImportPickupModal = () => {
+    this.setState({ showImportPickup: false });
   };
 
   hideLocalTransportModal = () => {
@@ -642,10 +656,29 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
+                
+              <div className="checklist-info">
+             
+                <h5 className="checklist-title mb-0">Step 8. Import Pickup </h5>
+                <Button className="float-right"
+                        color="primary"
+                       onClick={this.showImportPickupModal}> Import Pickup </Button>
+
+
+          <CreateImportPickupModal show={this.state.showImportPickup} handleClose={this.hideImportPickupModal} entity={this.state.entity} filterCarrierEntityData={this.state.filterCarrierEntityData} qldbPersonId={this.state.qldbPersonId} manufacturerId={this.state.manufacturerId} purchaseOrderIds={this.state.purchaseOrderIds} >
+          <p>Import Pickup</p>
+        </ CreateImportPickupModal>
+              </div>
+            </div>
+          </ListGroupItem>
+
+
+          <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
+            <div className="checklist-item checklist-item-success">
 
               <div className="checklist-info">
 
-                <h5 className="checklist-title mb-0">Step 8. Initiate Shipment for Distributor</h5>
+                <h5 className="checklist-title mb-0">Step 9. Initiate Shipment for Distributor</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showInitiateShipmentDistributorModal}> Initiate Shipment Distributor </Button>
@@ -663,7 +696,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
               <div className="checklist-info">
 
-                <h5 className="checklist-title mb-0">Step 9. Create Distributor Purchase Order</h5>
+                <h5 className="checklist-title mb-0">Step 10. Create Distributor Purchase Order</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showCreateDistributorPurchaseOrderModal}>  Create Distributor Purchase Order </Button>
@@ -681,7 +714,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
               <div className="checklist-info">
 
-                <h5 className="checklist-title mb-0">Step 10. Approve Product Delivery</h5>
+                <h5 className="checklist-title mb-0">Step 11. Approve Product Delivery</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showApproveDeliveryModal}>  Approve Delivery </Button>
@@ -699,7 +732,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
               <div className="checklist-info">
 
-                <h5 className="checklist-title mb-0">Step 11. Set Price and Selling Amount (By Distributer)</h5>
+                <h5 className="checklist-title mb-0">Step 12. Set Price and Selling Amount (By Distributer)</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showSetPriceAndAmountModal}>  Set Price-Amount </Button>
@@ -720,7 +753,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
 
               <div className="checklist-info">
 
-                <h5 className="checklist-title mb-0">Step 12. Create Local Transport</h5>
+                <h5 className="checklist-title mb-0">Step 13. Create Local Transport</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showLocalTransportModal}> Create Local Transport</Button>
@@ -739,7 +772,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
             <div className="checklist-item checklist-item-info">
               <div className="checklist-info">
                 <h5 className="checklist-title mb-0">
-                Step 13. Request the vaccine container
+                Step 14. Request the vaccine container
                 </h5>
                 <Button className="float-right"
                         color="primary"
@@ -750,7 +783,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-danger">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 14. Accept the request</h5>
+                <h5 className="checklist-title mb-0">Step 15. Accept the request</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showAcceptRequestModal}> Accept Request </Button>
@@ -760,7 +793,7 @@ LinkCognito_QLDBUser = (qldbPersonId) => {
           <ListGroupItem className="checklist-entry flex-column align-items-start py-4 px-4">
             <div className="checklist-item checklist-item-success">
               <div className="checklist-info">
-                <h5 className="checklist-title mb-0">Step 15. Receive the Vaccine order</h5>
+                <h5 className="checklist-title mb-0">Step 16. Receive the Vaccine order</h5>
                 <Button className="float-right"
                         color="primary"
                        onClick={this.showReceiveVaccineOrderModal}> Receive Vaccine Order </Button>
