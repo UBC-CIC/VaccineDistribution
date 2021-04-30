@@ -58,7 +58,7 @@ class ApproveLadingBill extends Component {
     getContainerDetails= (containerIds) =>{
         if (containerIds.length>0){
        
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_CONTAINER",
+        axios.post(process.env.REACT_APP_API_URL, { Operation: "GET_CONTAINER",
       
         PersonId: localStorage.getItem("qldbPersonId"),
         ContainerId: containerIds[0]
@@ -87,7 +87,7 @@ class ApproveLadingBill extends Component {
 
 
     viewContainers = (purchaseOrderId) => {
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PURCHASE_ORDER",
+        axios.post(process.env.REACT_APP_API_URL, { Operation: "GET_PURCHASE_ORDER",
   
         PersonId: localStorage.getItem("qldbPersonId"),
         PurchaseOrderId: purchaseOrderId

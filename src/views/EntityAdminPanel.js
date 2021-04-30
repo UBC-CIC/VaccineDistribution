@@ -371,7 +371,7 @@ approveExport = (containerId) => {
   }
   approveImport = (containerId) => {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+    axios.post(process.env.REACT_APP_API_URL, { Operation: "APPROVE_EXPORT",
   
     PersonId: localStorage.getItem("qldbPersonId"),
     ContainerId: containerId
@@ -395,7 +395,7 @@ approveExport = (containerId) => {
 
     approveLadingBill = (containerId) => {
 
-      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+      axios.post(process.env.REACT_APP_API_URL, { Operation: "APPROVE_EXPORT",
     
       PersonId: localStorage.getItem("qldbPersonId"),
       ContainerId: containerId

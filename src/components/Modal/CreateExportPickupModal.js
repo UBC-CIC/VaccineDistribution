@@ -40,8 +40,10 @@ class CreateExportPickupModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
 
     const selectedEntity = this.props.entity.filter(entity => entity.id === event.target.value)
+      if(selectedEntity[0]){
+          this.setState({ PickUpRequestId : selectedEntity[0].PickUpRequests });
+      }
 
-    this.setState({ PickUpRequestId : selectedEntity[0].PickUpRequests });
   }
 
   handleOnChangePickup = event => {

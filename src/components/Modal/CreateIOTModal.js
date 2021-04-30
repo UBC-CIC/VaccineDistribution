@@ -32,7 +32,6 @@ class CreateIOTModal extends React.Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
-    console.log(event.target.name, event.target.value)
   }
 
   async componentDidMount(){

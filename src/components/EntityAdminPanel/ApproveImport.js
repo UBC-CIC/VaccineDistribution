@@ -51,7 +51,7 @@ class ApproveImport extends Component {
     }
 
     viewContainers = (purchaseOrderId) => {
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PURCHASE_ORDER",
+        axios.post(process.env.REACT_APP_API_URL, { Operation: "GET_PURCHASE_ORDER",
   
         PersonId: localStorage.getItem("qldbPersonId"),
         PurchaseOrderId: purchaseOrderId

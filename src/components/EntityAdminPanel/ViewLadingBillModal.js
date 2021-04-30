@@ -42,7 +42,7 @@ class ViewLadingBillModal extends React.Component {
 
     for (var i = 0; i< this.props.BillOfLadings.length; i++)
     {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_LADING_BILL",
+    axios.post(process.env.REACT_APP_API_URL, { Operation: "APPROVE_LADING_BILL",
   
     PersonId: localStorage.getItem("qldbPersonId"),
     LadingBillId: this.props.BillOfLadings[i]

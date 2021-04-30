@@ -49,10 +49,12 @@ class CreateSetPriceAndAmountModal extends React.Component {
     this.setState({ [event.target.name] : event.target.value });
 
     const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
+      if(selectedProduct[0]){
+          this.setState({ ProductPrice : selectedProduct[0].ProductPrice });
+          this.setState({ MinimumSellingAmount : selectedProduct[0].MinimumSellingAmount });
+      }
 
-    this.setState({ ProductPrice : selectedProduct[0].ProductPrice });
-    this.setState({ MinimumSellingAmount : selectedProduct[0].MinimumSellingAmount });
-    
+
   }
 
 

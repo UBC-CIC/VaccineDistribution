@@ -44,7 +44,7 @@ class ViewApproveImportModal extends React.Component {
   ApproveImport(){
 
    
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_IMPORT",
+    axios.post(process.env.REACT_APP_API_URL, { Operation: "APPROVE_IMPORT",
   
     PersonId: localStorage.getItem("qldbPersonId"),
     ContainerId: this.state.ContainerId,

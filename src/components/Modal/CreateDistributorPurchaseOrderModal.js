@@ -43,6 +43,9 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
 
   handleOnChangeSelect = event => {
     this.setState({ [event.target.name] : event.target.value });
+      if(event.target.value==='0') {
+        this.setState({[event.target.name] :''})
+    }
 
     const selectedProduct = this.props.products.filter(product => product.ProductId === event.target.value)
 
@@ -120,7 +123,6 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
         if(res.data.body.statusCode===200){
             this.showNotification("Created manufacturer order", "success")
 
@@ -173,7 +175,7 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
               name="ProductId"
               onChange={this.handleOnChangeSelect}
             >
-              <option value={1}>-select-</option>
+              <option value={'0'}>-select-</option>
 
               {/*{this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>))}*/}
                 {this.props.filterProductData ? this.props.filterProductData.map((result) => (<option value={result.id}>{result.text}</option>)) : null}

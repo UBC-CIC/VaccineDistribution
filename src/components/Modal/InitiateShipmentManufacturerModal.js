@@ -32,6 +32,7 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.name] : event.target.value });
+    if(event.target.value==='0') console.log(event.target.value)
   }
 
   async componentDidMount(){
@@ -60,7 +61,6 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
         console.log(res);
         console.log(res.data);
-        console.log("MCGRequestId",res.data.body.McgRequestId);
         if(res.data.statusCode === 200){
         this.showNotification("Initiated shipment for manufacturer", "success")
         //this.setState({ qldbPersonId: res.data.body.PersonId });

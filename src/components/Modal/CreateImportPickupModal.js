@@ -41,7 +41,9 @@ class CreateImportPickupModal extends React.Component {
 
     const selectedEntity = this.props.entity.filter(entity => entity.id === event.target.value)
 
-    this.setState({ PickUpRequestId : selectedEntity[0].PickUpRequests });
+    if(selectedEntity[0]){
+        this.setState({ PickUpRequestId : selectedEntity[0].PickUpRequests });
+    }
   }
 
   handleOnChangePickup = event => {
@@ -81,7 +83,7 @@ class CreateImportPickupModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "IMPORT_PICKUP",
+    axios.post(process.env.REACT_APP_API_URL, { Operation: "IMPORT_PICKUP",
     PersonId: this.props.qldbPersonId,
     PickUpRequestId: this.state.PickUpRequestIdFinal,
     
