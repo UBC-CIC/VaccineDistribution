@@ -4,10 +4,13 @@ import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {updateLoginState} from "../../actions/loginActions";
 import "./Login.css";
-
+// import 'react-phone-number-input/style.css'
+// import PhoneInput from 'react-phone-number-input'
+import 'react-phone-input-2/lib/style.css'
+import PhoneInput from 'react-phone-input-2'
 
 const initialFormState = {
-    email: "", password: "", authCode: "", resetCode: ""
+    email: "", password: "", authCode: "", resetCode: "",username:""
 }
 
 function Login(props) {
@@ -20,7 +23,9 @@ function Login(props) {
     const [newVerification, setNewVerification] = useState(false);
     const [loading, setLoading] = useState(false);
     const [currentUser, setCurrentUser] =  useState(null);
+    const [signUpError, setSignUpError] = useState('');
 
+    const [phone_number, setPhone_number] = useState()
 
 
 
@@ -52,14 +57,26 @@ function Login(props) {
 
     async function signUp() {
         try {
-            const {email, password} = formState;
+            const {email, password,username} = formState;
+            console.log(phone_number)
+
             setLoading(true);
-            await Auth.signUp({username: email, password: password, attributes: {email}});
+            await Auth.signUp({
+                username: username,
+                password: password,
+                attributes: {
+                    email,
+                    phone_number:"+"+phone_number,
+                }});
             setLoading(false);
             updateLoginState("confirmSignUp");
+            console.log(Auth.currentUserInfo())
+
         } catch (e) {
             setLoading(false);
             setAccountCreationError(true);
+            setSignUpError(e.message)
+            console.log(e.message)
             console.log('error signing up:', e);
         }
     }
@@ -67,10 +84,10 @@ function Login(props) {
     async function confirmSignUp() {
         try {
             setNewVerification(false);
-            const {email, authCode,password} = formState;
+            const {username, authCode,password} = formState;
             setLoading(true);
-            await Auth.confirmSignUp(email, authCode);
-            let user = await Auth.signIn(email,password);
+            await Auth.confirmSignUp(username, authCode);
+            let user = await Auth.signIn(username,password);
             setCurrentUser(user)
             updateLoginState("signedIn");
 
@@ -83,9 +100,9 @@ function Login(props) {
 
     async function resendConfirmationCode() {
         try {
-            const {email} = formState;
+            const {username} = formState;
             setVerificationError(false);
-            await Auth.resendSignUp(email);
+            await Auth.resendSignUp(username);
             setNewVerification(true);
         } catch (err) {
             setNewVerification(false);
@@ -96,8 +113,8 @@ function Login(props) {
     async function signIn(){
         try {
             setLoading(true);
-            const {email, password} = formState;
-            let user = await Auth.signIn(email, password);
+            const {username, password} = formState;
+            let user = await Auth.signIn(username, password);
             if (user.challengeName === "NEW_PASSWORD_REQUIRED") {
                 updateLoginState("newUserPassword");
                 setLoading(false);
@@ -114,9 +131,9 @@ function Login(props) {
 
     async function setNewPassword() {
         try {
-            const {email, password} = formState;
+            const {username, password} = formState;
             setLoading(true);
-            await Auth.completeNewPassword(currentUser, password, {email: email});
+            await Auth.completeNewPassword(currentUser, password, {email: username});
             updateLoginState("signedIn");
             setLoading(false);
         } catch (e) {
@@ -128,9 +145,9 @@ function Login(props) {
 
     async function forgotPassword() {
         try {
-            const {email} = formState;
+            const {username} = formState;
             setLoading(true);
-            await Auth.forgotPassword(email);
+            await Auth.forgotPassword(username);
             setLoading(false);
             updateLoginState("resetPassword");
         } catch (e) {
@@ -141,9 +158,9 @@ function Login(props) {
 
     async function resetPassword() {
         try {
-            const {email, resetCode, password} = formState;
+            const {username, resetCode, password} = formState;
             setLoading(true);
-            await Auth.forgotPasswordSubmit(email, resetCode, password);
+            await Auth.forgotPasswordSubmit(username, resetCode, password);
             setLoading(false);
             updateLoginState("signIn");
         } catch (e) {
@@ -216,8 +233,8 @@ function Login(props) {
                                                             </Grid.Row>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"} name={"email"} type={"email"}
-                                                                           onChange={onChange} placeholder={"Email"}
+                                                                    <Input id={"inputs"} name={"username"} type={"username"}
+                                                                           onChange={onChange} placeholder={"Username"}
                                                                            style={{maxWidth: "100%"}}
                                                                            error={(accountLoginError)} fluid>
                                                                         <input/>
@@ -328,9 +345,9 @@ function Login(props) {
                                                         <Grid>
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
-                                                                    <Input id={"inputs"} name={"email"} type={"email"}
+                                                                    <Input id={"inputs"} name={"username"} type={"username"}
                                                                            onChange={onChange}
-                                                                           placeholder={"Enter your email"}
+                                                                           placeholder={"Enter your username"}
                                                                            style={{maxWidth: "100%"}} fluid>
                                                                         <input/>
                                                                     </Input>
@@ -364,9 +381,9 @@ function Login(props) {
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
                                                                     <Input id={"inputs"}
-                                                                           name={"email"} type={"email"}
+                                                                           name={"username"} type={"username"}
                                                                            onChange={onChange}
-                                                                           placeholder={"Enter your email"}
+                                                                           placeholder={"Enter your username"}
                                                                            style={{maxWidth: "100%"}} fluid>
                                                                         <input/>
                                                                     </Input>
@@ -418,18 +435,30 @@ function Login(props) {
                                                 {
                                                     loginState === "signUp" && (
                                                         <Grid>
+                                                            {(accountCreationError)? <span style={{color: "red"}}>{signUpError}</span> : null}
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
                                                                     <Input id={"inputs"} name={"email"} type={"email"}
                                                                            onChange={onChange}
                                                                            placeholder={"Enter your email"}
                                                                            style={{maxWidth: "100%"}}
-                                                                           error={(accountCreationError)} fluid>
+                                                                           fluid>
                                                                         <input/>
                                                                     </Input>
-                                                                    {(accountCreationError)? <span style={{color: "red"}}>An account with the given email already exists</span> : null}
                                                                 </Grid.Column>
                                                             </Grid.Row>
+                                                            <Grid.Row style={{paddingBottom: "0px"}}>
+                                                                <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
+                                                                    <Input id={"inputs"} name={"username"} type={"text"}
+                                                                           onChange={onChange}
+                                                                           placeholder={"Enter your username"}
+                                                                           style={{maxWidth: "100%"}}
+                                                                           fluid>
+                                                                        <input/>
+                                                                    </Input>
+                                                                </Grid.Column>
+                                                            </Grid.Row>
+
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"} style={{paddingLeft: "30px", paddingRight: "30px"}}>
                                                                     <Input id={"inputs"}
@@ -441,6 +470,16 @@ function Login(props) {
                                                                     </Input>
                                                                 </Grid.Column>
                                                             </Grid.Row>
+                                                            <PhoneInput
+                                                                        placeholder="Enter phone number"
+                                                                        country={'ca'}
+                                                                        value={phone_number}
+                                                                        onChange={setPhone_number}
+                                                                        enableSearch = {true}
+                                                                        inputStyle={{width:"93%",maxWidth:"600px"}}
+                                                                        containerStyle={{marginTop:"15px",width:"100%",maxWidth:"600px"}}
+                                                                    />
+
                                                             <Grid.Row style={{paddingBottom: "0px"}}>
                                                                 <Grid.Column verticalAlign={"middle"} textAlign={"center"}>
                                                                     <Button onClick={signUp} animated={"vertical"} color={"blue"} loading={(loading)}>
