@@ -51,14 +51,15 @@ class InitiateShipmentDistributorModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
-    PersonId: this.props.qldbPersonId,
-    PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: parseInt(this. state.TransportType),
-    CarrierCompanyId: this.state.CarrierCompanyId
-    
-}
-     )
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "INITIATE_SHIPMENT_FOR_DISTRIBUTOR",
+            PersonId: this.props.qldbPersonId,
+            PurchaseOrderId: this.state.PurchaseOrderId,
+            TransportType: parseInt(this.state.TransportType),
+            CarrierCompanyId: this.state.CarrierCompanyId
+
+        }
+    )
       .then(res => {
           if(res.data.statusCode===200){
               this.showNotification("Initiated shipment for distributor", "success")

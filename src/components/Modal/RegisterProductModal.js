@@ -60,17 +60,18 @@ class RegisterProductModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_PRODUCT",
-    PersonId: this.props.qldbPersonId,
-    Product:{
-    ProductCode: this.state.ProductCode,
-    ProductName: this. state.ProductName,
-    ProductPrice: parseInt(this.state.ProductPrice),
-    MinimumSellingAmount: parseInt(this.state.MinimumSellingAmount),
-    ProductsPerContainer: parseInt(this.state.ProductsPerContainer),
-    ProductExpiry: parseInt(this.state.ProductExpiry),
-    ProductStorage:{
-      LowThreshTemp: parseInt(this.state.LowThreshTemp),
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "REGISTER_NEW_PRODUCT",
+            PersonId: this.props.qldbPersonId,
+            Product: {
+                ProductCode: this.state.ProductCode,
+                ProductName: this.state.ProductName,
+                ProductPrice: parseInt(this.state.ProductPrice),
+                MinimumSellingAmount: parseInt(this.state.MinimumSellingAmount),
+                ProductsPerContainer: parseInt(this.state.ProductsPerContainer),
+                ProductExpiry: parseInt(this.state.ProductExpiry),
+                ProductStorage: {
+                    LowThreshTemp: parseInt(this.state.LowThreshTemp),
       HighThreshTemp: parseInt(this.state.HighThreshTemp),
       HighThreshHumidity: parseInt(this.state.HighThreshHumidity)
     },

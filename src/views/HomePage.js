@@ -170,7 +170,7 @@ class HomePage extends React.Component {
   //Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {Operation: "GET_ALL_SCENTITIES"},
+    axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_SCENTITIES"},
         {
           headers: {
             //'Authorization': jwtToken

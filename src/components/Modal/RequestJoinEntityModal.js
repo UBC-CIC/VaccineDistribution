@@ -82,17 +82,18 @@ class RegisterEntityModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
-    ScEntity:{
-      ScEntityName: this.state.ScEntityName,
-      ScEntityContact:{
-        ScEntityContact_Email: this.state.ScEntityContact_Email,
-        ScEntityContact_Address: this.state.ScEntityContact_Address,
-        ScEntityContact_Phone: this.state.ScEntityContact_Phone
-      },
-      isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin,
-      ScEntityTypeCode: this.state.ScEntityTypeCode,
-      PersonIds: this.state.PersonIds,
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "REGISTER_NEW_USER_AND_SCENTITY",
+            ScEntity: {
+                ScEntityName: this.state.ScEntityName,
+                ScEntityContact: {
+                    ScEntityContact_Email: this.state.ScEntityContact_Email,
+                    ScEntityContact_Address: this.state.ScEntityContact_Address,
+                    ScEntityContact_Phone: this.state.ScEntityContact_Phone
+                },
+                isApprovedBySuperAdmin: this.state.isApprovedBySuperAdmin,
+                ScEntityTypeCode: this.state.ScEntityTypeCode,
+                PersonIds: this.state.PersonIds,
       JoiningRequests: this.state.JoiningRequests,
       ScEntityIdentificationCode: this.state.ScEntityIdentificationCode,
       ScEntityIdentificationCodeType: this.state.ScEntityIdentificationCodeType

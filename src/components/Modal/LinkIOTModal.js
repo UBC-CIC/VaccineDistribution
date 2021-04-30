@@ -48,10 +48,11 @@ class LinkIOTModal extends React.Component {
 
     handleSubmit = event => {
         event.preventDefault();
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ASSIGN_IOT",
+        axios.post(process.env.REACT_APP_API_URL, {
+                Operation: "ASSIGN_IOT",
                 PersonId: this.props.qldbPersonId,
                 IotId: this.state.IotId,
-                ContainerId:this.state.ContainerId
+                ContainerId: this.state.ContainerId
             }
         )
             .then(res => {

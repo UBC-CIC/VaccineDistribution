@@ -81,15 +81,16 @@ class CreateExportPickupModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "EXPORT_PICKUP",
-    PersonId: this.props.qldbPersonId,
-    PickUpRequestId: this.state.PickUpRequestIdFinal,
-    FreightCarrierId: this.state.FreightCarrierId,
-    ExportAirportId: this.state.ExportAirportId,
-    ImportAirportId: this.state.ImportAirportId
-    
-}
-     )
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "EXPORT_PICKUP",
+            PersonId: this.props.qldbPersonId,
+            PickUpRequestId: this.state.PickUpRequestIdFinal,
+            FreightCarrierId: this.state.FreightCarrierId,
+            ExportAirportId: this.state.ExportAirportId,
+            ImportAirportId: this.state.ImportAirportId
+
+        }
+    )
       .then(res => {
 
         console.log(res);

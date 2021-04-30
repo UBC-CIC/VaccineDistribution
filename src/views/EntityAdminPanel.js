@@ -87,7 +87,7 @@ class EntityAdminPanel extends Component {
 async getEntityData() {
 
   /*
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_JOINING_REQUESTS",
+  axios.post(process.env.REACT_APP_API_URL, { Operation: "GET_JOINING_REQUESTS",
 PersonId: localStorage.getItem("qldbPersonId"),
 ScEntityId: localStorage.getItem("ScEntityId")
 } ,
@@ -141,15 +141,17 @@ async getQldbPersonId() {
 
 async getAllJoiningRequest(){
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_JOINING_REQUESTS",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "GET_JOINING_REQUESTS",
 
-  PersonId: localStorage.getItem("qldbPersonId"),
-  ScEntityId: localStorage.getItem("ScEntityId")
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+            PersonId: localStorage.getItem("qldbPersonId"),
+            ScEntityId: localStorage.getItem("ScEntityId")
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
     .then(res => {
         console.log(res);
         console.log(res.data);
@@ -170,15 +172,17 @@ async getAllJoiningRequest(){
 
 async getYourScEntityId() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "GET_YOUR_SCENTITY",
 
-  PersonId: localStorage.getItem("qldbPersonId")
+            PersonId: localStorage.getItem("qldbPersonId")
 
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -197,16 +201,18 @@ async getYourScEntityId() {
 
 async getPurchaseOrder() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PURCHASE_ORDER_IDS",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "GET_PURCHASE_ORDER_IDS",
 
-  PersonId: localStorage.getItem("qldbPersonId"),
-  FetchType: "Recieved"
+            PersonId: localStorage.getItem("qldbPersonId"),
+            FetchType: "Recieved"
 
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -224,14 +230,16 @@ async getPurchaseOrder() {
 
 async getInventoryTable(){
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_INVENTORY_TABLE",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "GET_INVENTORY_TABLE",
 
-  PersonId: localStorage.getItem("qldbPersonId")
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+            PersonId: localStorage.getItem("qldbPersonId")
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
     .then(res => {
         console.log(res);
         console.log(res.data);
@@ -272,16 +280,17 @@ approveEntityData = (joiningRequestId, personId) => {
 const joiningRequest = this.state.allJoiningRequest.filter(requests => requests.SenderPersonId === personId)
 console.log("McgRequest filter", joiningRequest)
 console.log("McgRequestId filter", joiningRequest[0].JoiningRequestId)
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_JOINING_REQUEST",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "ACCEPT_JOINING_REQUEST",
 
-PersonId: localStorage.getItem("qldbPersonId"),
-JoiningRequestId: joiningRequest[0].JoiningRequestId
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }
-  })
+            PersonId: localStorage.getItem("qldbPersonId"),
+            JoiningRequestId: joiningRequest[0].JoiningRequestId
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
       .then(res => {
           console.log(res);
           console.log(res.data);
@@ -304,15 +313,17 @@ JoiningRequestId: joiningRequest[0].JoiningRequestId
 
 approvePurchaseOrder = (purchaseOrderId) => {
 
-axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_PURCHASE_ORDER",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "ACCEPT_PURCHASE_ORDER",
 
-PersonId: localStorage.getItem("qldbPersonId"),
-PurchaseOrderId: purchaseOrderId
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+            PersonId: localStorage.getItem("qldbPersonId"),
+            PurchaseOrderId: purchaseOrderId
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -332,15 +343,17 @@ PurchaseOrderId: purchaseOrderId
 
 approveExport = (containerId) => {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "APPROVE_EXPORT",
 
-  PersonId: localStorage.getItem("qldbPersonId"),
-  ContainerId: containerId
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+            PersonId: localStorage.getItem("qldbPersonId"),
+            ContainerId: containerId
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
     .then(res => {
         console.log(res);
         console.log(res.data);

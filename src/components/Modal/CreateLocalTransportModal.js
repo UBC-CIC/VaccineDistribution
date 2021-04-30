@@ -72,12 +72,13 @@ class CreateLocalTransportModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "LOCAL_EXPORT",
-    PersonId: this.props.qldbPersonId,
-    PickUpRequestId: this.state.PickUpRequestIdFinal
-    
-}
-     )
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "LOCAL_EXPORT",
+            PersonId: this.props.qldbPersonId,
+            PickUpRequestId: this.state.PickUpRequestIdFinal
+
+        }
+    )
       .then(res => {
 
         console.log(res);
