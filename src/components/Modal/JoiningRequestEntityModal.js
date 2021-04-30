@@ -99,17 +99,18 @@ class JoiningRequestEntityModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "REGISTER_NEW_USER_AND_SCENTITY",
-    Person:{
-      EmployeeId: this.state.EmployeeId,
-      FirstName: this.state.FirstName,
-      LastName: this.state.LastName,
-      isSuperAdmin: this.state.isSuperAdmin,
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "REGISTER_NEW_USER_AND_SCENTITY",
+            Person: {
+                EmployeeId: this.state.EmployeeId,
+                FirstName: this.state.FirstName,
+                LastName: this.state.LastName,
+                isSuperAdmin: this.state.isSuperAdmin,
 
-      PersonContact:{
-        Email: this.props.userEmail,
-        Phone: this.props.userPhone,
-        Address: this.state.Address
+                PersonContact: {
+                    Email: this.props.userEmail,
+                    Phone: this.props.userPhone,
+                    Address: this.state.Address
       }
 
     },

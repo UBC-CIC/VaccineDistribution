@@ -61,10 +61,11 @@ class VaccineTable extends Component {
   //get all container data
   async getVaccines(){
     try {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, { Operation: "GET_VACCINE" } ,{
+    axios.post(process.env.REACT_APP_API_VACCINE_URL, {Operation: "GET_VACCINE"}, {
       headers: {
         'Authorization': jwtToken
-      }})
+      }
+    })
     .then(res => {
         console.log(res);
         console.log(res.data);

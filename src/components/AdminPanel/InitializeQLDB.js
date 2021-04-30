@@ -25,11 +25,12 @@ class InitializeQLDB extends React.Component {
   }
 
   handleTable = () => {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_LEDGER_AND_TABLES"},
-    {
-      headers: {
-        'Authorization': jwtToken
-      }} )
+    axios.post(process.env.REACT_APP_API_URL, {Operation: "CREATE_LEDGER_AND_TABLES"},
+        {
+            headers: {
+                'Authorization': jwtToken
+            }
+        })
       .then(res => {
           alert("Ledger and Tables created suuccessfully", res.data)
       })

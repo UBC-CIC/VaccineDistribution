@@ -44,15 +44,17 @@ class VaccineForm extends React.Component {
   }
 
   handleSubmit = event => {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgvaccine`, {
+    axios.post(process.env.REACT_APP_API_VACCINE_URL, {
       Operation: "POST",
       Vac_ID: this.state.Vac_ID,
       vaccineType: this.state.vaccineType,
-    vaccineName: this.state.vaccineName,
-    isVaccineSafe: true },{
+      vaccineName: this.state.vaccineName,
+      isVaccineSafe: true
+    }, {
       headers: {
         'Authorization': jwtToken
-      }} )
+      }
+    })
       .then(res => {
 
         console.log(res);

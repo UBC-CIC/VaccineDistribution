@@ -99,17 +99,18 @@ class CreateDistributorPurchaseOrderModal extends React.Component {
     res.setHeader("Access-Control-Allow-Headers", "content-type");
     res.setHeader("Access-Control-Allow-Methods","PUT, POST, GET, DELETE, PATCH, OPTIONS");
     */
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_DISTRIBUTOR_PURCHASE_ORDER",
-    PersonId: this.props.qldbPersonId,
-    DistributorId: this.state.DistributorId,
-    PurchaseOrder:{
-    PurchaseOrderNumber: this.state.PurchaseOrderNumber,
-    ProductId: this. state.ProductId,
-    OrderQuantity: parseInt(this.state.OrderQuantity),
-    Orderer:{
-            OrdererScEntityId: this.state.OrdererScEntityId,
-            OrdererPersonId: this.state.OrdererPersonId
-    },
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "CREATE_DISTRIBUTOR_PURCHASE_ORDER",
+            PersonId: this.props.qldbPersonId,
+            DistributorId: this.state.DistributorId,
+            PurchaseOrder: {
+                PurchaseOrderNumber: this.state.PurchaseOrderNumber,
+                ProductId: this.state.ProductId,
+                OrderQuantity: parseInt(this.state.OrderQuantity),
+                Orderer: {
+                    OrdererScEntityId: this.state.OrdererScEntityId,
+                    OrdererPersonId: this.state.OrdererPersonId
+                },
     isOrderShipped: this.state.isOrderShipped,
     OrderType: this.state.OrderType
     }

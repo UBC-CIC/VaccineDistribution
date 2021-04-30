@@ -42,16 +42,18 @@ class ViewContainerModal extends React.Component {
 
     for (var i = 0; i< this.props.container.length; i++)
     {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_EXPORT",
-  
-    PersonId: localStorage.getItem("qldbPersonId"),
-    ContainerId: this.props.container[i]
-  
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "APPROVE_EXPORT",
+
+            PersonId: localStorage.getItem("qldbPersonId"),
+            ContainerId: this.props.container[i]
+
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
     .then(res => {
         console.log(res);
         console.log(res.data);

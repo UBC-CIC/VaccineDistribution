@@ -65,11 +65,12 @@ class ProductTable extends Component {
 
     //get all container data
     async getAllProducts() {
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
+        axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_PRODUCTS"},
             {
                 headers: {
                     'Authorization': jwtToken
-                }})
+                }
+            })
             .then(res => {
                 console.log(res.data);
                 console.log(res.data.body);

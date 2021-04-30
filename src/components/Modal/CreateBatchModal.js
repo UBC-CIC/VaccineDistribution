@@ -61,17 +61,17 @@ class CreateBatchModal extends React.Component {
 
   handleSubmit = event => {
       event.preventDefault();
-      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {
-              Operation: "CREATE_BATCH",
-              PersonId: this.props.qldbPersonId,
-              ProductId: this.state.ProductId,
+      axios.post(process.env.REACT_APP_API_URL, {
+          Operation: "CREATE_BATCH",
+          PersonId: this.props.qldbPersonId,
+          ProductId: this.state.ProductId,
 
-              Batch: {
-                  BatchNo: this.state.BatchNo,
-                  UnitsProduced: this.state.UnitsProduced,
-                  UnitsRemaining: this.state.UnitsRemaining,
-                  MfgDate: this.state.MfgDate,//((new Date(this.state.MfgDate).getTime())/1000.0).toString(),
-                  ProductInstances: this.state.ProductInstances,
+          Batch: {
+              BatchNo: this.state.BatchNo,
+              UnitsProduced: this.state.UnitsProduced,
+              UnitsRemaining: this.state.UnitsRemaining,
+              MfgDate: this.state.MfgDate,//((new Date(this.state.MfgDate).getTime())/1000.0).toString(),
+              ProductInstances: this.state.ProductInstances,
                   CaseIds: this.state.CaseIds
               }
           }

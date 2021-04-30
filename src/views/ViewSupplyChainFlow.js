@@ -261,11 +261,12 @@ class ViewSupplyChainFlow extends Component {
 //Get all the Entities from "GET_ALL_ENTITIES" operation
   async getEntityData() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+    axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_SCENTITIES"},
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
     .then(res => {
         console.log(res.data);
         console.log(res.data.body);
@@ -312,11 +313,12 @@ class ViewSupplyChainFlow extends Component {
   //Get all the products from "GET_ALL_PRODUCTS" operation
   async getAllProducts() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+      axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_PRODUCTS"},
+          {
+              headers: {
+                  //'Authorization': jwtToken
+              }
+          })
     .then(res => {
         console.log(res.data);
         console.log(res.data.body);
@@ -368,15 +370,17 @@ class ViewSupplyChainFlow extends Component {
 
   async getYourScEntityId() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
+      axios.post(process.env.REACT_APP_API_URL, {
+              Operation: "GET_YOUR_SCENTITY",
 
-    PersonId: localStorage.getItem("qldbPersonId")
+              PersonId: localStorage.getItem("qldbPersonId")
 
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+          },
+          {
+              headers: {
+                  //'Authorization': jwtToken
+              }
+          })
     .then(res => {
         console.log(res);
         console.log(res.data);
@@ -394,16 +398,18 @@ class ViewSupplyChainFlow extends Component {
 
   async getPurchaseOrder() {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_PURCHASE_ORDER_IDS",
+      axios.post(process.env.REACT_APP_API_URL, {
+              Operation: "GET_PURCHASE_ORDER_IDS",
 
-    PersonId: localStorage.getItem("qldbPersonId"),
-    FetchType: "Recieved"
+              PersonId: localStorage.getItem("qldbPersonId"),
+              FetchType: "Recieved"
 
-  } ,
-    {
-      headers: {
-        //'Authorization': jwtToken
-      }})
+          },
+          {
+              headers: {
+                  //'Authorization': jwtToken
+              }
+          })
     .then(res => {
         console.log(res);
         console.log(res.data);

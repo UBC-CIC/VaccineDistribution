@@ -59,17 +59,18 @@ class CreateManufacturerOrderModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
-    PersonId: this.props.qldbPersonId,
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "CREATE_MANUFACTURER_PURCHASE_ORDER",
+            PersonId: this.props.qldbPersonId,
 
-    PurchaseOrder:{
-    PurchaseOrderNumber: this.state.PurchaseOrderNumber,
-    ProductId: this. state.ProductId,
-    OrderQuantity: parseInt(this.state.OrderQuantity),
-    Orderer:{
-            OrdererScEntityId: this.state.OrdererScEntityId,
-            OrdererPersonId: this.state.OrdererPersonId
-    },
+            PurchaseOrder: {
+                PurchaseOrderNumber: this.state.PurchaseOrderNumber,
+                ProductId: this.state.ProductId,
+                OrderQuantity: parseInt(this.state.OrderQuantity),
+                Orderer: {
+                    OrdererScEntityId: this.state.OrdererScEntityId,
+                    OrdererPersonId: this.state.OrdererPersonId
+                },
     isOrderShipped: this.state.isOrderShipped,
     OrderType: this.state.OrderType
     }

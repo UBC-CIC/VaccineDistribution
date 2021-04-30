@@ -56,17 +56,19 @@ class CompanyForm extends React.Component {
           return
       }
 
-      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`,
+      axios.post(process.env.REACT_APP_API_COMPANY_URL,
           {
               Operation: "POST",
               Comp_ID: parseInt(this.state.Comp_ID),
-    companyType: this.state.companyType,
-    companyName: this.state.companyName,
-    companyIC: this.state.companyIC,
-    isCompanyRegistered: false },{
-      headers: {
-        'Authorization': jwtToken
-      }} )
+              companyType: this.state.companyType,
+              companyName: this.state.companyName,
+              companyIC: this.state.companyIC,
+              isCompanyRegistered: false
+          }, {
+              headers: {
+                  'Authorization': jwtToken
+              }
+          })
       .then(res => {
         console.log(res);
       })

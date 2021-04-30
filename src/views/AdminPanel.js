@@ -78,11 +78,12 @@ class AdminPanel extends Component {
 
 async getEntityData() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+  axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_SCENTITIES"},
+      {
+          headers: {
+              //'Authorization': jwtToken
+          }
+      })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -97,11 +98,12 @@ async getEntityData() {
 
 async getProductData() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_PRODUCTS"} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+    axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_PRODUCTS"},
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -147,7 +149,8 @@ async getQldbPersonId() {
 
     async getAllRequests() {
 
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_MCG_REQUESTS",
+        axios.post(process.env.REACT_APP_API_URL, {
+                Operation: "GET_ALL_MCG_REQUESTS",
 
                 PersonId: localStorage.getItem("qldbPersonId")
             },
@@ -169,16 +172,18 @@ async getQldbPersonId() {
 
 
 async getYourScEntityId() {
-  
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_YOUR_SCENTITY",
 
-  PersonId: localStorage.getItem("qldbPersonId")
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "GET_YOUR_SCENTITY",
 
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+            PersonId: localStorage.getItem("qldbPersonId")
+
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);
@@ -230,7 +235,7 @@ approveEntityData = (ScEntityIdentificationCode, personId) => {
 
 
     const requests = this.state.allRequests.filter(requests => requests.SenderPersonId === personId)
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {
+    axios.post(process.env.REACT_APP_API_URL, {
             Operation: "ACCEPT_MCG_REQUEST",
 
             PersonId: localStorage.getItem("qldbPersonId"),
@@ -269,15 +274,17 @@ approveProductData = (productId) => {
 
 
     const request = this.state.allRequests.filter(requests => requests.DocumentId === productId)
-  axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "ACCEPT_MCG_REQUEST",
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "ACCEPT_MCG_REQUEST",
 
-PersonId: localStorage.getItem("qldbPersonId"),
-          RequestId: request[0].RequestId
-} ,
-  {
-    headers: {
-      //'Authorization': jwtToken
-    }})
+            PersonId: localStorage.getItem("qldbPersonId"),
+            RequestId: request[0].RequestId
+        },
+        {
+            headers: {
+                //'Authorization': jwtToken
+            }
+        })
   .then(res => {
       console.log(res);
       console.log(res.data);

@@ -46,7 +46,7 @@ class ContainerForm extends React.Component {
 
   handleSubmit = event => {
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, {
+    axios.post(process.env.REACT_APP_API_CONTAINER_URL, {
       Operation: "POST",
       Cont_ID: this.state.Cont_ID,
       containerType: this.state.containerType,

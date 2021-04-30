@@ -44,11 +44,12 @@ class JoinRequest_Entity extends Component {
           
           console.log("JWT token",jwtToken);
     
-        axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "GET_ALL_SCENTITIES"} ,
-        {
-          headers: {
-            'Authorization': jwtToken
-          }})
+        axios.post(process.env.REACT_APP_API_URL, {Operation: "GET_ALL_SCENTITIES"},
+            {
+                headers: {
+                    'Authorization': jwtToken
+                }
+            })
         .then(res => {
             console.log(res);
             console.log(res.data);

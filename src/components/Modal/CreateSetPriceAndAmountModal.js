@@ -91,11 +91,12 @@ class CreateSetPriceAndAmountModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "SET_PRICE_AND_SELLING_AMOUNT",
-    ProductId: this.state.ProductId,
-    MinimumSellingAmount: parseInt(this.state.MinimumSellingAmount),
-    ProductPrice: parseInt(this.state.ProductPrice),
-    PersonId: this.props.qldbPersonId
+    axios.post(process.env.REACT_APP_API_URL, {
+        Operation: "SET_PRICE_AND_SELLING_AMOUNT",
+        ProductId: this.state.ProductId,
+        MinimumSellingAmount: parseInt(this.state.MinimumSellingAmount),
+        ProductPrice: parseInt(this.state.ProductPrice),
+        PersonId: this.props.qldbPersonId
     })
 
       .then(res => {

@@ -53,19 +53,16 @@ class ViewProfile extends React.Component {
       bypassCache: false  // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
     }).then(
         user => {
-          console.log(user)
           this.setState({
             userEmail: user.attributes.email,
             userName: user.username,
             emailVerified : user.attributes.email_verified
           })
-          console.log(user.attributes)
         })
         .catch(err => console.log(err));
 
   }
   handleOnChange = event => {
-    console.log(event.target.value)
     this.setState({ [event.target.name] : event.target.value });
   }
 
@@ -82,7 +79,6 @@ class ViewProfile extends React.Component {
       }.bind(this), 7000);
   }
   handleSubmit = event => {
-    console.log("hello")
     event.preventDefault()
   }
 
@@ -111,7 +107,6 @@ class ViewProfile extends React.Component {
           })
           .then(data => {
             this.showNotification("Password updated","success")
-            console.log(data)
             this.setState({
               oldPassword:"",
               newPassword:"",

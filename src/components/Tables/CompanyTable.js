@@ -70,10 +70,11 @@ class CompanyTable extends Component {
       
       console.log("JWT token",jwtToken);
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcompany`, { Operation: "GET_COMPANY" } ,{
-      headers: {
-        'Authorization': jwtToken
-      }})
+    axios.post(process.env.REACT_APP_API_COMPANY_URL, {Operation: "GET_COMPANY"}, {
+        headers: {
+            'Authorization': jwtToken
+        }
+    })
     .then(res => {
         console.log(res);
         console.log(res.data);

@@ -45,16 +45,17 @@ class InitiateShipmentManufacturerModal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
-    PersonId: this.props.qldbPersonId,
+    axios.post(process.env.REACT_APP_API_URL, {
+            Operation: "INITIATE_SHIPMENT_FOR_MANUFACTURER",
+            PersonId: this.props.qldbPersonId,
 
-    
-    PurchaseOrderId: this.state.PurchaseOrderId,
-    TransportType: parseInt(this. state.TransportType),
-    CarrierCompanyId: this.state.CarrierCompanyId
-    
-}
-     )
+
+            PurchaseOrderId: this.state.PurchaseOrderId,
+            TransportType: parseInt(this.state.TransportType),
+            CarrierCompanyId: this.state.CarrierCompanyId
+
+        }
+    )
       .then(res => {
 
         console.log(res);

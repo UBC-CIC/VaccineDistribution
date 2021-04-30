@@ -9,7 +9,6 @@ import {Auth} from "aws-amplify";
 import NotificationMessage from "../Notification/NotificationMessage";
 
 
-
 let user;
 let jwtToken;
 
@@ -68,10 +67,11 @@ class CreateApproveDeliveryModal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, { Operation: "APPROVE_DELIVERY",
-    PersonId: this.props.qldbPersonId,
-    PurchaseOrderNumber: this.state.PurchaseOrderId
-  }).then(res => {
+    axios.post(process.env.REACT_APP_API_URL, {
+        Operation: "APPROVE_DELIVERY",
+        PersonId: this.props.qldbPersonId,
+        PurchaseOrderNumber: this.state.PurchaseOrderId
+    }).then(res => {
 
         console.log(res);
         console.log(res.data);

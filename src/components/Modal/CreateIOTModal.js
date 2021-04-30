@@ -47,17 +47,18 @@ class CreateIOTModal extends React.Component {
   handleSubmit = event => {
       console.log(this.state)
     event.preventDefault();
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`,
-        { Operation: "CREATE_IOT",
-    PersonId: this.props.qldbPersonId,
-        IoT:{
-            IoTNumber:"",
-            IoTType:parseInt(this.state.IOTType),
-            IoTName: "",
-            ContainerId:""
+    axios.post(process.env.REACT_APP_API_URL,
+        {
+            Operation: "CREATE_IOT",
+            PersonId: this.props.qldbPersonId,
+            IoT: {
+                IoTNumber: "",
+                IoTType: parseInt(this.state.IOTType),
+                IoTName: "",
+                ContainerId: ""
+            }
         }
-    }
-     )
+    )
       .then(res => {
           console.log(res)
           if(res.data.statusCode===200){

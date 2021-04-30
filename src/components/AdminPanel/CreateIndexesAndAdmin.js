@@ -30,7 +30,7 @@ class CreateIndexesAndAdmin extends React.Component {
   }
 
   handleTable = () => {
-      axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgsupplychain`, {Operation: "INSERT_INITIAL_DOCUMENTS"},
+      axios.post(process.env.REACT_APP_API_URL, {Operation: "INSERT_INITIAL_DOCUMENTS"},
           {
               headers: {
                   'Authorization': jwtToken

@@ -61,10 +61,11 @@ class ContainerTable extends Component {
   //get all container data
   async getContainers(){
     try {
-    axios.post(`https://adpvovcpw8.execute-api.us-west-2.amazonaws.com/testMCG/mcgcontainer`, { Operation: "GET_CONTAINER" },{
+    axios.post(process.env.REACT_APP_API_CONTAINER_URL, {Operation: "GET_CONTAINER"}, {
       headers: {
         'Authorization': jwtToken
-      }} )
+      }
+    })
     .then(res => {
         console.log(res);
         console.log(res.data);
