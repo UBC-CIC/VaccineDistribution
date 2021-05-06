@@ -134,7 +134,7 @@ class Sidebar extends React.Component {
                 src={logo.imgSrc}
               /> }
                */}
-               <div>Vaccine Distribution</div>
+               <div>Vaccine Delivery</div>
             </NavbarBrand>
           ) : null}
           <Nav className="align-items-center d-md-none">

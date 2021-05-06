@@ -58,7 +58,7 @@ function App(props) {
                       * [disableSignUp: true, false]
                       * */
                       <Login logo={"custom"} type={"static"} themeColor={"standard"} animateTitle={true}
-                             title={"Vaccine distribution"} darkMode={true}
+                             title={"Vaccine Delivery"} darkMode={true}
                              disableSignUp={false}
                       />
                   )
