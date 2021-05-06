@@ -1,0 +1,31 @@
+version: 1
+backend:
+  phases:
+    build:
+      commands:
+        - '# Execute Amplify CLI with the helper script'
+        - amplifyPush --simple
+    postBuild:
+      commands:
+        - yum install -y jq
+        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        - export REACT_APP_MAP_NAME="${PROJECT_NAME}Map"
+        - export MAPINVOKE=$(aws location describe-map --map-name $REACT_APP_MAP_NAME --query MapName)
+        - if [  -z "$MAPINVOKE" ]; then aws location create-map --map-name $REACT_APP_MAP_NAME --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
+​
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - yarn install
+    build:
+      commands:
+        - yarn run build
+        - node ./node_modules/gulp/bin/gulp.js
+  artifacts:
+    baseDirectory: build
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
