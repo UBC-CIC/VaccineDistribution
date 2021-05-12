@@ -16,14 +16,17 @@ frontend:
   phases:
     preBuild:
       commands:
-        - export AWSREGION=$(aws configure get region)
-        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        - export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
-        - echo $TABLES | while IFS= read -r line ; do aws ssm put-parameter --name "/vaccine/$(print $line | tr '[:upper:]' '[:lower:]' | cut -d - -f1)" --value "$line" --overwrite;  done
-        - export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
-        - aws ssm put-parameter --name "/vaccine/poolid" --value "$POOLID" --overwrite
-        - sam deploy --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
-        - yarn install
+      - |
+        export AWSREGION=$(aws configure get region)
+        export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
+        for i in $TABLES
+           aws ssm put-parameter --name "/vaccine/$(print $i | tr '[:upper:]' '[:lower:]' | cut -d - -f1)" --value "$i" --overwrite
+        done
+        export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
+        aws ssm put-parameter --name "/vaccine/poolid" --value "$POOLID" --overwrite
+        sam deploy --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
+        yarn install
     build:
       commands:
         - yarn run build
