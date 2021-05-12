@@ -12,7 +12,6 @@ backend:
         - export REACT_APP_MAP_NAME=$(aws location list-maps --query 'Entries[*].[MapName]' --output text | grep -i -m1 ${PROJECT_NAME})
         - if [ -z "$REACT_APP_MAP_NAME" ]; then aws location create-map --map-name ${PROJECT_NAME}Map --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
         - echo "$REACT_APP_MAP_NAME" >> .env
-​
 frontend:
   phases:
     preBuild:
