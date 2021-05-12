@@ -9,14 +9,21 @@ backend:
       commands:
         - yum install -y jq
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        - export REACT_APP_MAP_NAME="${PROJECT_NAME}Map"
-        - export MAPINVOKE=$(aws location describe-map --map-name $REACT_APP_MAP_NAME --query MapName)
-        - if [  -z "$MAPINVOKE" ]; then aws location create-map --map-name $REACT_APP_MAP_NAME --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
+        - export REACT_APP_MAP_NAME=$(aws location list-maps --query 'Entries[*].[MapName]' --output text | grep -i -m1 ${PROJECT_NAME})
+        - if [ -z "$REACT_APP_MAP_NAME" ]; then aws location create-map --map-name ${PROJECT_NAME}Map --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
+        - echo "$REACT_APP_MAP_NAME >> .env
 ​
 frontend:
   phases:
     preBuild:
       commands:
+        - export AWSREGION=$(aws configure get region)
+        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        - export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
+        - echo $TABLES | while IFS= read -r line ; do TN=$(echo $line | tr '[:upper:]' '[:lower:]' | cut -d - -f1); aws ssm put-parameter --name "/vaccine/$TN" --value "$line" --overwrite; done
+        - export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
+        - aws ssm put-parameter --name "/vaccine/poolid" --value "$POOLID" --overwrite
+        - sam deploy --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
         - yarn install
     build:
       commands:

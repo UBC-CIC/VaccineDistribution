@@ -2,11 +2,6 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
     "MRI Scheduler Project \n"
-
-Parameters:
-  CognitoUserPoolId:
-    Description: CognitoUserPool Id created by Amplidy
-    Type: 'String'
   
 Globals:
   Function:
@@ -28,7 +23,7 @@ Resources:
         DefaultAuthorizer: CognitoAuthorizer
         Authorizers:
           CognitoAuthorizer:
-            UserPoolArn: !Sub "arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
+            UserPoolArn: !Sub 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/{{resolve:ssm:/vaccine/poolid:1}}'
 
   QldbLayer:
     Type: AWS::Serverless::LayerVersion
@@ -154,10 +149,10 @@ Resources:
             ParameterName: "vaccine*"
       Environment:
         Variables:
-          containerTable: 'a'
-          gpsReadingTable:  'a'         
-          sensorReadingTable: 'a'
-          sensorTable: 'a'
+          containerTable: !Sub '{{resolve:ssm:/vaccine/container:1}}'
+          gpsReadingTable: !Sub '{{resolve:ssm:/vaccine/gpsreading:1}}'
+          sensorReadingTable: !Sub '{{resolve:ssm:/vaccine/sensorreading:1}}'
+          sensorTable: !Sub '{{resolve:ssm:/vaccine/sensor:1}}'
           region: !Sub ${AWS::Region}
 
   iotStream:
