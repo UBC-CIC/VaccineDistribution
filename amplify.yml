@@ -22,13 +22,13 @@ frontend:
         export S3DEPLOYMENTBUCKET=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters s3 --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | grep deployment | awk -F':::' '{print $2}')
         export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
         for i in ${TABLES}; do
-            export TSHORT=$(echo $i | awk '{print tolower($0)}' | cut -d - -f1)
-            export TNAME=$i
-            aws ssm put-parameter --name "/vaccine/$TSHORT" --value $TNAME --overwrite
+            export TSHORT=$(echo ${i} | awk '{print tolower($0)}' | cut -d - -f1)
+            export TNAME=${i}
+            aws ssm put-parameter --name "/vaccine/${TSHORT}" --value ${TNAME} --overwrite
         done
         export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
-        aws ssm put-parameter --name "/vaccine/poolid" --value "$POOLID" --overwrite
-        sam deploy --s3-bucket $S3DEPLOYMENTBUCKET  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
+        aws ssm put-parameter --name "/vaccine/poolid" --value "${POOLID}" --overwrite
+        sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
         yarn install
     build:
       commands:
