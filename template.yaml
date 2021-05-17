@@ -70,7 +70,7 @@ Resources:
   containerAPI:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: ./lambda/containerAPI/containerAPI.zip
+      CodeUri: ./lambda/containerAPI
       Events:
         ApiEvent: # warning: creates a public endpoint
           Type: Api
@@ -90,7 +90,7 @@ Resources:
   supplyChainAPI:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: ./lambda/qldb/qldb.zip
+      CodeUri: ./lambda/qldb
       Events:
         ApiEvent: # warning: creates a public endpoint
           Type: Api
@@ -111,7 +111,7 @@ Resources:
   vaccineAPI:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: ./lambda/vaccineAPI/vaccineAPI.zip
+      CodeUri: ./lambda/vaccineAPI
       Events:
         ApiEvent: # warning: creates a public endpoint
           Type: Api
