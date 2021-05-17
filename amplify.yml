@@ -16,20 +16,23 @@ frontend:
   phases:
     preBuild:
       commands:
-      - |
-        export AWSREGION=$(aws configure get region)        
-        export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        export S3DEPLOYMENTBUCKET=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters s3 --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | grep deployment | awk -F':::' '{print $2}')
-        export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
-        for i in ${TABLES}; do
-            export TSHORT=$(echo ${i} | awk '{print tolower($0)}' | cut -d - -f1)
-            export TNAME=${i}
-            aws ssm put-parameter --name "/vaccine/${TSHORT}" --value ${TNAME} --overwrite
-        done
-        export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
-        aws ssm put-parameter --name "/vaccine/poolid" --value "${POOLID}" --overwrite
-        sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region $AWSREGION --stack-name $PROJECT_NAME-Backend
-        yarn install
+        - export AWSREGION=$(aws configure get region)        
+        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        - export S3DEPLOYMENTBUCKET=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters s3 --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | grep deployment | awk -F':::' '{print $2}')
+        - CONTAINERTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i container)
+        - aws ssm put-parameter --name "/vaccine/table/container" --value "${CONTAINERTABLE}" --overwrite
+        - SENSORTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i sensor-)
+        - aws ssm put-parameter --name "/vaccine/table/sensor" --value "${SENSORTABLE}" --overwrite
+        - SENSORREADINGTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i sensorreading)
+        - aws ssm put-parameter --name "/vaccine/table/sensorreading" --value "${SENSORREADINGTABLE}" --overwrite
+        - USERTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i linkuser)
+        - aws ssm put-parameter --name "/vaccine/table/user" --value "${USERTABLE}" --overwrite
+        - GPSREADINGTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i gpsreading)
+        - aws ssm put-parameter --name "/vaccine/table/gpsreading" --value "${GPSREADINGTABLE}" --overwrite
+        - export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 ${PROJECT_NAME} | cut -c1-19)
+        - aws ssm put-parameter --name "/vaccine/poolid" --value "${POOLID}" --overwrite
+        - sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region ${AWSREGION} --stack-name ${PROJECT_NAME}-Backend
+        - yarn install
     build:
       commands:
         - yarn run build

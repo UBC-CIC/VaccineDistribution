@@ -46,12 +46,11 @@ Resources:
           - python3.7
           - python3.6
         RetentionPolicy: Delete
-      
 
   companyAPI:
     Type: AWS::Serverless::Function 
     Properties:
-      CodeUri: ./lambda/companyAPI/companyAPI.zip
+      CodeUri: ./lambda/companyAPI
       Events:
         ApiEvent: # warning: creates a public endpoint
           Type: Api
@@ -149,10 +148,10 @@ Resources:
             ParameterName: "vaccine*"
       Environment:
         Variables:
-          containerTable: !Sub '{{resolve:ssm:/vaccine/container:1}}'
-          gpsReadingTable: !Sub '{{resolve:ssm:/vaccine/gpsreading:1}}'
-          sensorReadingTable: !Sub '{{resolve:ssm:/vaccine/sensorreading:1}}'
-          sensorTable: !Sub '{{resolve:ssm:/vaccine/sensor:1}}'
+          containerTable: !Sub '{{resolve:ssm:/vaccine/table/container:1}}'
+          gpsReadingTable: !Sub '{{resolve:ssm:/vaccine/table/gpsreading:1}}'
+          sensorReadingTable: !Sub '{{resolve:ssm:/vaccine/table/sensorreading:1}}'
+          sensorTable: !Sub '{{resolve:ssm:/vaccine/table/sensor:1}}'
           region: !Sub ${AWS::Region}
 
   iotStream:
