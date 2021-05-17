@@ -11,7 +11,7 @@ backend:
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
         - export REACT_APP_MAP_NAME=$(aws location list-maps --query 'Entries[*].[MapName]' --output text | grep -i -m1 ${PROJECT_NAME})
         - if [ -z "$REACT_APP_MAP_NAME" ]; then aws location create-map --map-name ${PROJECT_NAME}Map --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
-        - echo "$REACT_APP_MAP_NAME" >> .env
+        - echo "REACT_APP_MAP_NAME=$REACT_APP_MAP_NAME" >> .env
 frontend:
   phases:
     preBuild:
@@ -20,8 +20,10 @@ frontend:
         export AWSREGION=$(aws configure get region)
         export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
         export TABLES=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/)
-        for i in $TABLES
-           aws ssm put-parameter --name "/vaccine/$(print $i | tr '[:upper:]' '[:lower:]' | cut -d - -f1)" --value "$i" --overwrite
+        for i in $TABLES; do
+            export TSHORT=$(echo $i | awk '{print tolower($0)}' | cut -d - -f1)
+            export TNAME=$i
+            aws ssm put-parameter --name "/vaccine/$TSHORT" --value $TNAME --overwrite
         done
         export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 $PROJECT_NAME | cut -c1-19)
         aws ssm put-parameter --name "/vaccine/poolid" --value "$POOLID" --overwrite
