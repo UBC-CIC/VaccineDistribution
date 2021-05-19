@@ -9,14 +9,29 @@ backend:
       commands:
         - yum install -y jq
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        - export REACT_APP_MAP_NAME="${PROJECT_NAME}Map"
-        - export MAPINVOKE=$(aws location describe-map --map-name $REACT_APP_MAP_NAME --query MapName)
-        - if [  -z "$MAPINVOKE" ]; then aws location create-map --map-name $REACT_APP_MAP_NAME --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
-​
+        - export REACT_APP_MAP_NAME=$(aws location list-maps --query 'Entries[*].[MapName]' --output text | grep -i -m1 ${PROJECT_NAME})
+        - if [ -z "$REACT_APP_MAP_NAME" ]; then aws location create-map --map-name ${PROJECT_NAME}Map --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
+        - echo "REACT_APP_MAP_NAME=$REACT_APP_MAP_NAME" >> .env
 frontend:
   phases:
     preBuild:
       commands:
+        - export AWSREGION=$(aws configure get region)        
+        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        - export S3DEPLOYMENTBUCKET=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters s3 --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | grep deployment | awk -F':::' '{print $2}')
+        - CONTAINERTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i container)
+        - aws ssm put-parameter --name "/vaccine/table/container" --type String --value "${CONTAINERTABLE}" --overwrite
+        - SENSORTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i sensor-)
+        - aws ssm put-parameter --name "/vaccine/table/sensor" --type String --value "${SENSORTABLE}" --overwrite
+        - SENSORREADINGTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i sensorreading)
+        - aws ssm put-parameter --name "/vaccine/table/sensorreading" --type String --value "${SENSORREADINGTABLE}" --overwrite
+        - USERTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i linkuser)
+        - aws ssm put-parameter --name "/vaccine/table/user" --type String --value "${USERTABLE}" --overwrite
+        - GPSREADINGTABLE=$(aws resourcegroupstaggingapi get-resources --tag-filters Key=user:Application,Values="${PROJECT_NAME}" --resource-type-filters dynamodb --query 'ResourceTagMappingList[*].[ResourceARN]' --output text | cut -f2- -d/ | grep -i gpsreading)
+        - aws ssm put-parameter --name "/vaccine/table/gpsreading" --type String --value "${GPSREADINGTABLE}" --overwrite
+        - export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 ${PROJECT_NAME} | cut -c1-19)
+        - aws ssm put-parameter --name "/vaccine/poolid" --type String --value "${POOLID}" --overwrite
+        - sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region ${AWSREGION} --stack-name ${PROJECT_NAME}-Backend
         - yarn install
     build:
       commands:
