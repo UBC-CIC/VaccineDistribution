@@ -387,10 +387,10 @@ class ConnectUserModal extends React.Component {
               onChange={this.handleScEntityTypeCodeChange}              
             >
               <option value="1">Supply Chain Owner</option>
-              <option value="2">Manufacturer</option>
-              <option value="3">Airports</option>
-              <option value="4">Seaports</option>
-              <option value="5">Hospitals</option>
+              <option value="2">Manufacturer/Distributor</option>
+              <option value="3">Airport</option>
+              <option value="4">Logistics</option>
+              <option value="5">Hospital</option>
 
               </Input>
           </FormGroup>
