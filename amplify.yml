@@ -8,6 +8,8 @@ backend:
     postBuild:
       commands:
         - yum install -y jq
+        - export AWSACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
+        - export AWSREGION=$(aws configure get region)
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
         - export REACT_APP_MAP_NAME=$(aws location list-maps --query 'Entries[*].[MapName]' --output text | grep -i -m1 ${PROJECT_NAME})
         - if [ -z "$REACT_APP_MAP_NAME" ]; then aws location create-map --map-name ${PROJECT_NAME}Map --configuration "Style=VectorEsriLightGrayCanvas" --pricing-plan "RequestBasedUsage"; fi
