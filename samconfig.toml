@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "vaccine-backend"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-tv5fka8ymyxs"
+s3_prefix = "vaccine-backend"
+region = "us-west-2"
+capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM"
+parameter_overrides = "CognitoUserPoolId=\"us-west-2_h8GVu56ja\""

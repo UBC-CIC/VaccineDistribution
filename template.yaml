@@ -1,0 +1,169 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+    "MRI Scheduler Project \n"
+  
+Globals:
+  Function:
+    AutoPublishAlias: live
+    Handler: lambda_function.lambda_handler
+    MemorySize: 256
+    Runtime: python3.7
+    Timeout: 29
+    Tracing: Active
+
+Resources:  
+
+  apiGw:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: v1
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: !Sub 'arn:aws:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/{{resolve:ssm:/vaccine/poolid:1}}'
+
+  QldbLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      Description: Postgres Custom Functions
+      ContentUri: ./layers/qldb_pyion.zip
+      CompatibleRuntimes:
+        - python3.8
+        - python3.7
+        - python3.6
+      RetentionPolicy: Delete
+
+  KlayersLayer:
+      Type: AWS::Serverless::LayerVersion
+      Properties:
+        Description: Klayers-python38-pyqldb-73
+        ContentUri: ./layers/Klayers-python38-pyqldb.zip
+        CompatibleRuntimes:
+          - python3.8
+          - python3.7
+          - python3.6
+        RetentionPolicy: Delete
+
+  companyAPI:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./lambda/companyAPI
+      Events:
+        ApiEvent: # warning: creates a public endpoint
+          Type: Api
+          Properties:
+            RestApiId: !Ref apiGw
+            Method: Post
+            Path: /company
+      Layers: 
+        - !Ref KlayersLayer
+      Policies:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonQLDBFullAccess 
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - SSMParameterReadPolicy:
+            ParameterName: "vaccine*"
+
+  containerAPI:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./lambda/containerAPI
+      Events:
+        ApiEvent: # warning: creates a public endpoint
+          Type: Api
+          Properties:
+            RestApiId: !Ref apiGw
+            Method: Post
+            Path: /container
+      Layers:
+        - !Ref KlayersLayer
+      Policies:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonQLDBFullAccess 
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - SSMParameterReadPolicy:
+            ParameterName: "vaccine*"
+
+  supplyChainAPI:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./lambda/qldb
+      Events:
+        ApiEvent: # warning: creates a public endpoint
+          Type: Api
+          Properties:
+            RestApiId: !Ref apiGw
+            Method: Post
+            Path: /supplychain
+      Layers: 
+        - !Ref QldbLayer
+        - !Ref KlayersLayer
+      Policies:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonQLDBFullAccess 
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - SSMParameterReadPolicy:
+            ParameterName: "vaccine*"
+
+  vaccineAPI:
+    Type: AWS::Serverless::Function 
+    Properties:
+      CodeUri: ./lambda/vaccineAPI
+      Events:
+        ApiEvent: # warning: creates a public endpoint
+          Type: Api
+          Properties:
+            RestApiId: !Ref apiGw
+            Method: Post
+            Path: /vaccine
+      Layers: 
+        - !Ref KlayersLayer
+      Policies:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonQLDBFullAccess 
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - SSMParameterReadPolicy:
+            ParameterName: "vaccine*"
+
+  iotSensor:
+    Type: AWS::Serverless::Function 
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs12.x
+      CodeUri: ./lambda/iot/iot.zip
+      Events:
+        Stream:
+          Type: Kinesis
+          Properties:
+            Stream: !GetAtt iotStream.Arn
+            BatchSize: 100
+            StartingPosition: LATEST
+      Policies:
+        - arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess
+        - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        - SSMParameterReadPolicy:
+            ParameterName: "vaccine*"
+      Environment:
+        Variables:
+          containerTable: !Sub '{{resolve:ssm:/vaccine/table/container:1}}'
+          gpsReadingTable: !Sub '{{resolve:ssm:/vaccine/table/gpsreading:1}}'
+          sensorReadingTable: !Sub '{{resolve:ssm:/vaccine/table/sensorreading:1}}'
+          sensorTable: !Sub '{{resolve:ssm:/vaccine/table/sensor:1}}'
+          region: !Sub ${AWS::Region}
+
+  iotStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      ShardCount: 1
+
+  lambdaUpdateWeightsParameter:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: /vaccine/apigwurl
+      Type: String
+      Value: 
+        !Sub 'https://${apiGw}.execute-api.${AWS::Region}'
+      Description: APIGW URL
