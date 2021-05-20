@@ -1,6 +1,6 @@
 {
   "auth": {
-    "mcgvaccinedelivery09b5e860": {
+    "vaccinedistributionafe22c03afe22c03": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -8,7 +8,7 @@
     }
   },
   "api": {
-    "mcgvaccinedelivery": {
+    "vaccinedistribution": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -16,10 +16,14 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authmcgvaccinedelivery09b5e860"
+              "userPoolId": "authvaccinedistributionafe22c03afe22c03"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ]
         }
       }
     }

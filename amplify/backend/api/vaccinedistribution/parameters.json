@@ -1,10 +1,10 @@
 {
-  "AppSyncApiName": "mcgvaccinedelivery",
+  "AppSyncApiName": "vaccinedistribution",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authmcgvaccinedelivery09b5e860",
+      "authvaccinedistributionafe22c03afe22c03",
       "Outputs.UserPoolId"
     ]
   }

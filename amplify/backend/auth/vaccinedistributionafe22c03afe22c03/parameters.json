@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "mcgvaccinedelivery09b5e860_identitypool_09b5e860",
+    "identityPoolName": "vaccinedistributionafe22c03_identitypool_afe22c03",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "mcgvac09b5e860",
-    "userPoolName": "mcgvaccinedelivery09b5e860_userpool_09b5e860",
+    "resourceNameTruncated": "vaccinafe22c03",
+    "userPoolName": "vaccinedistributionafe22c03_userpool_afe22c03",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -18,20 +18,23 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "phone_number"
     ],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "email"
+        "email",
+        "phone_number"
     ],
     "userpoolClientReadAttributes": [
-        "email"
+        "email",
+        "phone_number"
     ],
-    "userpoolClientLambdaRole": "mcgvac09b5e860_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
-    "sharedId": "09b5e860",
-    "resourceName": "mcgvaccinedelivery09b5e860",
+    "userpoolClientLambdaRole": "vaccinafe22c03_userpoolclient_lambda_role",
+    "userpoolClientSetAttributes": true,
+    "sharedId": "afe22c03",
+    "resourceName": "vaccinedistributionafe22c03afe22c03",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -45,9 +48,18 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "triggers": "{}",
+    "hostedUI": false,
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }
