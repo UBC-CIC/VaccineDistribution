@@ -91,6 +91,7 @@ Resources:
     Type: AWS::Serverless::Function 
     Properties:
       CodeUri: ./lambda/qldb
+      Timeout: 180
       Events:
         ApiEvent: # warning: creates a public endpoint
           Type: Api
@@ -133,7 +134,7 @@ Resources:
     Properties:
       Handler: index.handler
       Runtime: nodejs12.x
-      CodeUri: ./lambda/iot/iot.zip
+      CodeUri: ./lambda/iot
       Events:
         Stream:
           Type: Kinesis
