@@ -33,15 +33,17 @@ import axios from "axios";
 
 Amplify.configure(config);
 
+const superAdminEmail = process.env.REACT_APP_SUPER_ADMIN_EMAIL
+
 class Admin extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      isSuperAdmin:false,
-      isAdmin:false,
-      qldbPersonId:"",
-      cognitoUserId:""
+      isSuperAdmin: false,
+      isAdmin: false,
+      qldbPersonId: "",
+      cognitoUserId: ""
     }
   }
   componentDidMount() {
@@ -87,8 +89,11 @@ class Admin extends React.Component {
       let user = await Auth.currentAuthenticatedUser();
       let jwtToken = user.signInUserSession.idToken.jwtToken;
       this.setState({cognitoUserId: user.attributes.sub})
+      if (user.attributes.email === superAdminEmail) {
+        this.setState({isSuperAdmin: true})
+      }
 
-      const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter:{cognitoUserId: {eq: this.state.cognitoUserId}}}))
+      const currentReadings = await API.graphql(graphqlOperation(listLinkUsers, {filter: {cognitoUserId: {eq: this.state.cognitoUserId}}}))
 
       console.log('current readings: ', currentReadings)
       this.setState({
