@@ -39,7 +39,8 @@ frontend:
         - aws ssm put-parameter --name "/vaccine/table/gpsreading" --type String --value "${GPSREADINGTABLE}" --overwrite
         - export POOLID=$(aws cognito-idp list-user-pools --max-results 50 --query 'UserPools[*].[Id,Name]' --output text | grep -i -m1 ${PROJECT_NAME} | cut -c1-19)
         - aws ssm put-parameter --name "/vaccine/poolid" --type String --value "${POOLID}" --overwrite
-        - sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region ${AWSREGION} --stack-name ${PROJECT_NAME}-Backend
+        - export SAM_STACK=$(aws cloudformation describe-stacks --stack-name ${PROJECT_NAME}-Backend --query "Stacks[*].[StackName]" --output text)
+        - if [ -z "$SAM_STACK" ]; then sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region ${AWSREGION} --stack-name ${PROJECT_NAME}-Backend; fi
         - yarn install
     build:
       commands:
