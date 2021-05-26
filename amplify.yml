@@ -41,6 +41,8 @@ frontend:
         - aws ssm put-parameter --name "/vaccine/poolid" --type String --value "${POOLID}" --overwrite
         - export SAM_STACK=$(aws cloudformation describe-stacks --stack-name ${PROJECT_NAME}-Backend --query "Stacks[*].[StackName]" --output text)
         - if [ -z "$SAM_STACK" ]; then sam deploy --s3-bucket ${S3DEPLOYMENTBUCKET}  --capabilities CAPABILITY_IAM CAPABILITY_AUTO_EXPAND CAPABILITY_NAMED_IAM --region ${AWSREGION} --stack-name ${PROJECT_NAME}-Backend; fi
+        - SUPPLY_CHAIN_API_LAMBDA=$(aws cloudformation describe-stack-resources --stack-name ${PROJECT_NAME}-Backend --logical-resource-id supplyChainAPI --query 'StackResources[*].[PhysicalResourceId]' --output text)
+        - aws lambda invoke --function-name "${SUPPLY_CHAIN_API_LAMBDA}" --payload '{"Operation":"CREATE_LEDGER_AND_TABLES"}'
         - yarn install
     build:
       commands:
