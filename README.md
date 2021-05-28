@@ -1,7 +1,7 @@
 # Vaccine Distribution
 
 ## Project Overview
-This prototype intents to address vaccine distribution supply-chain challenges. It allows distributors to take action if a vaccine batch begins to exceed its temperature requirement during transportation, by leverating IoT sensor in the container that measures temperature, humidity and give the ability to track the location of vaccine batches in near-real time. The solution also implementes a blockchain smart-contract based on AWS Quantum Ledger Database. 
+This prototype aims to address supply-chain challenges in vaccine distribution. An IoT sensor in each container allows the distributor to monitor temperature and humidity during transportation. The sensor also allows distributor to track the location in near-real time. The solution implements a blockchain smart-contract based on AWS Quantum Ledger Database.
 
 
 ## High level Architecture
